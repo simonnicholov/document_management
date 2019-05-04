@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Third Party
+    'compressor',
+    'django_extensions',
 
     # Custom
 ]
