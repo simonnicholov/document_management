@@ -58,11 +58,11 @@ jobs:
             #         - ./node_modules
             #     key: yarn-dependencies-{{ checksum "yarn.lock" }}
 
-            - run:
-                name: Collect static
-                command: |
-                    . venv/bin/activate
-                    python manage.py collectstatic -l --noinput
+            # - run:
+            #     name: Collect static
+            #     command: |
+            #         . venv/bin/activate
+            #         python manage.py collectstatic -l --noinput
 
             - run:
                 name: run tests
