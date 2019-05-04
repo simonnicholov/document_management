@@ -1,0 +1,37 @@
+MASTER
+
+Location
+  - location_code
+  - location_name
+  - ucreate
+  - created_at
+  - umodified
+  - updated_at
+
+Partner
+  - partner_name
+  - address
+  - dll
+  
+User
+ - username
+ - email
+ - role
+ 
+ 
+ TRANSACTION
+ 
+ Document
+  - location (Foreignkey Location)
+  - partner (Foreignkey Partner)
+  - document_no
+  - document_name
+  - start_date
+  - end_date
+  - price
+  - document_file
+  - notes
+  - document_type
+  - maintenance
+  - state
+  
