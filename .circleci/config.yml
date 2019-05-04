@@ -20,66 +20,66 @@ jobs:
         steps:
             - checkout
 
-        - run:
-            name: Configure DB settings
-            command: |
-                cp document_management/settings_local{.ci.py,.py}
+            - run:
+                name: Configure DB settings
+                command: |
+                    cp document_management/settings_local{.ci.py,.py}
 
-        # Download and cache dependencies
-        - restore_cache:
-            keys:
-                - v1-dependencies-{{ checksum "requirements.txt" }}
-                # fallback to using the latest cache if no exact match is found
-                - v1-dependencies-
+            # Download and cache dependencies
+            - restore_cache:
+                keys:
+                    - v1-dependencies-{{ checksum "requirements.txt" }}
+                    # fallback to using the latest cache if no exact match is found
+                    - v1-dependencies-
 
-        - run:
-            name: install dependencies
-            command: |
-                python3 -m venv venv
-                . venv/bin/activate
-                pip install -r requirements.txt
+            - run:
+                name: install dependencies
+                command: |
+                    python3 -m venv venv
+                    . venv/bin/activate
+                    pip install -r requirements.txt
 
-        - save_cache:
-            paths:
-                - ./venv
-            key: v1-dependencies-{{ checksum "requirements.txt" }}
+            - save_cache:
+                paths:
+                    - ./venv
+                key: v1-dependencies-{{ checksum "requirements.txt" }}
 
-        # Configuration for yarn dependencies
-        - restore_cache:
-            keys:
-            - yarn-dependencies-{{ checksum "yarn.lock" }}
+            # Configuration for yarn dependencies
+            - restore_cache:
+                keys:
+                - yarn-dependencies-{{ checksum "yarn.lock" }}
 
-        - run:
-            name: Install front-end dependencies
-            command: yarn install
+            - run:
+                name: Install front-end dependencies
+                command: yarn install
 
-        - save_cache:
-            paths:
-                - ./node_modules
-            key: yarn-dependencies-{{ checksum "yarn.lock" }}
+            - save_cache:
+                paths:
+                    - ./node_modules
+                key: yarn-dependencies-{{ checksum "yarn.lock" }}
 
-        - run:
-            name: Collect static
-            command: |
-                . venv/bin/activate
-                python manage.py collectstatic -l --noinput
+            - run:
+                name: Collect static
+                command: |
+                    . venv/bin/activate
+                    python manage.py collectstatic -l --noinput
 
-        - run:
-            name: run tests
-            command: |
-                . venv/bin/activate
-                python manage.py test --pararel
+            - run:
+                name: run tests
+                command: |
+                    . venv/bin/activate
+                    python manage.py test --pararel
 
-        - store_artifacts:
-            path: test-reports
-            destination: test-reports
+            - store_artifacts:
+                path: test-reports
+                destination: test-reports
 
-        - run:
-            name: Flake8 tests
-            command: |
-                export DIFF_FILES=$(git diff --name-only --diff-filter=b $(git merge-base HEAD origin/master) | grep ".py")
-                if [[ ! -z $DIFF_FILES ]]
-                then
-                echo "Checking ..." $DIFF_FILES
-                venv/bin/flake8 --exclude migrations,libraries,settings.py --ignore=E501,W504 $DIFF_FILES
-                fi
+            - run:
+                name: Flake8 tests
+                command: |
+                    export DIFF_FILES=$(git diff --name-only --diff-filter=b $(git merge-base HEAD origin/master) | grep ".py")
+                    if [[ ! -z $DIFF_FILES ]]
+                    then
+                    echo "Checking ..." $DIFF_FILES
+                    venv/bin/flake8 --exclude migrations,libraries,settings.py --ignore=E501,W504 $DIFF_FILES
+                    fi
