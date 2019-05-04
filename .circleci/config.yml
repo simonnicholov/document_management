@@ -38,6 +38,7 @@ jobs:
                     python3 -m venv venv
                     . venv/bin/activate
                     pip install -r requirements.txt
+                    pip install flake8
 
             - save_cache:
                 paths:
@@ -68,7 +69,7 @@ jobs:
                 name: run tests
                 command: |
                     . venv/bin/activate
-                    python manage.py test --pararel
+                    python manage.py test --parallel
 
             - store_artifacts:
                 path: test-reports
