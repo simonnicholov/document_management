@@ -45,18 +45,18 @@ jobs:
                 key: v1-dependencies-{{ checksum "requirements.txt" }}
 
             # Configuration for yarn dependencies
-            - restore_cache:
-                keys:
-                - yarn-dependencies-{{ checksum "yarn.lock" }}
+            # - restore_cache:
+            #     keys:
+            #     - yarn-dependencies-{{ checksum "yarn.lock" }}
 
-            - run:
-                name: Install front-end dependencies
-                command: yarn install --frozen-lockfile
+            # - run:
+            #     name: Install front-end dependencies
+            #     command: yarn install --frozen-lockfile
 
-            - save_cache:
-                paths:
-                    - ./node_modules
-                key: yarn-dependencies-{{ checksum "yarn.lock" }}
+            # - save_cache:
+            #     paths:
+            #         - ./node_modules
+            #     key: yarn-dependencies-{{ checksum "yarn.lock" }}
 
             - run:
                 name: Collect static
