@@ -4,6 +4,7 @@
     "description": "an application which helps you to manage all company's documents",
     "main": "index.js",
     "dependencies": {
+        "jquery": "^3.4.1",
         "yarn": "^1.15.2"
     },
     "devDependencies": {},
