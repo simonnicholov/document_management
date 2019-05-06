@@ -17,7 +17,7 @@ class UserAdmin(DjangoUserAdmin):
     )
 
     list_display = ('email', 'name', 'is_superuser', 'is_staff', 'is_legal',)
-    list_filter = ('is_staff', 'is_superuser', 'is_legal',  'is_active',)
+    list_filter = ('is_staff', 'is_superuser', 'is_legal', 'is_active',)
     search_fields = ('email', 'name',)
     ordering = ('email',)
 

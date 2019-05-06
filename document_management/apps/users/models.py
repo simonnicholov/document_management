@@ -2,8 +2,6 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserM
 from django.db import models
 from django.utils import timezone
 
-from model_utils import Choices
-
 
 class CustomUserManager(UserManager):
 
