@@ -17,8 +17,14 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 
+from document_management.apps.users import views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('backoffice/', include('document_management.apps.urls', namespace="backoffice")),
+
+    # default url
+    path('', views.login_view, name="login")
 ]
 
 if settings.DEBUG:
@@ -29,4 +35,4 @@ if settings.DEBUG:
         # For django versions before 2.0:
         # url(r'^__debug__/', include(debug_toolbar.urls)),
 
-    ]+urlpatterns
+    ] + urlpatterns
