@@ -20,126 +20,131 @@
         </div>
     </div>     
 
-    <div class="row">
-        <div class="col-12">
-            <div class="row mb-2">
-                <div class="col-md-4">
-                    <a href="{% url 'backoffice:partners:add' %}">
-                        <button type="button" class="btn btn-danger btn-rounded mb-3"><i class="mdi mdi-plus"></i> Create Partner</button>
-                    </a>
-                </div>
-                <div class="col-md-8">
-                    <div class="row">
-                        <div class="col-md-8">
-                            <div class="form-group mb-3">
-                                <input type="text" id="simpleinput" class="form-control" placeholder="Searching ...">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="text-xs-right">
-                                <div class="btn-group mb-3 ml-1">
-                                    <button type="button" class="btn btn-primary">Active</button>
-                                    <button type="button" class="btn btn-light">Inactive</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> 
+    <div class="row mb-2">
+        <div class="col-md-12 text-center">
+            <a href="{% url 'backoffice:partners:add' %}">
+                <button type="button" class="btn btn-danger btn-rounded mb-3"><i class="mdi mdi-plus"></i> Create Partner</button>
+            </a>
+        </div>
+    </div>
 
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="card d-block">
-                        <div class="card-body">
-                            <div class="dropdown card-widgets">
-                                <a href="#" class="dropdown-toggle arrow-none" data-toggle="dropdown" aria-expanded="false">
-                                    <i class="dripicons-dots-3"></i>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a href="{% url 'backoffice:partners:edit' 1 %}" class="dropdown-item"><i class="mdi mdi-pencil mr-1"></i>Edit</a>
-                                    <a href="{% url 'backoffice:partners:delete' 1 %}" class="dropdown-item"><i class="mdi mdi-delete mr-1"></i>Delete</a>
-                                </div>
-                            </div>
-                            <h4 class="mt-0">
-                                <a href="{% url 'backoffice:partners:details' 1 %}" class="text-title">PT Mega Maju Selalu</a>
-                            </h4>
-                            <p class="text-muted font-13 mb-0">Jalan Permata Hijau Boulevard 3 No 18C</p>
-                        </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="row mt-1">
+                <div class="col-md-3">
+                    <label>Name</label>
+                    <div class="form-group">
+                        <input type="text" id="search_name" class="form-control">
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card d-block">
-                        <div class="card-body">
-                            <div class="dropdown card-widgets">
-                                <a href="#" class="dropdown-toggle arrow-none" data-toggle="dropdown" aria-expanded="false">
-                                    <i class="dripicons-dots-3"></i>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a href="{% url 'backoffice:partners:edit' 1 %}" class="dropdown-item"><i class="mdi mdi-pencil mr-1"></i>Edit</a>
-                                    <a href="{% url 'backoffice:partners:delete' 1 %}" class="dropdown-item"><i class="mdi mdi-delete mr-1"></i>Delete</a>
-                                </div>
-                            </div>
-                            <h4 class="mt-0">
-                                <a href="{% url 'backoffice:partners:details' 1 %}" class="text-title">PT Sumber Ceria Sentosa</a>
-                            </h4>
-                            <p class="text-muted font-13 mb-0">Jalan Raya Bitung Utama Blok F No 28A</p>
-                        </div>
+                <div class="col-md-3">
+                    <label>Direktur</label>
+                    <div class="form-group">
+                        <input type="text" id="search_direktur" class="form-control">
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card d-block">
-                        <div class="card-body">
-                            <div class="dropdown card-widgets">
-                                <a href="#" class="dropdown-toggle arrow-none" data-toggle="dropdown" aria-expanded="false">
-                                    <i class="dripicons-dots-3"></i>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a href="{% url 'backoffice:partners:edit' 1 %}" class="dropdown-item"><i class="mdi mdi-pencil mr-1"></i>Edit</a>
-                                    <a href="{% url 'backoffice:partners:delete' 1 %}" class="dropdown-item"><i class="mdi mdi-delete mr-1"></i>Delete</a>
-                                </div>
-                            </div>
-                            <h4 class="mt-0">
-                                <a href="{% url 'backoffice:partners:details' 1 %}" class="text-title">PT Mega Utama Perkasa</a>
-                            </h4>
-                            <p class="text-muted font-13 mb-0">Jalan Sunter Agung Perkasa Utama No 1A</p>
-                        </div>
+                <div class="col-md-3">
+                    <label>Bidang</label>
+                    <div class="form-group">
+                        <input type="text" id="search_bidang" class="form-control">
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card d-block">
-                        <div class="card-body">
-                            <div class="dropdown card-widgets">
-                                <a href="#" class="dropdown-toggle arrow-none" data-toggle="dropdown" aria-expanded="false">
-                                    <i class="dripicons-dots-3"></i>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a href="{% url 'backoffice:partners:edit' 1 %}" class="dropdown-item"><i class="mdi mdi-pencil mr-1"></i>Edit</a>
-                                    <a href="{% url 'backoffice:partners:delete' 1 %}" class="dropdown-item"><i class="mdi mdi-delete mr-1"></i>Delete</a>
-                                </div>
-                            </div>
-                            <h4 class="mt-0">
-                                <a href="{% url 'backoffice:partners:details' 1 %}" class="text-title">PT Berdiri Mandiri</a>
-                            </h4>
-                            <p class="text-muted font-13 mb-0">Jalan Pluit Selatan Blok 10B</p>
-                        </div>
+                <div class="col-md-3">
+                    <label>NPWP</label>
+                    <div class="form-group">
+                        <input type="text" id="search_npwp" class="form-control">
                     </div>
                 </div>
-            </div>
 
-            <div class="row justify-content-between ml-1 mr-1">
-                <div class="col-xs-3 text-left">
-                    <button type="button" class="btn btn-outline-info btn-rounded">Prev</button>
-                </div>
-                <div class="text-muted mt-2">
-                    Page 1 of 3
-                </div>
-                <div class="col-xs-3 text-right">
-                    <button type="button" class="btn btn-outline-info btn-rounded">Next</button>
-                </div>
             </div>
-            
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive-sm">
+                <table class="table table-sm table-hover table-centered mb-0">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Action</th>
+                            <th>Name</th>
+                            <th>Direktur</th>
+                            <th>Bidang</th>
+                            <th>NPWP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center">
+                                <div class="dropdown">
+                                    <a href="#" class="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
+                                        <i class="mdi mdi-dots-vertical"></i>
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <a href="{% url 'backoffice:partners:edit' 1 %}" class="dropdown-item"><i class="mdi mdi-pencil mr-2"></i> Edit</a>
+                                        <a href="{% url 'backoffice:partners:delete' 1 %}" class="dropdown-item"><i class="mdi mdi-delete mr-2"></i> Delete</a>
+                                        <a href="{% url 'backoffice:partners:details' 1 %}" class="dropdown-item"><i class="mdi mdi-magnify-plus mr-2"></i> Details</a>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>PT Mega Maju Selalu</td>
+                            <td>Andre Santoso</td>
+                            <td>Kontraktor</td>
+                            <td>5124.4531.5233.1234</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">
+                                <div class="dropdown">
+                                    <a href="#" class="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
+                                        <i class="mdi mdi-dots-vertical"></i>
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <a href="{% url 'backoffice:partners:edit' 1 %}" class="dropdown-item"><i class="mdi mdi-pencil mr-2"></i> Edit</a>
+                                        <a href="{% url 'backoffice:partners:delete' 1 %}" class="dropdown-item"><i class="mdi mdi-delete mr-2"></i> Delete</a>
+                                        <a href="{% url 'backoffice:partners:details' 1 %}" class="dropdown-item"><i class="mdi mdi-magnify-plus mr-2"></i> Details</a>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>PT Berkah Indo Makmur</td>
+                            <td>John Ruyadi</td>
+                            <td>Pertambangan</td>
+                            <td>8123.4645.5453.2482</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">
+                                <div class="dropdown">
+                                    <a href="#" class="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
+                                        <i class="mdi mdi-dots-vertical"></i>
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <a href="{% url 'backoffice:partners:edit' 1 %}" class="dropdown-item"><i class="mdi mdi-pencil mr-2"></i> Edit</a>
+                                        <a href="{% url 'backoffice:partners:delete' 1 %}" class="dropdown-item"><i class="mdi mdi-delete mr-2"></i> Delete</a>
+                                        <a href="{% url 'backoffice:partners:details' 1 %}" class="dropdown-item"><i class="mdi mdi-magnify-plus mr-2"></i> Details</a>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>PT Aman Notaris Indojaya</td>
+                            <td>Jessie Pangabean</td>
+                            <td>Notaris</td>
+                            <td>3542.4568.2357.3452</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
     
+    <div class="row justify-content-between ml-1 mr-1">
+        <div class="col-xs-3 text-left">
+            <button type="button" class="btn btn-outline-info btn-rounded">Prev</button>
+        </div>
+        <div class="text-muted mt-2">
+            Page 1 of 3
+        </div>
+        <div class="col-xs-3 text-right">
+            <button type="button" class="btn btn-outline-info btn-rounded">Next</button>
+        </div>
+    </div>
+
 </div>
 {% endblock %}
