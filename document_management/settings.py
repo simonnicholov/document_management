@@ -48,7 +48,10 @@ INSTALLED_APPS = [
     'django_extensions',
 
     # Custom
+    'document_management.apps.events',
+    'document_management.apps.partners',
     'document_management.apps.users',
+    
 ]
 
 MIDDLEWARE = [

@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+
+{% load static%}
+
+{% block content_page %}
+<div class="container-fluid pb-4">
+
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">DMS</a></li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Event</a></li>
+                        <li class="breadcrumb-item active">Index</li>
+                    </ol>
+                </div>
+                <h4 class="page-title">Events</h4>
+            </div>
+        </div>
+    </div>     
+
+    <div class="row mb-2">
+        <div class="col-md-12 text-center">
+            <a href="{% url 'backoffice:events:select' %}">
+                <button type="button" class="btn btn-danger btn-rounded mb-3"><i class="mdi mdi-plus"></i> Create Events</button>
+            </a>
+        </div>
+    </div>
+    
+    <div class="card">
+        <div class="card-body">
+            <div class="row mt-1">
+                <div class="col-md-3">
+                    <label>Search</label>
+                    <div class="form-group">
+                        <input type="text" id="simpleinput" class="form-control" placeholder="Searching ...">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Event Category</label>
+                        <select id="event_category" name="event_category" class="form-control select2" data-toggle="select2">
+                            <option>- Select -</option>
+                            <option>Agreement</option>
+                            <option>Follow Up</option>
+                            <option>Meeting</option>
+                            <option>Survey</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Event Status</label>
+                        <select id="event_status" name="event_status" class="form-control select2" data-toggle="select2">
+                            <option>- Select -</option>
+                            <option>Past</option>
+                            <option>Today</option>
+                            <option>Incoming</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Record Status</label>
+                        <select id="record_status" name="record_status" class="form-control select2" data-toggle="select2">
+                            <option>- Select -</option>
+                            <option>Active</option>
+                            <option>Inactive</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">            
+            <div class="table-responsive-sm">
+                <table class="table table-sm table-hover table-centered mb-0">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Action</th>
+                            <th>Event</th>
+                            <th>Category</th>
+                            <th>Partner</th>
+                            <th>Date/Time</th>
+                            <th>Location</th>
+                            <th>Event Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center">
+                                <div class="dropdown">
+                                    <a href="#" class="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
+                                        <i class="mdi mdi-dots-vertical"></i>
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <a href="{% url 'backoffice:events:edit' 1 %}" class="dropdown-item"><i class="mdi mdi-pencil mr-2"></i> Edit</a>
+                                        <a href="{% url 'backoffice:events:delete' 1 %}" class="dropdown-item"><i class="mdi mdi-delete mr-2"></i> Delete</a>
+                                        <a href="{% url 'backoffice:events:details' 1 %}" class="dropdown-item"><i class="mdi mdi-magnify-plus mr-2"></i> Details</a>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Gebyar Ramadhan</td>
+                            <td>Agreement</td>
+                            <td>PT Mega Maju Selalu</td>
+                            <td>26 Mei 2019 09:00</td>
+                            <td>Synergi Tower</td>
+                            <td><span class="badge badge-warning p-1">Today</span></td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">
+                                <div class="dropdown">
+                                    <a href="#" class="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
+                                        <i class="mdi mdi-dots-vertical"></i>
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <a href="{% url 'backoffice:events:edit' 1 %}" class="dropdown-item"><i class="mdi mdi-pencil mr-2"></i> Edit</a>
+                                        <a href="{% url 'backoffice:events:delete' 1 %}" class="dropdown-item"><i class="mdi mdi-delete mr-2"></i> Delete</a>
+                                        <a href="{% url 'backoffice:events:details' 1 %}" class="dropdown-item"><i class="mdi mdi-magnify-plus mr-2"></i> Details</a>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Bagi-bagi THR</td>
+                            <td>Follow Up</td>
+                            <td>PT Berdiri Lancar Jaya</td>
+                            <td>01 Juni 2019 11:00</td>
+                            <td>ABC Tower</td>
+                            <td><span class="badge badge-danger p-1">Incoming</span></td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">
+                                <div class="dropdown">
+                                    <a href="#" class="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
+                                        <i class="mdi mdi-dots-vertical"></i>
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <a href="{% url 'backoffice:events:edit' 1 %}" class="dropdown-item"><i class="mdi mdi-pencil mr-2"></i> Edit</a>
+                                        <a href="{% url 'backoffice:events:delete' 1 %}" class="dropdown-item"><i class="mdi mdi-delete mr-2"></i> Delete</a>
+                                        <a href="{% url 'backoffice:events:details' 1 %}" class="dropdown-item"><i class="mdi mdi-magnify-plus mr-2"></i> Details</a>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Hujan Uang</td>
+                            <td>Meeting</td>
+                            <td>PT Mega Utama Perkasa</td>
+                            <td>20 Maret 2019</td>
+                            <td>Ruko Pertamina</td>
+                            <td><span class="badge badge-info p-1">Past</span></td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">
+                                <div class="dropdown">
+                                    <a href="#" class="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
+                                        <i class="mdi mdi-dots-vertical"></i>
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <a href="{% url 'backoffice:events:edit' 1 %}" class="dropdown-item"><i class="mdi mdi-pencil mr-2"></i> Edit</a>
+                                        <a href="{% url 'backoffice:events:delete' 1 %}" class="dropdown-item"><i class="mdi mdi-delete mr-2"></i> Delete</a>
+                                        <a href="{% url 'backoffice:events:details' 1 %}" class="dropdown-item"><i class="mdi mdi-magnify-plus mr-2"></i> Details</a>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Tender Jalan Layang</td>
+                            <td>Meeting</td>
+                            <td>PT Sumber Ceria Sentosa</td>
+                            <td>01 Januari 2019</td>
+                            <td>Alfa Graha Tower</td>
+                            <td><span class="badge badge-info p-1">Past</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-between ml-1 mr-1">
+        <div class="col-xs-3 text-left">
+            <button type="button" class="btn btn-outline-info btn-rounded">Prev</button>
+        </div>
+        <div class="text-muted mt-2">
+            Page 1 of 3
+        </div>
+        <div class="col-xs-3 text-right">
+            <button type="button" class="btn btn-outline-info btn-rounded">Next</button>
+        </div>
+    </div>
+    
+</div>
+{% endblock %}
