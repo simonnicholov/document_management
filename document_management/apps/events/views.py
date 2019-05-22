@@ -7,6 +7,7 @@ def index(request):
     }
     return render(request, 'events/index.html', context)
 
+
 def select(request):
     context = {
         'title': 'Select Events'
