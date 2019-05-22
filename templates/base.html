@@ -12,6 +12,17 @@
         <link href="{% static 'css/app.min.css' %}" rel="stylesheet" type="text/css" />
         <link href="{% static 'css/icons.min.css' %}" rel="stylesheet" type="text/css" />
 
+        <style type="text/css">
+            .centered {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 50%;
+                margin-left: 100px;
+            }
+        </style>
+
     </head>
 
     <body>
@@ -41,6 +52,13 @@
                             <a href="{% url 'backoffice:dashboard' %}" class="side-nav-link">
                                 <i class="dripicons-meter"></i>
                                 <span> Dashboards </span>
+                            </a>
+                        </li>
+
+                        <li class="side-nav-item">
+                            <a href="{% url 'backoffice:events:index' %}" class="side-nav-link">
+                                <i class="dripicons-calendar"></i>
+                                <span> Events </span>
                             </a>
                         </li>
 
