@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% load static%}
+
+{% block content_page %}
+<div class="container-fluid pb-4">
+
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">DMS</a></li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Partner</a></li>
+                        <li class="breadcrumb-item active">Search</li>
+                    </ol>
+                </div>
+                <h4 class="page-title">Partners</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="row mt-1">
+                <div class="col-md-3">
+                    <label>Name</label>
+                    <div class="form-group">
+                        <input type="text" id="search_name" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>Direktur</label>
+                    <div class="form-group">
+                        <input type="text" id="search_direktur" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>Bidang</label>
+                    <div class="form-group">
+                        <input type="text" id="search_bidang" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>NPWP</label>
+                    <div class="form-group">
+                        <input type="text" id="search_npwp" class="form-control">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive-sm">
+                <table class="table table-sm table-hover table-centered mb-0">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Action</th>
+                            <th>Name</th>
+                            <th>Direktur</th>
+                            <th>Bidang</th>
+                            <th>NPWP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center">
+                                <a href="{% url 'backoffice:events:add' %}?partner=1" class="btn btn-primary btn-rounded">Select</a>
+                            </td>
+                            <td>PT Mega Maju Selalu</td>
+                            <td>Andre Santoso</td>
+                            <td>Kontraktor</td>
+                            <td>5124.4531.5233.1234</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">
+                                <a href="{% url 'backoffice:events:add' %}?partner=1" class="btn btn-primary btn-rounded">Select</a>
+                            </td>
+                            <td>PT Berkah Indo Makmur</td>
+                            <td>John Ruyadi</td>
+                            <td>Pertambangan</td>
+                            <td>8123.4645.5453.2482</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">
+                                <a href="{% url 'backoffice:events:add' %}?partner=1" class="btn btn-primary btn-rounded">Select</a>
+                            </td>
+                            <td>PT Aman Notaris Indojaya</td>
+                            <td>Jessie Pangabean</td>
+                            <td>Notaris</td>
+                            <td>3542.4568.2357.3452</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row justify-content-between ml-1 mr-1">
+        <div class="col-xs-3 text-left">
+            <button type="button" class="btn btn-outline-info btn-rounded">Prev</button>
+        </div>
+        <div class="text-muted mt-2">
+            Page 1 of 3
+        </div>
+        <div class="col-xs-3 text-right">
+            <button type="button" class="btn btn-outline-info btn-rounded">Next</button>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

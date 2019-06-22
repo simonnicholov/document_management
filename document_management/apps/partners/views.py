@@ -34,3 +34,10 @@ def details(request, id):
         'title': 'Details Partner'
     }
     return render(request, 'partners/details.html', context)
+
+
+def search(request):
+    context = {
+        'title': 'Search Partner'
+    }
+    return render(request, 'partners/search.html', context)
