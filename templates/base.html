@@ -21,6 +21,10 @@
                 width: 50%;
                 margin-left: 100px;
             }
+
+            .nav-tabs .nav-link.active {
+                background-color: transparent;
+            }
         </style>
 
     </head>
@@ -63,7 +67,7 @@
                             </a>
                             <ul class="side-nav-second-level" aria-expanded="false">
                                 <li>
-                                    <a href="layouts-horizontal.html">Kontruksi</a>
+                                    <a href="{% url 'backoffice:contracts:constructions:index' %}">Kontruksi</a>
                                 </li>
                                 <li>
                                     <a href="layouts-horizontal.html">Properti</a>
