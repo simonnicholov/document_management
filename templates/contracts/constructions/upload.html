@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% load static%}
+
+{% block content_page %}
+<div class="container-fluid pb-4">
+
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="{% url 'backoffice:dashboard' %}">DMS</a></li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Contracts</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'backoffice:contracts:constructions:index' %}">Constructions</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'backoffice:contracts:constructions:details' 1 %}">Details</a></li>
+                        <li class="breadcrumb-item active">Upload</li>
+                    </ol>
+                </div>
+                <h4 class="page-title">Construction Upload</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="header-title m-t-0">Dropzone File Upload</h4>
+                    <p class="text-muted font-13 m-b-30">
+                        DropzoneJS is an open source library that provides drag’n’drop file uploads with image previews.
+                    </p>
+
+                    <form action="/" method="post" class="dropzone" id="myAwesomeDropzone" data-plugin="dropzone" data-previews-container="#file-previews"
+                        data-upload-preview-template="#uploadPreviewTemplate">
+                        <div class="fallback">
+                            <input name="file" type="file" multiple />
+                        </div>
+
+                        <div class="dz-message needsclick">
+                            <i class="h1 text-muted dripicons-cloud-upload"></i>
+                            <h3>Drop files here or click to upload.</h3>
+                            <span class="text-muted font-13">(This is just a demo dropzone. Selected files are
+                                <strong>not</strong> actually uploaded.)</span>
+                        </div>
+                    </form>
+
+                    <div class="dropzone-previews mt-3" id="file-previews"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

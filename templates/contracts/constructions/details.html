@@ -31,15 +31,15 @@
                 <i class="mdi mdi-arrow-left-thick"></i>
                 Go Back
             </a>
-            <a href="{% url 'backoffice:contracts:constructions:index' %}" class="btn btn-outline-primary btn-rounded m-1">
+            <a href="{% url 'backoffice:contracts:constructions:edit' 1 %}" class="btn btn-outline-primary btn-rounded m-1">
                 <i class="mdi mdi-pencil"></i>
                 Edit
             </a>
-            <a href="{% url 'backoffice:contracts:constructions:index' %}" class="btn btn-outline-danger btn-rounded m-1">
+            <a href="{% url 'backoffice:contracts:constructions:delete' 1 %}" class="btn btn-outline-danger btn-rounded m-1">
                 <i class="mdi mdi-trash-can"></i>
                 Delete
             </a>
-            <a href="{% url 'backoffice:contracts:constructions:index' %}" class="btn btn-outline-info btn-rounded m-1">
+            <a href="{% url 'backoffice:contracts:constructions:upload' 1 %}" class="btn btn-outline-info btn-rounded m-1">
                 <i class="mdi mdi-upload"></i>
                 Upload
             </a>
@@ -199,7 +199,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group mb-3">
-                                <h6 class="font-14">Retentio Period :</h6>
+                                <h6 class="font-14">Retention Period :</h6>
                                 <p>...</p>
                             </div>
                         </div>
