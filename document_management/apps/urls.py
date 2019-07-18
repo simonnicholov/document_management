@@ -7,6 +7,7 @@ app_name = 'apps'
 urlpatterns = [
     # namespace urls
     path('', include('document_management.apps.users.urls', namespace="users")),
+    path('addendum/', include('document_management.apps.addendums.urls', namespace="addendums")),
     path('event/', include('document_management.apps.events.urls', namespace="events")),
     path('location/', include('document_management.apps.locations.urls', namespace="locations")),
     path('partner/', include('document_management.apps.partners.urls', namespace="partners")),

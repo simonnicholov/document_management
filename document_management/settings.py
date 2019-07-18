@@ -51,7 +51,7 @@ INSTALLED_APPS = [
     'document_management.apps.events',
     'document_management.apps.partners',
     'document_management.apps.users',
-    
+    'document_management.apps.addendums'
 ]
 
 MIDDLEWARE = [

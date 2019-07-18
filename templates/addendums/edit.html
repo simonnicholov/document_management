@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% load static%}
+
+{% block content_page %}
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="{% url 'backoffice:dashboard' %}">DMS</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'backoffice:addendums:index' %}">Addendum</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'backoffice:addendums:details' 1 %}">Details</a></li>
+                        <li class="breadcrumb-item active">Edit</li>
+                    </ol>
+                </div>
+                <h4 class="page-title">Edit Addendum</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+
+            <form action="" method="">
+
+                <div class="card">
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <h6 class="font-14">Type :</h6>
+                                    <p>Contract</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <h6 class="font-14">Category :</h6>
+                                    <p>Construction</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="nama">Number</label>
+                                    <input type="text" id="contractnumber" name="contractnumber" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="name">Subject</label>
+                                    <input type="text" id="contractdate" name="contractdate" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group mb-3">
+                                    <label for="alamat">Description</label>
+                                    <textarea id="description" name="description" class="form-control"  rows="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row text-center mt-3">
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-outline-success btn-rounded">Save</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>                
+
+            </form>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
