@@ -15,31 +15,31 @@
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="{% url 'backoffice:dashboard' %}">DMS</a></li>
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Contracts</a></li>
-                        <li class="breadcrumb-item"><a href="{% url 'backoffice:contracts:constructions:index' %}">Constructions</a></li>
-                        <li class="breadcrumb-item active">Detail</li>
+                        <li class="breadcrumb-item"><a href="{% url 'backoffice:contracts:index' %}">Contracts</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'backoffice:contracts:details' 1 %}">Detail</a></li>
+                        <li class="breadcrumb-item active"># K00-0001</li>
                     </ol>
                 </div>
-                <h4 class="page-title">Detail # K00-0001  - Contract Constructions</h4>
+                <h4 class="page-title">Detail Contract</h4>
             </div>
         </div>
     </div>
 
     <div class="row">
         <div class="col-lg-12 mb-2 text-center">
-            <a href="{% url 'backoffice:contracts:constructions:index' %}" class="btn btn-outline-secondary btn-rounded m-1">
+            <a href="{% url 'backoffice:contracts:index' %}" class="btn btn-outline-secondary btn-rounded m-1">
                 <i class="mdi mdi-arrow-left-thick"></i>
                 Go Back
             </a>
-            <a href="{% url 'backoffice:contracts:constructions:edit' 1 %}" class="btn btn-outline-primary btn-rounded m-1">
+            <a href="{% url 'backoffice:contracts:edit' 1 %}" class="btn btn-outline-primary btn-rounded m-1">
                 <i class="mdi mdi-pencil"></i>
                 Edit
             </a>
-            <a href="{% url 'backoffice:contracts:constructions:delete' 1 %}" class="btn btn-outline-danger btn-rounded m-1">
+            <a href="{% url 'backoffice:contracts:delete' 1 %}" class="btn btn-outline-danger btn-rounded m-1">
                 <i class="mdi mdi-trash-can"></i>
                 Delete
             </a>
-            <a href="{% url 'backoffice:contracts:constructions:upload' 1 %}" class="btn btn-outline-info btn-rounded m-1">
+            <a href="{% url 'backoffice:contracts:upload' 1 %}" class="btn btn-outline-info btn-rounded m-1">
                 <i class="mdi mdi-upload"></i>
                 Upload
             </a>
