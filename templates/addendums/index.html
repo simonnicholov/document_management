@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% load static%}
+
+{% block content_page %}
+<div class="container-fluid pb-4">
+
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">DMS</a></li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Addendum</a></li>
+                        <li class="breadcrumb-item active">Index</li>
+                    </ol>
+                </div>
+                <h4 class="page-title">Addendums</h4>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card">
+        <div class="card-body">
+            <div class="row mt-1">
+                <div class="col-md-3">
+                    <label>Search</label>
+                    <div class="form-group">
+                        <input type="text" id="simpleinput" class="form-control" placeholder="Searching ...">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Type</label>
+                        <select id="type" name="type" class="form-control select2" data-toggle="select2">
+                            <option>- Select -</option>
+                            <option>Contract</option>
+                            <option>MoU</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="category" name="category" class="form-control select2" data-toggle="select2">
+                            <option>- Select -</option>
+                            <option>Contract</option>
+                            <option>Property</option>
+                            <option>Others</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Record Status</label>
+                        <select id="record_status" name="record_status" class="form-control select2" data-toggle="select2">
+                            <option>- Select -</option>
+                            <option>Active</option>
+                            <option>Inactive</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">            
+            <div class="table-responsive-sm">
+                <table class="table table-sm table-hover table-centered mb-0">
+                    <thead>
+                        <tr>
+                            <th>Number</th>
+                            <th>Subject</th>
+                            <th>Date</th>
+                            <th>Type</th>
+                            <th>Category</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><a href="{% url 'backoffice:addendums:details' 1 %}"># ADS-001</a></td>
+                            <td>Perubahan pasal kontrak kerja</td>
+                            <td>25 Mei 2019</td>
+                            <td>Contract</td>
+                            <td>Construction</td>
+                            <td><span class="badge badge-warning p-1">Today</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
