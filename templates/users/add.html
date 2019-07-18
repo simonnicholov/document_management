@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% load static%}
+
+{% block content_page %}
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="{% url 'backoffice:dashboard' %}">DMS</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'backoffice:users:index' %}">User</a></li>
+                        <li class="breadcrumb-item active">Add</li>
+                    </ol>
+                </div>
+                <h4 class="page-title">Add User</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+
+            <form action="" method="">
+
+                <div class="card">
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="code">Email</label>
+                                    <input type="text" id="email" name="email" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="name">Name</label>
+                                    <input type="text" id="name" name="name" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group mb-3">
+                                    <label for="code">Status</label>
+                                    <div class="form-group mb-3">
+                                        <input type="checkbox" id="status" data-switch="primary" checked="checked"/>
+                                        <label for="status" data-on-label="Yes" data-off-label="No"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3>Role Access</h3>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group mb-3">
+                                    <label for="code">Super User</label>
+                                    <div class="form-group mb-3">
+                                        <input type="checkbox" id="super_user" data-switch="primary"/>
+                                        <label for="super_user" data-on-label="Yes" data-off-label="No"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group mb-3">
+                                    <label for="code">Legal User</label>
+                                    <div class="form-group mb-3">
+                                        <input type="checkbox" id="legal_user" data-switch="primary"/>
+                                        <label for="legal_user" data-on-label="Yes" data-off-label="No"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group mb-3">
+                                    <label for="code">Staff User</label>
+                                    <div class="form-group mb-3">
+                                        <input type="checkbox" id="staff_user" data-switch="primary"/>
+                                        <label for="staff_user" data-on-label="Yes" data-off-label="No"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row text-center">
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-outline-success btn-rounded">Save</button>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% load static%}
+
+{% block content_page %}
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="{% url 'backoffice:dashboard' %}">DMS</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'backoffice:events:index' %}">Event</a></li>
+                        <li class="breadcrumb-item active">Select</li>
+                    </ol>
+                </div>
+                <h4 class="page-title">Select Event</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="row centered">
+        <div class="col-md-6">
+            <a href="{% url 'backoffice:partners:search' %}?type=add">
+                <div class="card bg-info text-white">
+                    <div class="card-body text-center">
+                        <h3 class="card-title pt-1">
+                            <i class="mdi mdi-lock-outline mr-1"></i>
+                            Choose Partner
+                        </h3>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-6">
+            <a href="{% url 'backoffice:events:add' %}">
+                <div class="card bg-primary text-white">
+                    <div class="card-body text-center">
+                        <h3 class="card-title pt-1">
+                            <i class="mdi mdi-lock-outline mr-1"></i>
+                            Continue
+                        </h3>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

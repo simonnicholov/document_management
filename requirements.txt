@@ -1,0 +1,10 @@
+Django==2.2.3
+
+# django
+django-compressor==2.2
+django-extensions==2.1.6
+django-libsass==0.7
+django-model-utils==3.1.2
+
+# third party
+psycopg2-binary==2.8.2

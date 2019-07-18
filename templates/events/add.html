@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+
+{% load static%}
+
+{% block content_page %}
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="{% url 'backoffice:dashboard' %}">DMS</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'backoffice:events:index' %}">Event</a></li>
+                        <li class="breadcrumb-item active">Add</li>
+                    </ol>
+                </div>
+                <h4 class="page-title">Add Event</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+
+            <form action="" method="">
+
+                <div class="card">
+                    <div class="card-body">
+
+                        <h3>Partner Information</h3>
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="name">Partner</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" disabled="disabled">
+                                        <div class="input-group-append">
+                                            <a href="{% url 'backoffice:partners:search' %}" class="btn btn-primary"><i class="dripicons-pencil"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="director">Director</label>
+                                    <input type="text" id="director" name="director" class="form-control" disabled="disabled">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="personincharge">Person In Charge</label>
+                                    <input type="text" id="personincharge" name="personincharge" class="form-control" disabled="disabled">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="phone">Phone</label>
+                                    <input type="text" id="phone" name="phone" class="form-control" disabled="disabled">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="fax">Fax</label>
+                                    <input type="text" id="fax" name="fax" class="form-control"  disabled="disabled">
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3>General Information</h3>
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="name">Name</label>
+                                    <input type="text" id="name" name="name" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="name">Category</label>
+                                    <select id="category" name="category" class="form-control">
+                                        <option>- Select -</option>
+                                        <option>Agreement</option>
+                                        <option>Follow Up</option>
+                                        <option>Meeting</option>
+                                        <option>Survey</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group mb-3">
+                                    <label for="example-textarea">Description</label>
+                                    <textarea class="form-control" id="example-textarea" rows="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3>Event Information</h3>
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="name">Topic</label>
+                                    <input type="text" id="topic" name="topic" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="name">Location</label>
+                                    <input type="text" id="location" name="location" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row"> 
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="name">Date</label>
+                                    <input type="text" id="startdate" name="startdate" class="form-control" data-provide="datepicker" data-date-autoclose="true">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="name">Time</label>
+                                    <input type="text" id="time" name="time" class="form-control" data-toggle="timepicker" data-show-meridian="false">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-outline-success btn-rounded">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+
+            </form>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

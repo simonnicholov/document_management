@@ -1,0 +1,60 @@
+# general
+.DS_Store
+media/*
+!media/tests.png
+!media/tests.jpg
+*/CACHE/*
+static
+build/*
+*.pyc
+*.pyo
+*.so
+*~
+*.db
+local_settings.py
+settings_local.py
+*.jpg.*
+*.tmproj
+*.sqlite
+.sass-cache
+dump.rdb
+static_files/bower/*
+.mypy_cache
+.vscode
+node_modules/*
+
+# django
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+db.sqlite3
+media
+
+# installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+fabric.json
+
+# mkdocs documentation
+/site
+
+# pyenv
+.python-version
+
+# unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*,cover
+.hypothesis/
+
+# virtualenv
+.venv
+venv/
+ENV/
