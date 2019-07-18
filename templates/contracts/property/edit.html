@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+
+{% load static%}
+
+{% block content_page %}
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="{% url 'backoffice:dashboard' %}">DMS</a></li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Contracts</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'backoffice:contracts:constructions:index' %}">Property</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'backoffice:contracts:constructions:details' 1 %}">Detail</a></li>
+                        <li class="breadcrumb-item active">Edit</li>
+                    </ol>
+                </div>
+                <h4 class="page-title">Edit Property</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+
+            <form action="" method="">
+
+                <div class="card">
+                    <div class="card-body">
+                        
+                        <h3>General Information</h3>
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="nama">Contract Number</label>
+                                    <input type="text" id="contractnumber" name="contractnumber" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="name">Contract Date</label>
+                                    <input type="text" id="contractdate" name="contractdate" class="form-control" data-provide="datepicker" data-date-autoclose="true">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Location</label>
+                                    <select id="location" name="location" class="form-control select2" data-toggle="select2">
+                                        <option>- Select -</option>
+                                        <option>Banten</option>
+                                        <option>Denpasar</option>
+                                        <option>Jakarta</option>
+                                        <option>Makassar</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group mb-3">
+                                    <label for="alamat">Description</label>
+                                    <textarea id="description" name="description" class="form-control"  rows="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3 class="mt-3">Corporate Information</h3>
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Corporate</label>
+                                    <select id="corporate" name="corporate" class="form-control select2" data-toggle="select2">
+                                        <option>- Select -</option>
+                                        <option>PT Mega Maju Selalu</option>
+                                        <option>PT Berkah Indo Makmur</option>
+                                        <option>PT Aman Notaris Indojaya</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="name">Amount</label>
+                                    <input type="text" id="amount" name="amount" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3 class="mt-3">Scope Information</h3>
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="npwp">Job specification</label>
+                                    <input type="text" id="job_specification" name="job_specification" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="alamat">Beginning Period</label>
+                                    <input type="text" id="beginning_period" name="beginning_period" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="alamat">Ending Period</label>
+                                    <input type="text" id="ending_period" name="ending_period" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="alamat">Retention Period</label>
+                                    <input type="text" id="retention_period" name="retention_period" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        
+
+                        <div class="row text-center mt-3">
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-outline-success btn-rounded">Save</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>                
+
+            </form>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
