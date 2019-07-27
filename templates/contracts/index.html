@@ -11,20 +11,19 @@
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="{% url 'backoffice:dashboard' %}">DMS</a></li>
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Contracts</a></li>
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Constructions</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'backoffice:contracts:index' %}">Contracts</a></li>
                         <li class="breadcrumb-item active">Index</li>
                     </ol>
                 </div>
-                <h4 class="page-title">Contract Constructions</h4>
+                <h4 class="page-title">Contracts</h4>
             </div>
         </div>
     </div>     
 
     <div class="row mb-2">
         <div class="col-md-12 text-center">
-            <a href="{% url 'backoffice:contracts:constructions:add' %}">
-                <button type="button" class="btn btn-danger btn-rounded mb-3"><i class="mdi mdi-plus"></i> Create Construction</button>
+            <a href="{% url 'backoffice:contracts:add' %}">
+                <button type="button" class="btn btn-danger btn-rounded mb-3"><i class="mdi mdi-plus"></i> Create Contract</button>
             </a>
         </div>
     </div>
@@ -78,19 +77,19 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td><a href="{% url 'backoffice:contracts:constructions:details' 1 %}"># K00-0001</a></td>
+                            <td><a href="{% url 'backoffice:contracts:details' 1 %}"># K00-0001</a></td>
                             <td>2019-05-20</td>
                             <td>PT Mega Maju Selalu</td>
                             <td><span class="badge badge-warning p-1">Ongoing</span></td>
                         </tr>
                         <tr>
-                            <td><a href="{% url 'backoffice:contracts:constructions:details' 1 %}"># K00-0002</a></td>
+                            <td><a href="{% url 'backoffice:contracts:details' 1 %}"># K00-0002</a></td>
                             <td>2019-05-25</td>
                             <td>PT Berdiri Lancar Jaya</td>
                             <td><span class="badge badge-success p-1">Done</span></td>
                         </tr>
                         <tr>
-                            <td><a href="{% url 'backoffice:contracts:constructions:details' 1 %}"># K00-0003</a></td>
+                            <td><a href="{% url 'backoffice:contracts:details' 1 %}"># K00-0003</a></td>
                             <td>2019-03-25</td>
                             <td>PT Mega Utama Perkasa</td>
                             <td><span class="badge badge-danger p-1">Expired</span></td>

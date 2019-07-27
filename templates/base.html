@@ -60,22 +60,10 @@
                         </li>
 
                         <li class="side-nav-item">
-                            <a href="javascript: void(0);" class="side-nav-link">
-                                <i class="dripicons-wallet"></i>
-                                <span>Kontrak</span>
-                                <span class="menu-arrow"></span>
+                            <a href="{% url 'backoffice:contracts:index' %}" class="side-nav-link">
+                                <i class="dripicons-time-reverse"></i>
+                                <span>Contract</span>
                             </a>
-                            <ul class="side-nav-second-level" aria-expanded="false">
-                                <li>
-                                    <a href="{% url 'backoffice:contracts:constructions:index' %}">Kontruksi</a>
-                                </li>
-                                <li>
-                                    <a href="layouts-horizontal.html">Properti</a>
-                                </li>
-                                <li>
-                                    <a href="layouts-horizontal.html">Lain-lain</a>
-                                </li>
-                            </ul>
                         </li>
 
                         <li class="side-nav-item">
