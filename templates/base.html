@@ -28,18 +28,11 @@
         </style>
 
     </head>
-
     <body>
 
-        <!-- Begin page -->
         <div class="wrapper">
-
-            <!-- ========== Left Sidebar Start ========== -->
             <div class="left-side-menu">
-
                 <div class="slimscroll-menu" id="left-side-menu-container">
-
-                    <!-- LOGO -->
                     <a href="index.html" class="logo text-center">
                         <span class="logo-lg">
                             <img src="{% static 'img/logo.png' %}" alt="" height="16">
@@ -49,7 +42,6 @@
                         </span>
                     </a>
 
-                    <!--- Sidemenu -->
                     <ul class="metismenu side-nav">
 
                         <li class="side-nav-item">
@@ -77,65 +69,29 @@
                             <a href="javascript: void(0);" class="side-nav-link">
                                 <i class="dripicons-suitcase"></i>
                                 <span>MoU</span>
-                                <span class="menu-arrow"></span>
                             </a>
-                            <ul class="side-nav-second-level" aria-expanded="false">
-                                <li>
-                                    <a href="layouts-horizontal.html">Kontruksi</a>
-                                </li>
-                                <li>
-                                    <a href="layouts-horizontal.html">Properti</a>
-                                </li>
-                                <li>
-                                    <a href="layouts-horizontal.html">Lain-lain</a>
-                                </li>
-                            </ul>
                         </li>
 
                         <li class="side-nav-item">
                             <a href="javascript: void(0);" class="side-nav-link">
                                 <i class="dripicons-microphone"></i>
                                 <span>Berita Acara</span>
-                                <span class="menu-arrow"></span>
                             </a>
-                            <ul class="side-nav-second-level" aria-expanded="false">
-                                <li>
-                                    <a href="layouts-horizontal.html">Kontruksi</a>
-                                </li>
-                                <li>
-                                    <a href="layouts-horizontal.html">Properti</a>
-                                </li>
-                                <li>
-                                    <a href="layouts-horizontal.html">Lain-lain</a>
-                                </li>
-                            </ul>
                         </li>
 
                         <li class="side-nav-item">
                             <a href="javascript: void(0);" class="side-nav-link">
                                 <i class="dripicons-clipboard"></i>
                                 <span>Per. Perusahaan</span>
-                                <span class="menu-arrow"></span>
                             </a>
-                            <ul class="side-nav-second-level" aria-expanded="false">
-                                <li>
-                                    <a href="layouts-horizontal.html">Keputusan Direksi</a>
-                                </li>
-                                <li>
-                                    <a href="layouts-horizontal.html">Surat Edaran</a>
-                                </li>
-                                <li>
-                                    <a href="layouts-horizontal.html">Peraturan Lain</a>
-                                </li>
-                            </ul>
                         </li>
 
-                        <li class="side-nav-item">
+                        <!-- <li class="side-nav-item">
                             <a href="{% url 'backoffice:events:index' %}" class="side-nav-link">
                                 <i class="dripicons-calendar"></i>
                                 <span>Events</span>
                             </a>
-                        </li>
+                        </li> -->
 
                         <li class="side-nav-item">
                             <a href="{% url 'backoffice:locations:index' %}" class="side-nav-link">
@@ -166,196 +122,14 @@
                         </li>
 
                     </ul>
-                    <!-- End Sidebar -->
 
                     <div class="clearfix"></div>
-
                 </div>
-                <!-- Sidebar -left -->
-
             </div>
-            <!-- Left Sidebar End -->
-
-            <!-- ============================================================== -->
-            <!-- Start Page Content here -->
-            <!-- ============================================================== -->
-
             <div class="content-page">
                 <div class="content">
-
-                    <!-- Topbar Start -->
                     <div class="navbar-custom">
                         <ul class="list-unstyled topbar-right-menu float-right mb-0">
-
-                             <li class="dropdown notification-list">
-                                <a class="nav-link dropdown-toggle arrow-none" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                    <i class="dripicons-message noti-icon"></i>
-                                    <span class="noti-icon-badge"></span>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated dropdown-lg">
-
-                                    <!-- item-->
-                                    <div class="dropdown-item noti-title">
-                                        <h5 class="m-0">
-                                            Messages
-                                        </h5>
-                                    </div>
-
-                                    <div class="slimscroll" style="max-height: 230px;">
-                                        <!-- item-->
-                                        <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                            <div class="notify-icon bg-primary">
-                                                <i class="mdi mdi-comment-account-outline"></i>
-                                            </div>
-                                            <p class="notify-details">Caleb Flakelar commented on Admin
-                                                <small class="text-muted">1 min ago</small>
-                                            </p>
-                                        </a>
-
-                                        <!-- item-->
-                                        <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                            <div class="notify-icon bg-info">
-                                                <i class="mdi mdi-account-plus"></i>
-                                            </div>
-                                            <p class="notify-details">New user registered.
-                                                <small class="text-muted">5 hours ago</small>
-                                            </p>
-                                        </a>
-
-                                        <!-- item-->
-                                        <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                            <div class="notify-icon">
-                                                <img src="assets/images/users/avatar-2.jpg" class="img-fluid rounded-circle" alt="" /> </div>
-                                            <p class="notify-details">Cristina Pride</p>
-                                            <p class="text-muted mb-0 user-msg">
-                                                <small>Hi, How are you? What about our next meeting</small>
-                                            </p>
-                                        </a>
-
-                                        <!-- item-->
-                                        <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                            <div class="notify-icon bg-primary">
-                                                <i class="mdi mdi-comment-account-outline"></i>
-                                            </div>
-                                            <p class="notify-details">Caleb Flakelar commented on Admin
-                                                <small class="text-muted">4 days ago</small>
-                                            </p>
-                                        </a>
-
-                                        <!-- item-->
-                                        <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                            <div class="notify-icon">
-                                                <img src="assets/images/users/avatar-4.jpg" class="img-fluid rounded-circle" alt="" /> </div>
-                                            <p class="notify-details">Karen Robinson</p>
-                                            <p class="text-muted mb-0 user-msg">
-                                                <small>Wow ! this admin looks good and awesome design</small>
-                                            </p>
-                                        </a>
-
-                                        <!-- item-->
-                                        <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                            <div class="notify-icon bg-info">
-                                                <i class="mdi mdi-heart"></i>
-                                            </div>
-                                            <p class="notify-details">Carlos Crouch liked
-                                                <b>Admin</b>
-                                                <small class="text-muted">13 days ago</small>
-                                            </p>
-                                        </a>
-                                    </div>
-
-                                    <!-- All-->
-                                    <a href="javascript:void(0);" class="dropdown-item text-center text-primary notify-item notify-all">
-                                        View All
-                                    </a>
-
-                                </div>
-                            </li>
-
-                            <li class="dropdown notification-list">
-                                <a class="nav-link dropdown-toggle arrow-none" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                    <i class="dripicons-bell noti-icon"></i>
-                                    <span class="noti-icon-badge"></span>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated dropdown-lg">
-
-                                    <!-- item-->
-                                    <div class="dropdown-item noti-title">
-                                        <h5 class="m-0">
-                                            Notification
-                                        </h5>
-                                    </div>
-
-                                    <div class="slimscroll" style="max-height: 230px;">
-                                        <!-- item-->
-                                        <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                            <div class="notify-icon bg-primary">
-                                                <i class="mdi mdi-comment-account-outline"></i>
-                                            </div>
-                                            <p class="notify-details">Caleb Flakelar commented on Admin
-                                                <small class="text-muted">1 min ago</small>
-                                            </p>
-                                        </a>
-
-                                        <!-- item-->
-                                        <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                            <div class="notify-icon bg-info">
-                                                <i class="mdi mdi-account-plus"></i>
-                                            </div>
-                                            <p class="notify-details">New user registered.
-                                                <small class="text-muted">5 hours ago</small>
-                                            </p>
-                                        </a>
-
-                                        <!-- item-->
-                                        <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                            <div class="notify-icon">
-                                                <img src="assets/images/users/avatar-2.jpg" class="img-fluid rounded-circle" alt="" /> </div>
-                                            <p class="notify-details">Cristina Pride</p>
-                                            <p class="text-muted mb-0 user-msg">
-                                                <small>Hi, How are you? What about our next meeting</small>
-                                            </p>
-                                        </a>
-
-                                        <!-- item-->
-                                        <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                            <div class="notify-icon bg-primary">
-                                                <i class="mdi mdi-comment-account-outline"></i>
-                                            </div>
-                                            <p class="notify-details">Caleb Flakelar commented on Admin
-                                                <small class="text-muted">4 days ago</small>
-                                            </p>
-                                        </a>
-
-                                        <!-- item-->
-                                        <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                            <div class="notify-icon">
-                                                <img src="assets/images/users/avatar-4.jpg" class="img-fluid rounded-circle" alt="" /> </div>
-                                            <p class="notify-details">Karen Robinson</p>
-                                            <p class="text-muted mb-0 user-msg">
-                                                <small>Wow ! this admin looks good and awesome design</small>
-                                            </p>
-                                        </a>
-
-                                        <!-- item-->
-                                        <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                            <div class="notify-icon bg-info">
-                                                <i class="mdi mdi-heart"></i>
-                                            </div>
-                                            <p class="notify-details">Carlos Crouch liked
-                                                <b>Admin</b>
-                                                <small class="text-muted">13 days ago</small>
-                                            </p>
-                                        </a>
-                                    </div>
-
-                                    <!-- All-->
-                                    <a href="javascript:void(0);" class="dropdown-item text-center text-primary notify-item notify-all">
-                                        View All
-                                    </a>
-
-                                </div>
-                            </li>
 
                             <li class="dropdown notification-list">
                                 <a class="nav-link dropdown-toggle nav-user arrow-none mr-0" data-toggle="dropdown" href="#" role="button" aria-haspopup="false"
@@ -395,15 +169,11 @@
                             <i class="mdi mdi-menu"></i>
                         </button>
                     </div>
-                    <!-- end Topbar -->
 
                     {% block content_page %}
                     {% endblock %}
 
                 </div>
-                <!-- content -->
-
-                <!-- Footer Start -->
                 <footer class="footer">
                     <div class="container-fluid">
                         <div class="row">
@@ -413,30 +183,21 @@
                         </div>
                     </div>
                 </footer>
-                <!-- end Footer -->
-
             </div>
-
-            <!-- ============================================================== -->
-            <!-- End Page content -->
-            <!-- ============================================================== -->
-
-
         </div>
-        <!-- END wrapper -->
 
         <!-- bundle -->
         <script src="{% static 'js/app.min.js' %}"></script>
 
         <!-- third party js -->
-        <script src="{% static 'js/chart.bundle.min.js' %}"></script>
+        <!-- <script src="{% static 'js/chart.bundle.min.js' %}"></script>
         <script src="{% static 'js/jquery-jvectormap-1.2.2.min.js' %}"></script>
-        <script src="{% static 'js/jquery-jvectormap-world-mill-en.js' %}"></script>
+        <script src="{% static 'js/jquery-jvectormap-world-mill-en.js' %}"></script> -->
         <script src="{% static 'js/dropzone.min.js' %}"></script>
         <!-- third party js ends -->
 
         <!-- demo app -->
-        <script src="{% static 'js/demo.dashboard.js' %}"></script>
+        <!-- <script src="{% static 'js/demo.dashboard.js' %}"></script> -->
         <!-- end demo js-->
     </body>
 
