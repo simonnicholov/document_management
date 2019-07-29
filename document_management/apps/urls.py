@@ -18,4 +18,6 @@ urlpatterns = [
 
     # specific urls
     path('dashboard/', views.dashboard, name="dashboard"),
+    path('permission-requests/', views.permission_requests, name="permission_requests"),
+    path('approval-requests/', views.approval_requests, name="approval_requests"),
 ]
