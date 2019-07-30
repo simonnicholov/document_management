@@ -50,22 +50,22 @@
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
+                        <label>Type</label>
+                        <select id="type" name="type" class="form-control select2" data-toggle="select2">
+                            <option>- Select -</option>
+                            <option>Public</option>
+                            <option>Private</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
                         <label>Status</label>
                         <select id="status" name="status" class="form-control select2" data-toggle="select2">
                             <option>- Select -</option>
                             <option>Ongoing</option>
                             <option>Done</option>
                             <option>Expired</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label>Record Status</label>
-                        <select id="record_status" name="record_status" class="form-control select2" data-toggle="select2">
-                            <option>- Select -</option>
-                            <option>Active</option>
-                            <option>Inactive</option>
                         </select>
                     </div>
                 </div>
@@ -80,33 +80,41 @@
                     <thead>
                         <tr>
                             <!-- <th class="text-center">Action</th> -->
-                            <th>Nomor Kontrak</th>
-                            <th>Perusahaan</th>
-                            <th>Tanggal Kontrak</th>
+                            <th>Contract Number</th>
+                            <th>Subject</th>
+                            <th>Company</th>
+                            <th>Contract Date</th>
                             <th>Category</th>
+                            <th>Type</th>
                             <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td><a href="{% url 'backoffice:contracts:details' 1 %}"># K00-0001</a></td>
+                            <td>Persyaratan Pendaftaran Tender</td>
                             <td>PT Mega Maju Selalu</td>
                             <td>2019-05-20</td>
                             <td>Property</td>
+                            <td><span class="badge badge-success p-1">Public</span></td>
                             <td><span class="badge badge-warning p-1">Ongoing</span></td>
                         </tr>
                         <tr>
                             <td><a href="{% url 'backoffice:contracts:details' 1 %}"># K00-0002</a></td>
+                            <td>Kontrak pemasangan marmer</td>
                             <td>PT Berdiri Lancar Jaya</td>
                             <td>2019-05-25</td>
                             <td>Construction</td>
+                            <td><span class="badge badge-danger p-1">Private</span></td>
                             <td><span class="badge badge-success p-1">Done</span></td>
                         </tr>
                         <tr>
                             <td><a href="{% url 'backoffice:contracts:details' 1 %}"># K00-0003</a></td>
+                            <td>Persyaratan Pemenang Tender</td>
                             <td>PT Mega Utama Perkasa</td>
                             <td>2019-03-25</td>
                             <td>Others</td>
+                            <td><span class="badge badge-success p-1">Public</span></td>
                             <td><span class="badge badge-danger p-1">Expired</span></td>
                         </tr>
                     </tbody>
