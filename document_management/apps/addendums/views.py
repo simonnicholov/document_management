@@ -55,3 +55,10 @@ def preview(request, id):
         'title': 'Preview Addendum'
     }
     return render(request, 'addendums/preview.html', context)
+
+
+def update_record_status(request, id):
+    context = {
+        'title': 'Update Record Status'
+    }
+    return render(request, 'addendums/update_record_status.html', context)

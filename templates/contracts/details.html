@@ -39,6 +39,19 @@
                 <i class="mdi mdi-trash-can"></i>
                 Delete
             </a>
+            <!-- TODO : Ada Logika untuk Deactivate dan Activate -->
+            <a href="{% url 'backoffice:contracts:change_record_status' 1 %}" class="btn btn-outline-danger btn-rounded m-1">
+                <i class="mdi mdi-trash-can"></i>
+                Deactivate
+            </a>
+            <a href="{% url 'backoffice:contracts:change_record_status' 1 %}" class="btn btn-outline-success btn-rounded m-1">
+                <i class="mdi mdi-trash-can"></i>
+                Activate
+            </a>
+            <a href="{% url 'backoffice:contracts:change_status' 1 %}" class="btn btn-outline-info btn-rounded m-1">
+                <i class="mdi mdi-trash-can"></i>
+                Change Status
+            </a>
             <a href="{% url 'backoffice:contracts:upload' 1 %}" class="btn btn-outline-info btn-rounded m-1">
                 <i class="mdi mdi-upload"></i>
                 Upload
