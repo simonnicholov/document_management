@@ -41,3 +41,17 @@ def upload(request, id):
         'title': 'Upload Contract'
     }
     return render(request, 'contracts/upload.html', context)
+
+
+def change_status(request, id):
+    context = {
+        'title': 'Change Status'
+    }
+    return render(request, 'contracts/change_status.html', context)
+
+
+def change_record_status(request, id):
+    context = {
+        'title': 'Change Status Contract'
+    }
+    return render(request, 'contracts/change_record_status.html', context)
