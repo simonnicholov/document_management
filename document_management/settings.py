@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'document_management.apps.users',
     'document_management.apps.addendums',
     'document_management.apps.locations',
+    'document_management.apps.models.role_permissions',
 ]
 
 MIDDLEWARE = [
