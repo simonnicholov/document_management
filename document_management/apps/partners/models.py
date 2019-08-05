@@ -23,7 +23,7 @@ class Partner(models.Model):
     director = models.CharField(max_length=64, blank=True, null=True)
     person_in_charge = models.CharField(max_length=64, blank=True, null=True)
     business_sector = models.PositiveSmallIntegerField(choices=BUSINESS_SECTOR, blank=True, null=True)
-    address = models.CharField(max_length=128, unique=True)
+    address = models.CharField(max_length=256, unique=True)
     npwp = models.CharField(max_length=32, unique=True)
     siup = models.CharField(max_length=32, unique=True)
     ptkp = models.CharField(max_length=32, unique=True)
