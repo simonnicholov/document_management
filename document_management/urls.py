@@ -17,14 +17,14 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 
-from document_management.apps.users import views
+from document_management.apps import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('backoffice/', include('document_management.apps.urls', namespace="backoffice")),
 
     # default url
-    path('', views.login_view, name="login")
+    path('', views.login_view, name="login_view")
 ]
 
 if settings.DEBUG:
