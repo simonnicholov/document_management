@@ -8,7 +8,7 @@ from document_management.core.utils import FilenameGenerator
 
 
 class Document(models.Model):
-    DOCUMENT_TYPE = Choices(
+    GROUP = Choices(
         (1, 'contract', 'Contract'),
         (2, 'mou', 'MoU'),
         (3, 'reading_news', 'Reading News'),
@@ -35,7 +35,7 @@ class Document(models.Model):
     expired_date = models.DateField()
     amount = models.FloatField(validators=[MinValueValidator(0)], blank=True, null=True)
 
-    document_type = models.PositiveSmallIntegerField(choices=DOCUMENT_TYPE)
+    group = models.PositiveSmallIntegerField(choices=GROUP)
     category = models.PositiveSmallIntegerField(choices=CATEGORY)
     type = models.PositiveSmallIntegerField(choices=TYPE)
 

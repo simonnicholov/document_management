@@ -37,6 +37,9 @@ class PermissionRequest(models.Model):
                                   on_delete=models.CASCADE, blank=True, null=True)
     viewed_date = models.DateTimeField()
 
+    user_request = models.ForeignKey('users.User', related_name='user_request',
+                                     on_delete=models.CASCADE)
+
     is_active = models.BooleanField('active', default=True)
     created = AutoCreatedField()
 
