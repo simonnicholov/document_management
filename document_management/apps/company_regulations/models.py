@@ -38,8 +38,9 @@ class CompanyRegulation(models.Model):
 
 
 class CompanyRegulationFile(models.Model):
-    document = models.OneToOneField('company_regulations.CompanyRegulation', related_name="company_regulation_files",
-                                    on_delete=models.CASCADE)
+    company_regulation = models.OneToOneField('company_regulations.CompanyRegulation',
+                                              related_name="company_regulation_files",
+                                              on_delete=models.CASCADE)
     file = models.FileField(upload_to=FilenameGenerator('company_regulation_file'))
     is_active = models.BooleanField('active', default=True)
     created = AutoCreatedField()
