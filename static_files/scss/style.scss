@@ -1,5 +1,18 @@
+.centered {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    margin-left: 100px;
+}
+
 ul.errorlist {
     list-style: none;
     margin: 0;
     padding: 0;
+}
+
+.nav-tabs .nav-link.active {
+    background-color: transparent;
 }

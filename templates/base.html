@@ -1,4 +1,4 @@
-{% load static %}
+{% load static compress %}
 
 <!DOCTYPE html>
     <html lang="en">
@@ -8,25 +8,11 @@
         <title>{{ title }} :: Document Management</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <!-- <link href="{% static 'css/jquery-jvectormap-1.2.2.css' %}" rel="stylesheet" type="text/css" /> -->
-        <link href="{% static 'css/app.min.css' %}" rel="stylesheet" type="text/css" />
-        <link href="{% static 'css/icons.min.css' %}" rel="stylesheet" type="text/css" />
-
-        <style type="text/css">
-            .centered {
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                width: 50%;
-                margin-left: 100px;
-            }
-
-            .nav-tabs .nav-link.active {
-                background-color: transparent;
-            }
-        </style>
-
+        {% compress css %}
+            <link href="{% static 'css/app.min.css' %}" rel="stylesheet" type="text/css" />
+            <link href="{% static 'css/icons.min.css' %}" rel="stylesheet" type="text/css" />
+            <link href="{% static 'scss/style.scss' %}" rel="stylesheet" type="text/x-scss" />    
+        {% endcompress %}
     </head>
     <body>
 
@@ -152,29 +138,19 @@
                                         <img src="{% static 'img/man.png' %}" alt="user-image" class="rounded-circle">
                                     </span>
                                     <span>
-                                        <span class="account-user-name">Dominic Keller</span>
+                                        <span class="account-user-name">{{ user.name }}</span>
                                         <span class="account-position">Superadmin</span>
                                     </span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated topbar-dropdown-menu profile-dropdown">
-                                    <!-- item-->
-                                    <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                        <i class="mdi mdi-account-circle mr-1"></i>
-                                        <span>My Account</span>
-                                    </a>
-
-                                    <!-- item-->
                                     <a href="javascript:void(0);" class="dropdown-item notify-item">
                                         <i class="mdi mdi-key mr-1"></i>
                                         <span>Change Password</span>
                                     </a>
-
-                                    <!-- item-->
                                     <a href="javascript:void(0);" class="dropdown-item notify-item">
                                         <i class="mdi mdi-logout mr-1"></i>
                                         <span>Logout</span>
                                     </a>
-
                                 </div>
                             </li>
 
@@ -200,19 +176,11 @@
             </div>
         </div>
 
-        <!-- bundle -->
+        {% compress js %}
+        <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
         <script src="{% static 'js/app.min.js' %}"></script>
-
-        <!-- third party js -->
-        <!-- <script src="{% static 'js/chart.bundle.min.js' %}"></script>
-        <script src="{% static 'js/jquery-jvectormap-1.2.2.min.js' %}"></script>
-        <script src="{% static 'js/jquery-jvectormap-world-mill-en.js' %}"></script> -->
         <script src="{% static 'js/dropzone.min.js' %}"></script>
-        <!-- third party js ends -->
-
-        <!-- demo app -->
-        <!-- <script src="{% static 'js/demo.dashboard.js' %}"></script> -->
-        <!-- end demo js-->
+        {% endcompress %}
     </body>
 
 </html>
