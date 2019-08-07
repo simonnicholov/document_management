@@ -4,6 +4,8 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect
 
+from document_management.core.decorators import legal_required
+
 
 def login_view(request):
     form = AuthenticationForm(data=request.POST or None)
@@ -36,6 +38,7 @@ def logout_view(request):
     return redirect("login_view")
 
 
+@legal_required
 def dashboard_legal(request):
     context = {
         'title': 'Dashboard'

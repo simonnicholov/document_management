@@ -1,0 +1,5 @@
+{% if user.get_role_name|lower == "superuser" or user.get_role_name|lower == "legal" %}
+    <a href="{% url 'backoffice:dashboard_legal' %}">DMS</a>
+{% else %}
+    <a href="{% url 'backoffice:dashboard_user' %}">DMS</a>
+{% endif %}
