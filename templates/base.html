@@ -72,27 +72,34 @@
                             </a>
                         </li>
 
+                        {% if user.get_role_name|lower == "superuser" or user.get_role_name|lower == "legal" %}
                         <li class="side-nav-item">
                             <a href="{% url 'backoffice:approval_requests' %}" class="side-nav-link">
                                 <i class="dripicons-user"></i>
                                 <span>Approval Requests</span>
                             </a>
                         </li>
-                        
+                        {% endif %}
+
+                        {% if user.get_role_name|lower == "user" %}
                         <li class="side-nav-item">
                             <a href="{% url 'backoffice:permission_requests' %}" class="side-nav-link">
                                 <i class="dripicons-user"></i>
                                 <span>Permission Requests</span>
                             </a>
                         </li>
+                        {% endif %}
 
+                        {% comment %}
                         <!-- <li class="side-nav-item">
                             <a href="{% url 'backoffice:events:index' %}" class="side-nav-link">
                                 <i class="dripicons-calendar"></i>
                                 <span>Events</span>
                             </a>
                         </li> -->
+                        {% endcomment %}
 
+                        {% if user.get_role_name|lower == "superuser" or user.get_role_name|lower == "legal" %}
                         <li class="side-nav-item">
                             <a href="{% url 'backoffice:locations:index' %}" class="side-nav-link">
                                 <i class="dripicons-direction"></i>
@@ -106,7 +113,9 @@
                                 <span>Partners</span>
                             </a>
                         </li>
+                        {% endif %}
 
+                        {% comment %}
                         <!-- <li class="side-nav-item">
                             <a href="{% url 'backoffice:configurations:category' %}" class="side-nav-link">
                                 <i class="dripicons-gear"></i>
@@ -120,7 +129,7 @@
                                 <span>Users</span>
                             </a>
                         </li> -->
-
+                        {% endcomment %}
                     </ul>
 
                     <div class="clearfix"></div>
@@ -139,7 +148,7 @@
                                     </span>
                                     <span>
                                         <span class="account-user-name">{{ user.name }}</span>
-                                        <span class="account-position">Superadmin</span>
+                                        <span class="account-position">{{ user.get_role_name }}</span>
                                     </span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated topbar-dropdown-menu profile-dropdown">
@@ -177,9 +186,9 @@
         </div>
 
         {% compress js %}
-        <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
-        <script src="{% static 'js/app.min.js' %}"></script>
-        <script src="{% static 'js/dropzone.min.js' %}"></script>
+            <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
+            <script src="{% static 'js/app.min.js' %}"></script>
+            <script src="{% static 'js/dropzone.min.js' %}"></script>
         {% endcompress %}
     </body>
 
