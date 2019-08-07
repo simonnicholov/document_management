@@ -34,7 +34,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField('email address', unique=True, null=True,
                               max_length=254, db_index=True)
     name = models.CharField(max_length=255, blank=True)
-    role = models.ForeignKey('role_permissions.Permission', related_name="users",
+    role = models.ForeignKey('role_permissions.Role', related_name="users",
                              on_delete=models.CASCADE, blank=True, null=True)
 
     is_staff = models.BooleanField('staff status', default=False)
