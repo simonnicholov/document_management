@@ -16,10 +16,14 @@ class UserAdmin(DjangoUserAdmin):
             'fields': ('email', 'password1', 'password2',)}),
     )
 
-    list_display = ('email', 'name', 'is_superuser', 'is_staff',)
+    list_display = ('email', 'name', 'user_role', 'is_superuser', 'is_staff',)
     list_filter = ('is_staff', 'is_superuser', 'is_active',)
     search_fields = ('email', 'name',)
     ordering = ('email',)
+
+    def user_role(self, obj):
+        return obj.role.name
+    user_role.short_description = 'Role'
 
 
 admin.site.register(User, UserAdmin)
