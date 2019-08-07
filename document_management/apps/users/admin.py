@@ -21,8 +21,10 @@ class UserAdmin(DjangoUserAdmin):
     search_fields = ('email', 'name',)
     ordering = ('email',)
 
-    def user_role(self, obj):
-        return obj.role.name
+    def user_role(self, obj) -> str:
+        if obj.role:
+            return obj.role.name
+        return None
     user_role.short_description = 'Role'
 
 

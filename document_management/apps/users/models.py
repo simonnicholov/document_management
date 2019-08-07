@@ -47,7 +47,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
-    def get_role_name(self):
+    def get_role_name(self) -> str:
         if self.role:
             return self.role.name
         return None

@@ -148,7 +148,7 @@
                                     </span>
                                     <span>
                                         <span class="account-user-name">{{ user.name }}</span>
-                                        <span class="account-position">{{ user.get_role_name }}</span>
+                                        <span class="account-position">{{ user.get_role_name|default:'-' }}</span>
                                     </span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated topbar-dropdown-menu profile-dropdown">

@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect
@@ -5,11 +6,15 @@ from django.shortcuts import render, redirect
 
 def login_view(request):
     form = AuthenticationForm(data=request.POST or None)
-    print(form.is_valid())
-    print(form.errors)
     if form.is_valid():
         user = form.get_user()
+
+        if not user.role:
+            messages.error(request, 'You do not have an access for this application !')
+            return redirect('backoffice:login_view')
+
         login(request, user)
+
         if 'next' in request.POST:
             return redirect(request.POST.get('next'))
         else:
