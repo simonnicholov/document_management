@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect
 
@@ -24,6 +24,11 @@ def login_view(request):
         'form': form
     }
     return render(request, 'login.html', context)
+
+
+def logout_view(request):
+    logout(request)
+    return redirect("login_view")
 
 
 def dashboard(request):

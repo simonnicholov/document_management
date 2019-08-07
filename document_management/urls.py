@@ -24,7 +24,8 @@ urlpatterns = [
     path('backoffice/', include('document_management.apps.urls', namespace="backoffice")),
 
     # default url
-    path('', views.login_view, name="login_view")
+    path('', views.login_view, name="login_view"),
+    path('logout', views.logout_view, name="logout_view")
 ]
 
 if settings.DEBUG:
