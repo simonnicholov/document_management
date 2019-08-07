@@ -84,6 +84,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # additional options package
+                'django.template.context_processors.static',
             ],
         },
     },
@@ -171,7 +173,32 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     path.join(PROJECT_ROOT, 'static_files'),
     path.join(PROJECT_ROOT, 'node_modules'),
+    # additional for compressor
+    'compressor.finders.CompressorFinder',
 )
+
+# List of finder classes that know how to find static files in
+# various locations.
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    # additional for compressor
+    'compressor.finders.CompressorFinder',
+)
+
+# Configurations for compress files
+COMPRESS_ENABLED = False
+COMPRESS_ROOT = STATIC_ROOT
+COMPRESS_OFFLINE = True
+COMPRESS_CSS_FILTERS = [
+    'compressor.filters.css_default.CssAbsoluteFilter',
+    'compressor.filters.cssmin.CSSMinFilter'
+]
+COMPRESS_JS_FILTERS = ['compressor.filters.jsmin.JSMinFilter']
+COMPRESS_PRECOMPILERS = (
+    ('text/x-scss', 'django_libsass.SassCompiler'),
+)
+
 
 try:
     from .settings_local import *  # noqa

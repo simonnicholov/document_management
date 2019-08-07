@@ -5,6 +5,8 @@ from django.shortcuts import render, redirect
 
 def login_view(request):
     form = AuthenticationForm(data=request.POST or None)
+    print(form.is_valid())
+    print(form.errors)
     if form.is_valid():
         user = form.get_user()
         login(request, user)

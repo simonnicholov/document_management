@@ -34,8 +34,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField('email address', unique=True, null=True,
                               max_length=254, db_index=True)
     name = models.CharField(max_length=255, blank=True)
+    role = models.ForeignKey('role_permissions.Permission', related_name="users",
+                             on_delete=models.CASCADE)
+
     is_staff = models.BooleanField('staff status', default=False)
-    is_legal = models.BooleanField('legal status', default=False)
+    is_superuser = models.BooleanField('superuser status', default=False)
     is_active = models.BooleanField('active', default=True)
 
     objects = CustomUserManager()
