@@ -199,6 +199,11 @@ COMPRESS_PRECOMPILERS = (
     ('text/x-scss', 'django_libsass.SassCompiler'),
 )
 
+# Constant
+ROLE_SUPERUSER = "superuser"
+ROLE_LEGAL = "legal"
+ROLE_USER = "user"
+
 
 try:
     from .settings_local import *  # noqa

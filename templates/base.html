@@ -30,12 +30,21 @@
 
                     <ul class="metismenu side-nav">
 
-                        <li class="side-nav-item">
-                            <a href="{% url 'backoffice:dashboard' %}" class="side-nav-link">
-                                <i class="dripicons-meter"></i>
-                                <span>Dashboards</span>
-                            </a>
-                        </li>
+                        {% if user.get_role_name|lower == "superuser" or user.get_role_name|lower == "legal" %}
+                            <li class="side-nav-item">
+                                <a href="{% url 'backoffice:dashboard_legal' %}" class="side-nav-link">
+                                    <i class="dripicons-meter"></i>
+                                    <span>Dashboards</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="side-nav-item">
+                                <a href="{% url 'backoffice:dashboard_user' %}" class="side-nav-link">
+                                    <i class="dripicons-meter"></i>
+                                    <span>Dashboards</span>
+                                </a>
+                            </li>
+                        {% endif %}
 
                         <li class="side-nav-item">
                             <a href="{% url 'backoffice:contracts:index' %}" class="side-nav-link">
@@ -73,21 +82,21 @@
                         </li>
 
                         {% if user.get_role_name|lower == "superuser" or user.get_role_name|lower == "legal" %}
-                        <li class="side-nav-item">
-                            <a href="{% url 'backoffice:approval_requests' %}" class="side-nav-link">
-                                <i class="dripicons-user"></i>
-                                <span>Approval Requests</span>
-                            </a>
-                        </li>
+                            <li class="side-nav-item">
+                                <a href="{% url 'backoffice:approval_requests' %}" class="side-nav-link">
+                                    <i class="dripicons-user"></i>
+                                    <span>Approval Requests</span>
+                                </a>
+                            </li>
                         {% endif %}
 
                         {% if user.get_role_name|lower == "user" %}
-                        <li class="side-nav-item">
-                            <a href="{% url 'backoffice:permission_requests' %}" class="side-nav-link">
-                                <i class="dripicons-user"></i>
-                                <span>Permission Requests</span>
-                            </a>
-                        </li>
+                            <li class="side-nav-item">
+                                <a href="{% url 'backoffice:permission_requests' %}" class="side-nav-link">
+                                    <i class="dripicons-user"></i>
+                                    <span>Permission Requests</span>
+                                </a>
+                            </li>
                         {% endif %}
 
                         {% comment %}
@@ -100,19 +109,19 @@
                         {% endcomment %}
 
                         {% if user.get_role_name|lower == "superuser" or user.get_role_name|lower == "legal" %}
-                        <li class="side-nav-item">
-                            <a href="{% url 'backoffice:locations:index' %}" class="side-nav-link">
-                                <i class="dripicons-direction"></i>
-                                <span>Locations</span>
-                            </a>
-                        </li>
+                            <li class="side-nav-item">
+                                <a href="{% url 'backoffice:locations:index' %}" class="side-nav-link">
+                                    <i class="dripicons-direction"></i>
+                                    <span>Locations</span>
+                                </a>
+                            </li>
 
-                        <li class="side-nav-item">
-                            <a href="{% url 'backoffice:partners:index' %}" class="side-nav-link">
-                                <i class="dripicons-store"></i>
-                                <span>Partners</span>
-                            </a>
-                        </li>
+                            <li class="side-nav-item">
+                                <a href="{% url 'backoffice:partners:index' %}" class="side-nav-link">
+                                    <i class="dripicons-store"></i>
+                                    <span>Partners</span>
+                                </a>
+                            </li>
                         {% endif %}
 
                         {% comment %}

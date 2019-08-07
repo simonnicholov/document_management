@@ -18,7 +18,8 @@ urlpatterns = [
 
     # specific urls
     path('login/', views.login_view, name="login_view"),
-    path('dashboard/', views.dashboard, name="dashboard"),
+    path('dashboard/legal', views.dashboard_legal, name="dashboard_legal"),
+    path('dashboard/user', views.dashboard_user, name="dashboard_user"),
     path('permission-requests/', views.permission_requests, name="permission_requests"),
     path('approval-requests/', views.approval_requests, name="approval_requests"),
 ]

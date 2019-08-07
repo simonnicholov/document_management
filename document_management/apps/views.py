@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
@@ -18,7 +19,11 @@ def login_view(request):
         if 'next' in request.POST:
             return redirect(request.POST.get('next'))
         else:
-            return redirect('backoffice:dashboard')
+            role_name = user.get_role_name()
+            if role_name.lower() == settings.ROLE_SUPERUSER or \
+               role_name.lower() == settings.ROLE_LEGAL:
+                return redirect('backoffice:dashboard_legal')
+            return redirect('backoffice:dashboard_user')
     context = {
         'title': 'Login',
         'form': form
@@ -31,11 +36,18 @@ def logout_view(request):
     return redirect("login_view")
 
 
-def dashboard(request):
+def dashboard_legal(request):
     context = {
         'title': 'Dashboard'
     }
-    return render(request, 'dashboard.html', context)
+    return render(request, 'dashboard_legal.html', context)
+
+
+def dashboard_user(request):
+    context = {
+        'title': 'Dashboard'
+    }
+    return render(request, 'dashboard_user.html', context)
 
 
 def permission_requests(request):
