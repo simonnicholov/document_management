@@ -35,7 +35,7 @@ class User(AbstractBaseUser, PermissionsMixin):
                               max_length=254, db_index=True)
     name = models.CharField(max_length=255, blank=True)
     role = models.ForeignKey('role_permissions.Permission', related_name="users",
-                             on_delete=models.CASCADE)
+                             on_delete=models.CASCADE, blank=True, null=True)
 
     is_staff = models.BooleanField('staff status', default=False)
     is_superuser = models.BooleanField('superuser status', default=False)
