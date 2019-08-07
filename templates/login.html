@@ -1,4 +1,4 @@
-{% load static %}
+{% load static compress %}
 
 
 <!DOCTYPE html>
@@ -8,8 +8,11 @@
         <title>Login :: Document Management</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <link href="{% static 'css/app.min.css' %}" rel="stylesheet" type="text/css" />
-        <link href="{% static 'css/icons.min.css' %}" rel="stylesheet" type="text/css" />
+        {% compress css %}
+            <link href="{% static 'css/app.min.css' %}" rel="stylesheet" type="text/css" />
+            <link href="{% static 'css/icons.min.css' %}" rel="stylesheet" type="text/css" />
+            <link href="{% static 'scss/style.scss' %}" rel="stylesheet" type="text/x-scss" />
+        {% endcompress %}
     </head>
 
     <body class="authentication-bg">
@@ -20,7 +23,6 @@
                     <div class="col-lg-5">
                         <div class="card">
 
-                            <!-- Logo -->
                             <div class="card-header pt-4 pb-4 text-center bg-primary">
                                 <a href="index.html">
                                     <span><img src="{% static 'img/logo.png' %}" alt="" height="50"></span>
@@ -49,19 +51,17 @@
                                     </div>
 
                                 </form>
-                            </div> <!-- end card-body -->
+                            </div>
                         </div>
-                        <!-- end card -->
-
-                    </div> <!-- end col -->
+                    </div>
                 </div>
-                <!-- end row -->
             </div>
-            <!-- end container -->
         </div>
-        <!-- end page -->
 
-        <!-- App js -->
-        <script src="assets/js/app.min.js"></script>
+        {% compress js %}
+            <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
+            <script src="{% static 'js/app.min.js' %}"></script>
+        {% endcompress %}
+
     </body>
 </html>
