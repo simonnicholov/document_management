@@ -86,6 +86,8 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 # additional options package
                 'django.template.context_processors.static',
+                # project package
+                'document_management.core.context.context_constant'
             ],
         },
     },
@@ -200,9 +202,9 @@ COMPRESS_PRECOMPILERS = (
 )
 
 # Constant
-ROLE_SUPERUSER = "superuser"
-ROLE_LEGAL = "legal"
-ROLE_USER = "user"
+ROLE_SUPERUSER_ID = 1
+ROLE_LEGAL_ID = 2
+ROLE_USER_ID = 3
 
 
 try:

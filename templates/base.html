@@ -29,8 +29,7 @@
                     </a>
 
                     <ul class="metismenu side-nav">
-
-                        {% if user.get_role_name|lower == "superuser" or user.get_role_name|lower == "legal" %}
+                        {% if user.get_role_id == ROLE_SUPERUSER_ID or user.get_role_id == ROLE_LEGAL_ID %}
                             <li class="side-nav-item">
                                 <a href="{% url 'backoffice:dashboard_legal' %}" class="side-nav-link">
                                     <i class="dripicons-meter"></i>
@@ -81,7 +80,7 @@
                             </a>
                         </li>
 
-                        {% if user.get_role_name|lower == "superuser" or user.get_role_name|lower == "legal" %}
+                        {% if user.get_role_id == ROLE_SUPERUSER_ID or user.get_role_id == ROLE_LEGAL_ID %}
                             <li class="side-nav-item">
                                 <a href="{% url 'backoffice:approval_requests' %}" class="side-nav-link">
                                     <i class="dripicons-user"></i>
@@ -90,7 +89,7 @@
                             </li>
                         {% endif %}
 
-                        {% if user.get_role_name|lower == "user" %}
+                        {% if user.get_role_id == ROLE_USER_ID %}
                             <li class="side-nav-item">
                                 <a href="{% url 'backoffice:permission_requests' %}" class="side-nav-link">
                                     <i class="dripicons-user"></i>
@@ -108,7 +107,7 @@
                         </li> -->
                         {% endcomment %}
 
-                        {% if user.get_role_name|lower == "superuser" or user.get_role_name|lower == "legal" %}
+                        {% if user.get_role_id == ROLE_SUPERUSER_ID or user.get_role_id == ROLE_LEGAL_ID %}
                             <li class="side-nav-item">
                                 <a href="{% url 'backoffice:locations:index' %}" class="side-nav-link">
                                     <i class="dripicons-direction"></i>

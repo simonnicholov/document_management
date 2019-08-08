@@ -4,7 +4,7 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect
 
-from document_management.core.decorators import legal_required
+from document_management.core.decorators import legal_required, user_required
 
 
 def login_view(request):
@@ -21,9 +21,9 @@ def login_view(request):
         if 'next' in request.POST:
             return redirect(request.POST.get('next'))
         else:
-            role_name = user.get_role_name()
-            if role_name.lower() == settings.ROLE_SUPERUSER or \
-               role_name.lower() == settings.ROLE_LEGAL:
+            role_id = user.get_role_id()
+            if role_id == settings.ROLE_SUPERUSER_ID or \
+               role_id == settings.ROLE_LEGAL_ID:
                 return redirect('backoffice:dashboard_legal')
             return redirect('backoffice:dashboard_user')
     context = {
@@ -46,6 +46,7 @@ def dashboard_legal(request):
     return render(request, 'dashboard_legal.html', context)
 
 
+@user_required
 def dashboard_user(request):
     context = {
         'title': 'Dashboard'
@@ -53,6 +54,7 @@ def dashboard_user(request):
     return render(request, 'dashboard_user.html', context)
 
 
+@user_required
 def permission_requests(request):
     context = {
         'title': 'Permission Requests'
@@ -60,6 +62,7 @@ def permission_requests(request):
     return render(request, 'permission_requests.html', context)
 
 
+@legal_required
 def approval_requests(request):
     context = {
         'title': 'Approval Requests'
