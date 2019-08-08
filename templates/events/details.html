@@ -10,7 +10,9 @@
             <div class="page-title-box">
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="{% url 'backoffice:dashboard' %}">DMS</a></li>
+                        <li class="breadcrumb-item">
+                            {% include '_includes/breadcrumb.html' %}
+                        </li>
                         <li class="breadcrumb-item"><a href="{% url 'backoffice:events:index' %}">Event</a></li>
                         <li class="breadcrumb-item active">Detail</li>
                     </ol>
