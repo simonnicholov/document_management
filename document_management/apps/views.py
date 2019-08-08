@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect
 
@@ -68,3 +69,10 @@ def approval_requests(request):
         'title': 'Approval Requests'
     }
     return render(request, 'approval_requests.html', context)
+
+
+def change_password(request):
+    context = {
+        'title': 'Change Password'
+    }
+    return render(request, 'change_password.html', context)

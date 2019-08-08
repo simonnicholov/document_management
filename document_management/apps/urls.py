@@ -22,4 +22,5 @@ urlpatterns = [
     path('dashboard/user', views.dashboard_user, name="dashboard_user"),
     path('permission-requests/', views.permission_requests, name="permission_requests"),
     path('approval-requests/', views.approval_requests, name="approval_requests"),
+    path('change-password/', views.change_password, name="change_password"),
 ]
