@@ -33,17 +33,11 @@
 
                                 {% if form.errors %}
                                     <div class="alert alert-danger alert-dismissible bg-danger text-white border-0 fade show" role="alert">
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
                                         {{ form.non_field_errors }}
                                     </div>
                                 {% elif messages %}
                                     {% for message in messages %}
-                                        <div class="alert alert-danger alert-dismissible bg-danger text-white border-0 fade show" role="alert">
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
+                                        <div class="alert alert-success alert-dismissible bg-danger text-white border-0 fade show" role="alert">
                                             {{ message }}
                                         </div>
                                     {% endfor %}
@@ -79,6 +73,16 @@
         {% compress js %}
             <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
             <script src="{% static 'js/app.min.js' %}"></script>
+            <script>
+                $(document).ready(function() {
+                    var $alert = $(document).find(".alert");
+                    if ($alert.hasClass("alert-success")) {
+                        window.setTimeout(function(){
+                            $alert.removeClass("show").remove()
+                        }, 3000);
+                    }
+                });
+            </script>
         {% endcompress %}
 
     </body>

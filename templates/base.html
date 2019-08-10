@@ -164,7 +164,7 @@
                                         <i class="mdi mdi-key mr-1"></i>
                                         <span>Change Password</span>
                                     </a>
-                                    <a href="{% url 'logout_view' %}" class="dropdown-item notify-item">
+                                    <a href="{% url 'backoffice:logout' %}" class="dropdown-item notify-item">
                                         <i class="mdi mdi-logout mr-1"></i>
                                         <span>Logout</span>
                                     </a>
@@ -177,20 +177,25 @@
                         </button>
                     </div>
 
-                    {% if messages %}
-                        {% for message in messages %}
-                            <div class="alert alert-danger alert-dismissible bg-danger text-white border-0 fade show" role="alert">
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                                {{ message }}
-                            </div>
-                        {% endfor %}
-                    {% endif %}
 
-                    {% block content_page %}
-                    {% endblock %}
+                    <div class="container-fluid">
+                        {% if messages %}
+                            {% for message in messages %}
+                                {% if messsage.tags == MESSAGE_ERROR%}
+                                    <div class="alert alert-danger alert-dismissible bg-danger text-white border-0 fade show" role="alert">
+                                        {{ message }}
+                                    </div>
+                                {% elif message.tags == MESSAGE_SUCCESS %}
+                                    <div class="alert alert-success alert-dismissible bg-success text-white border-0 fade show" role="alert">
+                                        {{ message }}
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
 
+                        {% block content_page %}
+                        {% endblock %}
+                    </div>
                 </div>
                 <footer class="footer">
                     <div class="container-fluid">
@@ -208,6 +213,16 @@
             <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
             <script src="{% static 'js/app.min.js' %}"></script>
             <script src="{% static 'js/dropzone.min.js' %}"></script>
+            <script>
+                $(document).ready(function() {
+                    var $alert = $(document).find(".alert");
+                    if ($alert.hasClass("alert-success")) {
+                        window.setTimeout(function(){
+                            $alert.removeClass("show").remove()
+                        }, 3000);
+                    }
+                });
+            </script>
         {% endcompress %}
     </body>
 

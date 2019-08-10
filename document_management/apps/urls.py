@@ -17,7 +17,9 @@ urlpatterns = [
     path('contracts/', include('document_management.apps.contracts.urls', namespace="contracts")),
 
     # specific urls
-    path('login/', views.login_view, name="login_view"),
+    path('', views.login_view, name="login"),
+    path('logout/', views.logout_view, name="logout"),
+
     path('dashboard/legal', views.dashboard_legal, name="dashboard_legal"),
     path('dashboard/user', views.dashboard_user, name="dashboard_user"),
     path('permission-requests/', views.permission_requests, name="permission_requests"),

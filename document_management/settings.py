@@ -32,6 +32,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# It will be used for automated redirect for login required
+LOGIN_URL = 'backoffice:login'
 
 # Application definition
 
@@ -201,10 +203,12 @@ COMPRESS_PRECOMPILERS = (
     ('text/x-scss', 'django_libsass.SassCompiler'),
 )
 
-# Constant
+# CONSTANT VARIABLE
 ROLE_SUPERUSER_ID = 1
 ROLE_LEGAL_ID = 2
 ROLE_USER_ID = 3
+MESSAGE_SUCCESS = "success"
+MESSAGE_ERROR = "error"
 
 
 try:

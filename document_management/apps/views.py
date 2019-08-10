@@ -7,6 +7,8 @@ from django.shortcuts import render, redirect
 
 from document_management.core.decorators import legal_required, user_required
 
+from .forms import PasswordChangeForm
+
 
 def login_view(request):
     form = AuthenticationForm(data=request.POST or None)
@@ -15,7 +17,7 @@ def login_view(request):
 
         if not user.role:
             messages.error(request, 'You do not have an access for this application !')
-            return redirect('backoffice:login_view')
+            return redirect('backoffice:login')
 
         login(request, user)
 
@@ -36,7 +38,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return redirect("login_view")
+    return redirect("backoffice:login")
 
 
 @legal_required
@@ -71,8 +73,17 @@ def approval_requests(request):
     return render(request, 'approval_requests.html', context)
 
 
+@login_required
 def change_password(request):
+    form = PasswordChangeForm(user=request.user, data=request.POST or None)
+    if form.is_valid():
+        form.save()
+        messages.success(request, 'Your password has been successfully updated')
+        return redirect("backoffice:logout")
+
     context = {
-        'title': 'Change Password'
+        'form': form,
+        'next': next,
+        'title': 'Change Password',
     }
     return render(request, 'change_password.html', context)
