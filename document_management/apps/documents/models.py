@@ -25,6 +25,12 @@ class Document(models.Model):
         (2, 'public', 'Public'),
     )
 
+    STATUS = Choices(
+        (1, 'ongoing', 'Ongoing'),
+        (2, 'done', 'Done'),
+        (3, 'expired', 'Expired'),
+    )
+
     partner = models.ForeignKey('partners.Partner', related_name="documents",
                                 on_delete=models.CASCADE, blank=True, null=True)
     location = models.ForeignKey('locations.Location', related_name="documents",
@@ -38,6 +44,7 @@ class Document(models.Model):
     group = models.PositiveSmallIntegerField(choices=GROUP)
     category = models.PositiveSmallIntegerField(choices=CATEGORY)
     type = models.PositiveSmallIntegerField(choices=TYPE)
+    status = models.PositiveSmallIntegerField(choices=STATUS, default=STATUS.ongoing)
 
     job_specification = models.CharField(max_length=256, blank=True, null=True)
     beginning_period = models.CharField(max_length=4, blank=True, null=True)
