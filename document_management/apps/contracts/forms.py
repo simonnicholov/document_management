@@ -31,7 +31,7 @@ class ContractForm(forms.Form):
         empty_label=settings.EMPTY_LABEL, widget=select_widget
     )
     amount = forms.FloatField(validators=[MinValueValidator(0),
-                                          MaxValueValidator(500_000_000)])
+                                          MaxValueValidator(100_000_000_000_000)])
 
     job_specification = forms.CharField(max_length=256)
     beginning_period = forms.DateField(input_formats=["%Y-%m-%d"])
