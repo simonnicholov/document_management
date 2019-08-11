@@ -50,10 +50,10 @@ class Document(models.Model):
     job_specification = models.CharField(max_length=256, blank=True, null=True)
     beginning_period = models.CharField(max_length=4, blank=True, null=True)
     ending_period = models.CharField(max_length=4, blank=True, null=True)
-    retention_period = models.IntegerField(max_length=4, blank=True, null=True)
+    retention_period = models.PositiveSmallIntegerField(blank=True, null=True)
 
-    total_document = models.IntegerField(default=0)
-    total_addendum = models.IntegerField(default=0)
+    total_document = models.PositiveSmallIntegerField(default=0)
+    total_addendum = models.PositiveSmallIntegerField(default=0)
 
     is_active = models.BooleanField('active', default=True)
     created = AutoCreatedField()
