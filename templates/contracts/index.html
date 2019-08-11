@@ -2,6 +2,8 @@
 
 {% load static%}
 
+{% block body_class %}index{% endblock %}
+
 {% block content_page %}
 <div class="row">
     <div class="col-12">
@@ -34,17 +36,17 @@
             <div class="col-md-3">
                 <label>Search</label>
                 <div class="form-group">
-                    <input type="text" id="simpleinput" class="form-control" placeholder="Searching ...">
+                    <input type="text" name="query" class="form-control" {% if query %}value='{{ query }}'{% endif %} placeholder="Searching ...">
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
                     <label>Category</label>
                     <select id="category" name="category" class="form-control select2" data-toggle="select2">
-                        <option>- Select -</option>
-                        <option>Construction</option>
-                        <option>Property</option>
-                        <option>Others</option>
+                        <option value="0">- Select -</option>
+                        <option value="1">Construction</option>
+                        <option value="2">Property</option>
+                        <option value="3">Other</option>
                     </select>
                 </div>
             </div>
@@ -52,9 +54,9 @@
                 <div class="form-group">
                     <label>Type</label>
                     <select id="type" name="type" class="form-control select2" data-toggle="select2">
-                        <option>- Select -</option>
-                        <option>Public</option>
-                        <option>Private</option>
+                        <option value="0">- Select -</option>
+                        <option value="1">Public</option>
+                        <option value="2">Private</option>
                     </select>
                 </div>
             </div>
@@ -62,10 +64,10 @@
                 <div class="form-group">
                     <label>Status</label>
                     <select id="status" name="status" class="form-control select2" data-toggle="select2">
-                        <option>- Select -</option>
-                        <option>Ongoing</option>
-                        <option>Done</option>
-                        <option>Expired</option>
+                        <option value="0">- Select -</option>
+                        <option value="1">Ongoing</option>
+                        <option value="2">Done</option>
+                        <option value="3">Expired</option>
                     </select>
                 </div>
             </div>
@@ -79,7 +81,6 @@
             <table class="table table-sm table-hover table-centered mb-0">
                 <thead>
                     <tr>
-                        <!-- <th class="text-center">Action</th> -->
                         <th>Contract Number</th>
                         <th>Subject</th>
                         <th>Company</th>
@@ -90,7 +91,28 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    {% for document in page.object_list %}
+                        <tr>
+                            {% comment %}
+                            <!-- <td><a class="link" href="{% url 'frontdesk:members:details' membership.id %}">{{ membership.user.name }}</a></td>
+                            <td>{{ membership.user.phone|default:'' }}</td>
+                            <td>{{ membership.user.profile.birthday|date:'d M Y' }}</td> -->
+                            {% endcomment %}
+                            <td><a href="{% url 'backoffice:contracts:details' 1 %}"># {{ document.number }}</a></td>
+                            <td>{{ document.subject }}</td>
+                            <td>{{ document.partner.name }}</td>
+                            <td>{{ document.effective_date|date:'d M Y' }}</td>
+                            <td>{{ document.get_category_display }}</td>
+                            <td><span class="badge badge-success p-1">{{ document.get_type_display }}</span></td>
+                            <td><span class="badge badge-warning p-1">{{ document.get_status_display }}</span></td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="7" class="text-center"><h4>No Data</h4></td>
+                        </tr>
+                    {% endfor %}
+                    {% comment %}
+                    <!-- <tr>
                         <td><a href="{% url 'backoffice:contracts:details' 1 %}"># K00-0001</a></td>
                         <td>Persyaratan Pendaftaran Tender</td>
                         <td>PT Mega Maju Selalu</td>
@@ -116,22 +138,30 @@
                         <td>Others</td>
                         <td><span class="badge badge-success p-1">Public</span></td>
                         <td><span class="badge badge-danger p-1">Expired</span></td>
-                    </tr>
+                    </tr> -->
+                    {% endcomment %}
                 </tbody>
             </table>
         </div>
     </div>
 </div>
 
+{% if page.has_other_pages %}
 <div class="row justify-content-between ml-1 mr-1">
     <div class="col-xs-3 text-left">
-        <button type="button" class="btn btn-outline-info btn-rounded">Prev</button>
+        {% if page.has_previous %}
+            <a href="#" class="btn btn-outline-info btn-rounded">Prev</a>
+        {% endif %}
     </div>
     <div class="text-muted mt-2">
         Page 1 of 3
     </div>
     <div class="col-xs-3 text-right">
-        <button type="button" class="btn btn-outline-info btn-rounded">Next</button>
+        {% if page.has_next %}
+            <a href="#" class="btn btn-outline-info btn-rounded">Next</a>
+        {% endif %}
     </div>
 </div>
+{% endif %}
+
 {% endblock %}

@@ -79,7 +79,7 @@ def change_password(request):
     if form.is_valid():
         form.save()
         messages.success(request, 'Your password has been successfully updated')
-        return redirect("backoffice:logout")
+        # return redirect("backoffice:logout")
 
     context = {
         'form': form,

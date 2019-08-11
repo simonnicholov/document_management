@@ -15,8 +15,8 @@ class Document(models.Model):
     )
 
     CATEGORY = Choices(
-        (1, 'property', 'Property'),
-        (2, 'construction', 'Construction'),
+        (1, 'construction', 'Construction'),
+        (2, 'property', 'Property'),
         (3, 'other', 'Other'),
     )
 
@@ -35,11 +35,12 @@ class Document(models.Model):
                                 on_delete=models.CASCADE, blank=True, null=True)
     location = models.ForeignKey('locations.Location', related_name="documents",
                                  on_delete=models.CASCADE, blank=True, null=True)
-    number = models.CharField(max_length=32)
+    number = models.CharField(max_length=32, unique=True, db_index=True)
     subject = models.CharField(max_length=64)
     effective_date = models.DateField()
     expired_date = models.DateField()
     amount = models.FloatField(validators=[MinValueValidator(0)], blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
 
     group = models.PositiveSmallIntegerField(choices=GROUP)
     category = models.PositiveSmallIntegerField(choices=CATEGORY)
@@ -49,7 +50,7 @@ class Document(models.Model):
     job_specification = models.CharField(max_length=256, blank=True, null=True)
     beginning_period = models.CharField(max_length=4, blank=True, null=True)
     ending_period = models.CharField(max_length=4, blank=True, null=True)
-    retention_period = models.CharField(max_length=4, blank=True, null=True)
+    retention_period = models.IntegerField(max_length=4, blank=True, null=True)
 
     total_document = models.IntegerField(default=0)
     total_addendum = models.IntegerField(default=0)

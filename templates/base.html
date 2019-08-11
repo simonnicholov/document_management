@@ -14,7 +14,7 @@
             <link href="{% static 'scss/style.scss' %}" rel="stylesheet" type="text/x-scss" />    
         {% endcompress %}
     </head>
-    <body>
+    <body class="{% block body_class %}{% endblock %}">
 
         <div class="wrapper">
             <div class="left-side-menu">
@@ -219,7 +219,7 @@
                     if ($alert.hasClass("alert-success")) {
                         window.setTimeout(function(){
                             $alert.removeClass("show").remove()
-                        }, 3000);
+                        }, 4000);
                     }
                 });
             </script>
