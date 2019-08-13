@@ -25,7 +25,7 @@
 <div class="row">
     <div class="col-12">
 
-        <form action="" method="POST">
+        <form id="add_form" action="" method="POST" novalidate>
             {% csrf_token %}
 
             <div class="card">
@@ -118,7 +118,8 @@
                         <div class="col-md-6">
                             <div class="form-group mb-3">
                                 <label for="name">Amount</label>
-                                <input type="text" id="amount" name="amount" class="form-control" />
+                                <input type="text" id="amount_display" name="amount_display" class="form-control" />
+                                <input type="hidden" name="amount" id="amount"/>
                                 {{ form.amount.errors }}
                             </div>
                         </div>
@@ -163,7 +164,7 @@
 
                     <div class="row text-center mt-3">
                         <div class="col-md-12">
-                            <button type="submit" class="btn btn-outline-success btn-rounded">Save</button>
+                            <button id="button_submit" type="submit" class="btn btn-outline-success btn-rounded">Save</button>
                         </div>
                     </div>
 
@@ -176,4 +177,23 @@
 
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    $(document).on("keyup", '#amount_display', function(event) {
+        var $this = $(this);
+        var value = $this.val();
+        value = value.replace(/[\D\s\._\-]+/g, "");
+        $this.val(numberWithCommas(value));
+    });
+
+    // Validation on submission
+    $(document).on('click', '#button_submit', function(e) {
+        var amount = $("#amount_display").val().toString().replace(/\,/g, '');
+        amount = parseInt(amount);
+        $("#amount").val(amount);
+        $('#add-form').submit();
+    });
+</script>
 {% endblock %}

@@ -48,8 +48,8 @@ class Document(models.Model):
     status = models.PositiveSmallIntegerField(choices=STATUS, default=STATUS.ongoing)
 
     job_specification = models.CharField(max_length=256, blank=True, null=True)
-    beginning_period = models.CharField(max_length=4, blank=True, null=True)
-    ending_period = models.CharField(max_length=4, blank=True, null=True)
+    beginning_period = models.DateField(blank=True, null=True)
+    ending_period = models.DateField(blank=True, null=True)
     retention_period = models.PositiveSmallIntegerField(blank=True, null=True)
 
     total_document = models.PositiveSmallIntegerField(default=0)
