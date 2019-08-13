@@ -177,17 +177,16 @@
                         </button>
                     </div>
 
-
                     <div class="container-fluid">
                         {% if messages %}
                             {% for message in messages %}
-                                {% if messsage.tags == MESSAGE_ERROR%}
+                                {% if message.tags == MESSAGE_ERROR %}
                                     <div class="alert alert-danger alert-dismissible bg-danger text-white border-0 fade show" role="alert">
-                                        {{ message }}
+                                        <strong>ERROR !</strong>&nbsp;&nbsp; {{ message }}
                                     </div>
                                 {% elif message.tags == MESSAGE_SUCCESS %}
                                     <div class="alert alert-success alert-dismissible bg-success text-white border-0 fade show" role="alert">
-                                        {{ message }}
+                                        <strong>SUCCESS !</strong>&nbsp;&nbsp; {{ message }}
                                     </div>
                                 {% endif %}
                             {% endfor %}
@@ -213,17 +212,19 @@
             <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
             <script src="{% static 'js/app.min.js' %}"></script>
             <script src="{% static 'js/dropzone.min.js' %}"></script>
+            <script src="{% static 'js/main.js' %}"></script>
             <script>
-                $(document).ready(function() {
-                    var $alert = $(document).find(".alert");
-                    if ($alert.hasClass("alert-success")) {
-                        window.setTimeout(function(){
-                            $alert.removeClass("show").remove()
-                        }, 4000);
-                    }
-                });
+                var $alert = $(document).find(".alert");
+                if ($alert.hasClass("alert-success")) {
+                    window.setTimeout(function(){
+                        $alert.removeClass("show").remove()
+                    }, 4000);
+                }
             </script>
         {% endcompress %}
+
+        {% block extra_js %}
+        {% endblock %}
     </body>
 
 </html>
