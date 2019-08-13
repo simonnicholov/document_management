@@ -32,8 +32,8 @@ class ContractForm(forms.Form):
     )
     amount = forms.FloatField(
         validators=[MinValueValidator(0),
-                    MaxValueValidator(10_000_000_000_000,
-                                      ('Can not greater than 10.000.000.000.000'))
+                    MaxValueValidator(settings.MAX_VALIDATOR_AMOUNT,
+                                      (f'Can not greater than {settings.MAX_VALIDATOR_TEXT} '))
                     ])
     job_specification = forms.CharField(max_length=256)
     beginning_period = forms.DateField(input_formats=["%Y-%m-%d"])

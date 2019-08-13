@@ -33,4 +33,4 @@ class Partner(models.Model):
     created = AutoCreatedField()
 
     def __str__(self):
-        return f"Partner ({ self.id }) : ({ self.name })"
+        return self.name

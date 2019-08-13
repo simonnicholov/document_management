@@ -217,6 +217,9 @@ GROUP_READING_NEWS = 3
 
 EMPTY_LABEL = "--- select ---"
 
+MAX_VALIDATOR_AMOUNT = 10_000_000_000_000  # 10 Trilliun Rupiah
+MAX_VALIDATOR_TEXT = "10.000.000.000.000"
+
 
 try:
     from .settings_local import *  # noqa
