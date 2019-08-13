@@ -8,7 +8,6 @@ from document_management.apps.partners.models import Partner
 
 from document_management.core.choices import TYPE, CATEGORY
 from document_management.core.attributes import get_select_attribute
-# from document_management.core.validators import OverideMaxValueValidator
 
 
 select_widget = get_select_attribute()
