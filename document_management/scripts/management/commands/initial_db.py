@@ -2,6 +2,7 @@ from django_extensions.management.base import LoggingBaseCommand
 
 from document_management.apps.locations.models import Location
 from document_management.apps.role_permissions.models import Role, Permission, RolePermission
+from document_management.apps.partners.models import Partner
 
 
 class Command(LoggingBaseCommand):
@@ -63,4 +64,12 @@ class Command(LoggingBaseCommand):
             RolePermission(role=role_legal, permission=permission_download),
 
             RolePermission(role=role_user, permission=permission_view),
+        ])
+
+        # create partner
+        Partner.objects.bulk_create([
+            Partner(name='PT Sukses Abadi Jaya', director='Owen Khong'),
+            Partner(name='PT Selalu Maju Sejahtera', director='Bradon Lim'),
+            Partner(name='PT Maju Tanpa Henti', director='Michael Ng'),
+            Partner(name='PT Melaju Kencang', director='Nadiem Oct'),
         ])
