@@ -1,7 +1,8 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 from document_management.apps.documents.models import Document
 from document_management.core.decorators import legal_required
@@ -103,9 +104,15 @@ def delete(request, id):
     return render(request, 'contracts/delete.html', context)
 
 
+@login_required
 def details(request, id):
+    document = get_object_or_404(
+        Document.objects.select_related('partner', 'location')
+                .filter(is_active=True), id=id
+    )
     context = {
-        'title': 'Details Contract'
+        'title': 'Details Contract',
+        'document': document
     }
     return render(request, 'contracts/details.html', context)
 
