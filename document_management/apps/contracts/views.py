@@ -5,9 +5,10 @@ from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 
 from document_management.apps.documents.models import Document
+from document_management.apps.users.models import User
 from document_management.core.decorators import legal_required
 
-from .forms import ContractForm
+from .forms import ContractForm, DeleteForm
 
 
 def index(request):
@@ -90,6 +91,7 @@ def add(request):
     return render(request, 'contracts/add.html', context)
 
 
+@legal_required
 def edit(request, id):
     context = {
         'title': 'Edit Contract'
@@ -97,9 +99,23 @@ def edit(request, id):
     return render(request, 'contracts/edit.html', context)
 
 
+@legal_required
 def delete(request, id):
+    document = get_object_or_404(
+        Document.objects.select_related('partner', 'location')
+                .filter(is_active=True), id=id
+    )
+    form = DeleteForm(data=request.POST or None, document=document, user=request.user)
+    print('form is valid : ', form.is_valid())
+    print('form error : ', form.errors)
+    if form.is_valid():
+        form.save()
+        messages.success(request, "Document # { document.number } has been delete")
+        return redirect("backoffice:contracts:index")
     context = {
-        'title': 'Delete Contract'
+        'title': 'Delete Contract',
+        'document': document,
+        'form': form
     }
     return render(request, 'contracts/delete.html', context)
 
@@ -107,9 +123,9 @@ def delete(request, id):
 @login_required
 def details(request, id):
     document = get_object_or_404(
-        Document.objects.select_related('partner', 'location')
-                .filter(is_active=True), id=id
+        Document.objects.select_related('partner', 'location'), id=id
     )
+
     context = {
         'title': 'Details Contract',
         'document': document
@@ -117,6 +133,7 @@ def details(request, id):
     return render(request, 'contracts/details.html', context)
 
 
+@legal_required
 def upload(request, id):
     context = {
         'title': 'Upload Contract'
@@ -124,6 +141,7 @@ def upload(request, id):
     return render(request, 'contracts/upload.html', context)
 
 
+@legal_required
 def change_status(request, id):
     context = {
         'title': 'Change Status'
@@ -131,6 +149,7 @@ def change_status(request, id):
     return render(request, 'contracts/change_status.html', context)
 
 
+@legal_required
 def change_record_status(request, id):
     context = {
         'title': 'Change Status Contract'
