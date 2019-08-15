@@ -105,9 +105,9 @@ def delete(request, id):
         Document.objects.select_related('partner', 'location')
                 .filter(is_active=True), id=id
     )
+
     form = DeleteForm(data=request.POST or None, document=document, user=request.user)
-    print('form is valid : ', form.is_valid())
-    print('form error : ', form.errors)
+
     if form.is_valid():
         form.save()
         messages.success(request, "Document # { document.number } has been delete")
