@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from document_management.apps.documents.models import Document, DocumentFile
+from document_management.apps.documents.models import Document, DocumentFile, DocumentLogs
 
 
 class DocumentAdmin(admin.ModelAdmin):
@@ -25,5 +25,12 @@ class DocumentFileAdmin(admin.ModelAdmin):
     document_type.short_description = 'Type'
 
 
+class DocumentLogsAdmin(admin.ModelAdmin):
+    list_display = ['id', 'document_id', 'document_name', 'reason', 'action', 'value',
+                    'updated_by', 'updated_date', 'deleted_by', 'deleted_date']
+    search_fields = ('id', 'document',)
+
+
 admin.site.register(Document, DocumentAdmin)
 admin.site.register(DocumentFile, DocumentFileAdmin)
+admin.site.register(DocumentLogs, DocumentLogsAdmin)

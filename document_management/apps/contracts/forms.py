@@ -2,7 +2,7 @@ from django import forms
 from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
 
-from document_management.apps.documents.models import Document
+from document_management.apps.documents.models import Document, DocumentLogs
 from document_management.apps.locations.models import Location
 from document_management.apps.partners.models import Partner
 
@@ -118,3 +118,53 @@ class ContractForm(forms.Form):
                                                         defaults=defaults)
 
         return document
+
+
+class ChangeRecordStatusForm(forms.Form):
+
+    def __init__(self, document, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.document = document
+        self.user = user
+
+    def is_valid(self):
+        return True
+
+    def save(self, *args, **kwargs):
+        if self.document.is_active:
+            self.document.is_active = False
+        else:
+            self.document.is_active = True
+        self.document.save()
+
+        updated_by = self.user
+        updated_date = timezone.now()
+        action = DocumentLogs.ACTION.record_status
+        value = self.document.is_active
+
+        self.document.logs.create(action=action, value=value,
+                                  updated_by=updated_by, updated_date=updated_date)
+
+        return self.document
+
+
+class DeleteForm(forms.Form):
+    reason = forms.CharField(widget=forms.Textarea())
+
+    def __init__(self, document, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.document = document
+        self.user = user
+
+    def save(self, *args, **kwargs):
+        document_number = self.document.number
+
+        reason = self.cleaned_data['reason']
+        action = DocumentLogs.ACTION.delete_record
+        deleted_by = self.user
+        deleted_date = timezone.now()
+        self.document.logs.create(reason=reason, action=action,
+                                  deleted_by=deleted_by, deleted_date=deleted_date)
+        self.document.delete()
+
+        return document_number

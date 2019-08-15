@@ -171,13 +171,13 @@
                     <div class="col-md-6">
                         <div class="form-group mb-3">
                             <h6 class="font-14">Type :</h6>
-                            <p><span class="badge badge-danger p-1">{{ document.get_type_display }}</span></p>
+                            <p><span class="{{ document.badge_type }}">{{ document.get_type_display }}</span></p>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group mb-3">
                             <h6 class="font-14">Status :</h6>
-                            <p><span class="badge badge-danger p-1">{{ document.get_status_display }}</span></p>
+                            <p><span class="{{ document.badge_status }}">{{ document.get_status_display }}</span></p>
                         </div>
                     </div>
                 </div>
