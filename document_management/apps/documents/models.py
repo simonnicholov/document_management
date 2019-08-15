@@ -74,9 +74,17 @@ class DocumentFile(models.Model):
 
 
 class DocumentLogs(models.Model):
-    document = models.ForeignKey('documents.Document', related_name="logs",
-                                 on_delete=models.CASCADE)
+    ACTION = Choices(
+        (1, 'delete_record', 'Delete Record'),
+        (2, 'document_status', 'Document Status'),
+        (3, 'record_status', 'Record Status'),
+    )
+    document_id = models.IntegerField()
+    document_name = models.CharField(max_length=64)
+    action = models.PositiveSmallIntegerField(choices=ACTION, blank=True, null=True)
+    value = models.CharField(max_length=64, blank=True, null=True)
     reason = models.TextField(blank=True, null=True)
+
     updated_by = models.ForeignKey('users.User', related_name="updated_logs",
                                    on_delete=models.CASCADE, blank=True, null=True)
     updated_date = models.DateTimeField(blank=True, null=True)

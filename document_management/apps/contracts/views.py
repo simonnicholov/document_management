@@ -7,7 +7,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from document_management.apps.documents.models import Document
 from document_management.core.decorators import legal_required
 
-from .forms import ContractForm, DeleteForm
+from .forms import (ContractForm, DeleteForm, ChangeRecordStatusForm)
 
 
 def index(request):
@@ -109,8 +109,9 @@ def delete(request, id):
 
     if form.is_valid():
         form.save()
-        messages.success(request, "Document # { document.number } has been delete")
+        messages.success(request, "Document # %s has been deleted" % document.number)
         return redirect("backoffice:contracts:index")
+
     context = {
         'title': 'Delete Contract',
         'document': document,
@@ -124,6 +125,18 @@ def details(request, id):
     document = get_object_or_404(
         Document.objects.select_related('partner', 'location'), id=id
     )
+
+    if document.type == Document.TYPE.private:
+        document.badge_type = "badge badge-danger p-1"
+    else:
+        document.badge_type = "badge badge-success p-1"
+
+    if document.status == Document.STATUS.ongoing:
+        document.badge_status = "badge badge-warning p-1"
+    elif document.status == Document.STATUS.done:
+        document.badge_status = "badge badge-success p-1"
+    elif document.status == Document.STATUS.expired:
+        document.badge_status = "badge badge-danger p-1"
 
     context = {
         'title': 'Details Contract',
@@ -150,7 +163,18 @@ def change_status(request, id):
 
 @legal_required
 def change_record_status(request, id):
-    context = {
-        'title': 'Change Status Contract'
-    }
-    return render(request, 'contracts/change_record_status.html', context)
+    document = get_object_or_404(Document, id=id)
+    form = ChangeRecordStatusForm(document=document, user=request.user)
+
+    if form.is_valid():
+        document = form.save()
+
+        if document.is_active:
+            string_status = "activated"
+        else:
+            string_status = "deactivated"
+
+        messages.success(request, "Document # %s has been %s" % (document.number, string_status))
+        return redirect("backoffice:contracts:index")
+
+    return redirect("backoffice:contracts:index")

@@ -26,7 +26,8 @@ class DocumentFileAdmin(admin.ModelAdmin):
 
 
 class DocumentLogsAdmin(admin.ModelAdmin):
-    list_display = ['id', 'document', 'reason', 'updated_by', 'updated_date', 'deleted_by', 'deleted_date']
+    list_display = ['id', 'document_id', 'document_name', 'reason', 'action', 'value',
+                    'updated_by', 'updated_date', 'deleted_by', 'deleted_date']
     search_fields = ('id', 'document',)
 
 
