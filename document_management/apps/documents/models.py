@@ -63,7 +63,7 @@ class Document(models.Model):
 
 
 class DocumentFile(models.Model):
-    document = models.ForeignKey('documents.Document', related_name="document_files",
+    document = models.ForeignKey('documents.Document', related_name="files",
                                  on_delete=models.CASCADE)
     file = models.FileField(upload_to=FilenameGenerator('document_file'))
     is_active = models.BooleanField('active', default=True)
@@ -71,3 +71,18 @@ class DocumentFile(models.Model):
 
     def __str__(self):
         return str(self.file.url)
+
+
+class DocumentLogs(models.Model):
+    document = models.ForeignKey('documents.Document', related_name="logs",
+                                 on_delete=models.CASCADE)
+    reason = models.TextField(blank=True, null=True)
+    updated_by = models.ForeignKey('users.User', related_name="updated_logs",
+                                   on_delete=models.CASCADE, blank=True, null=True)
+    updated_date = models.DateTimeField(blank=True, null=True)
+    deleted_by = models.ForeignKey('users.User', related_name="deleted_logs",
+                                   on_delete=models.CASCADE, blank=True, null=True)
+    deleted_date = models.DateTimeField(blank=True, null=True)
+
+    def __str__(self):
+        return str(self.id)

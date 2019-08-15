@@ -1,6 +1,7 @@
 from django import forms
 from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.utils import timezone
 
 from document_management.apps.documents.models import Document
 from document_management.apps.locations.models import Location
@@ -118,3 +119,21 @@ class ContractForm(forms.Form):
                                                         defaults=defaults)
 
         return document
+
+
+class DeleteForm(forms.Form):
+    reason = forms.CharField(widget=forms.Textarea())
+
+    def __init__(self, document, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.document = document
+        self.user = user
+
+    def save(self, *args, **kwargs):
+        reason = self.cleaned_data['reason']
+        deleted_by = self.user
+        deleted_date = timezone.now()
+        self.document.logs.create(reason=reason, deleted_by=deleted_by,
+                                  deleted_date=deleted_date)
+
+        return self.document
