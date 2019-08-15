@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
 
     # Third Party
     'compressor',
@@ -139,8 +140,6 @@ COUNTRY = 'ID'
 COUNTRY_CODE = '62'
 
 TIME_ZONE = 'Asia/Jakarta'
-
-TIME_ZONE = 'UTC'
 
 USE_I18N = True
 

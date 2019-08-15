@@ -90,6 +90,7 @@ def add(request):
     return render(request, 'contracts/add.html', context)
 
 
+@legal_required
 def edit(request, id):
     context = {
         'title': 'Edit Contract'
@@ -97,6 +98,7 @@ def edit(request, id):
     return render(request, 'contracts/edit.html', context)
 
 
+@legal_required
 def delete(request, id):
     document = get_object_or_404(
         Document.objects.select_related('partner', 'location')
@@ -109,8 +111,11 @@ def delete(request, id):
         form.save()
         messages.success(request, "Document # %s has been deleted" % document.number)
         return redirect("backoffice:contracts:index")
+
     context = {
-        'title': 'Delete Contract'
+        'title': 'Delete Contract',
+        'document': document,
+        'form': form
     }
     return render(request, 'contracts/delete.html', context)
 
@@ -118,8 +123,7 @@ def delete(request, id):
 @login_required
 def details(request, id):
     document = get_object_or_404(
-        Document.objects.select_related('partner', 'location')
-                .filter(is_active=True), id=id
+        Document.objects.select_related('partner', 'location'), id=id
     )
 
     if document.type == Document.TYPE.private:
@@ -141,6 +145,7 @@ def details(request, id):
     return render(request, 'contracts/details.html', context)
 
 
+@legal_required
 def upload(request, id):
     context = {
         'title': 'Upload Contract'
@@ -148,6 +153,7 @@ def upload(request, id):
     return render(request, 'contracts/upload.html', context)
 
 
+@legal_required
 def change_status(request, id):
     context = {
         'title': 'Change Status'
@@ -155,6 +161,7 @@ def change_status(request, id):
     return render(request, 'contracts/change_status.html', context)
 
 
+@legal_required
 def change_record_status(request, id):
     document = get_object_or_404(Document, id=id)
     form = ChangeRecordStatusForm(document=document, user=request.user)

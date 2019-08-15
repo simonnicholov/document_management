@@ -16,8 +16,8 @@
                         {% include '_includes/breadcrumb.html' %}
                     </li>
                     <li class="breadcrumb-item"><a href="{% url 'backoffice:contracts:index' %}">Contracts</a></li>
-                    <li class="breadcrumb-item"><a href="{% url 'backoffice:contracts:details' 1 %}">Detail</a></li>
-                    <li class="breadcrumb-item active"># K00-0001</li>
+                    <li class="breadcrumb-item"><a href="{% url 'backoffice:contracts:details' document.id %}">Detail</a></li>
+                    <li class="breadcrumb-item active"># {{ document.number }}</li>
                 </ol>
             </div>
             <h4 class="page-title">Detail Contract</h4>
@@ -25,38 +25,52 @@
     </div>
 </div>
 
-<div class="row mt-3 mb-2">
+{% if not document.is_active %}
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="alert alert-info alert-dismissible bg-danger text-white border-0 fade show" role="alert">
+            <strong>INFO !</strong>&nbsp;&nbsp; Document is not active !
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<div class="row {% if document.is_active %}mt-3{% endif %} mb-2">
     <div class="col-lg-12 mb-2 text-center">
         <a href="{% url 'backoffice:contracts:index' %}" class="btn btn-outline-secondary btn-rounded m-1">
             <i class="mdi mdi-arrow-left-thick"></i>
             Go Back
         </a>
-        <a href="{% url 'backoffice:contracts:edit' 1 %}" class="btn btn-outline-primary btn-rounded m-1">
-            <i class="mdi mdi-pencil"></i>
-            Edit
-        </a>
-        <a href="{% url 'backoffice:contracts:delete' 1 %}" class="btn btn-outline-danger btn-rounded m-1">
-            <i class="mdi mdi-trash-can"></i>
-            Delete
-        </a>
-        <!-- TODO : Ada Logika untuk Deactivate dan Activate -->
-        <a href="{% url 'backoffice:contracts:change_record_status' 1 %}" class="btn btn-outline-danger btn-rounded m-1">
-            <i class="mdi mdi-trash-can"></i>
-            Deactivate
-        </a>
-        <a href="{% url 'backoffice:contracts:change_record_status' 1 %}" class="btn btn-outline-success btn-rounded m-1">
-            <i class="mdi mdi-trash-can"></i>
-            Activate
-        </a>
-        <a href="{% url 'backoffice:contracts:change_status' 1 %}" class="btn btn-outline-info btn-rounded m-1">
+        {% if document.is_active %}
+            <a href="{% url 'backoffice:contracts:edit' document.id %}" class="btn btn-outline-primary btn-rounded m-1">
+                <i class="mdi mdi-pencil"></i>
+                Edit
+            </a>
+            <a href="{% url 'backoffice:contracts:delete' document.id %}" class="btn btn-outline-danger btn-rounded m-1">
+                <i class="mdi mdi-trash-can"></i>
+                Delete
+            </a>
+            <a href="{% url 'backoffice:contracts:change_record_status' document.id %}" class="btn btn-outline-danger btn-rounded m-1">
+                <i class="mdi mdi-trash-can"></i>
+                Deactivate
+            </a>
+        {% else %}
+            <a href="{% url 'backoffice:contracts:change_record_status' document.id %}" class="btn btn-outline-success btn-rounded m-1">
+                <i class="mdi mdi-trash-can"></i>
+                Activate
+            </a>
+        {% endif %}
+        {% if document.is_active %}
+        <a href="{% url 'backoffice:contracts:change_status' document.id %}" class="btn btn-outline-info btn-rounded m-1">
             <i class="mdi mdi-trash-can"></i>
             Change Status
         </a>
-        <a href="{% url 'backoffice:contracts:upload' 1 %}" class="btn btn-outline-info btn-rounded m-1">
+        <a href="{% url 'backoffice:contracts:upload' document.id %}" class="btn btn-outline-info btn-rounded m-1">
             <i class="mdi mdi-upload"></i>
             Upload
         </a>
-        <a href="{% url 'backoffice:addendums:lists' 1 %}" class="btn btn-outline-warning btn-rounded m-1">
+        {% endif %}
+        <a href="{% url 'backoffice:addendums:lists' document.id %}" class="btn btn-outline-warning btn-rounded m-1">
             <i class="mdi mdi-refresh"></i>
             Addendum
         </a>
@@ -71,56 +85,35 @@
                 <h3>Document Collections</h3>
                 <hr />
                 
-                <div class="card mb-2 shadow-none border">
-                    <div class="p-2">
-                        <div class="row align-items-center">
-                            <div class="col-auto">
-                                <div class="avatar-sm">
-                                    <span class="avatar-title bg-primary-lighten text-primary rounded">
-                                        .ZIP
-                                    </span>
+                {% for file in document.document_files.all %}
+                    <div class="card mb-2 shadow-none border">
+                        <div class="p-2">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <div class="avatar-sm">
+                                        <span class="avatar-title bg-primary-lighten text-primary rounded">
+                                            .ZIP
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col pl-0">
-                                <a href="javascript:void(0);" class="text-muted font-weight-bold">Hyper-admin-design.zip</a>
-                                <p class="mb-0">2.3 MB</p>
-                            </div>
-                            <div class="col-auto">
-                                <a href="javascript:void(0);" class="btn btn-link btn-lg text-muted">
-                                    <i class="dripicons-download"></i>
-                                </a>
-                                <a href="javascript:void(0);" class="btn btn-link btn-lg text-muted">
-                                    <i class="dripicons-cross"></i>
-                                </a>
+                                <div class="col pl-0">
+                                    <a href="javascript:void(0);" class="text-muted font-weight-bold">Hyper-admin-design.zip</a>
+                                    <p class="mb-0">2.3 MB</p>
+                                </div>
+                                <div class="col-auto">
+                                    <a href="javascript:void(0);" class="btn btn-link btn-lg text-muted">
+                                        <i class="dripicons-download"></i>
+                                    </a>
+                                    <a href="javascript:void(0);" class="btn btn-link btn-lg text-muted">
+                                        <i class="dripicons-cross"></i>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="card mb-2 shadow-none border">
-                    <div class="p-2">
-                        <div class="row align-items-center">
-                            <div class="col-auto">
-                                <div class="avatar-sm">
-                                    <span class="avatar-title bg-primary-lighten text-primary rounded">
-                                        .ZIP
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="col pl-0">
-                                <a href="javascript:void(0);" class="text-muted font-weight-bold">Hyper-admin-design.zip</a>
-                                <p class="mb-0">2.3 MB</p>
-                            </div>
-                            <div class="col-auto">
-                                <a href="javascript:void(0);" class="btn btn-link btn-lg text-muted">
-                                    <i class="dripicons-download"></i>
-                                </a>
-                                <a href="javascript:void(0);" class="btn btn-link btn-lg text-muted">
-                                    <i class="dripicons-cross"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {% empty %}
+                    <h5 class="text-center p-2">No Document</h5>
+                {% endfor %}
             </div>
         </div>
 
@@ -195,7 +188,7 @@
                     <div class="col-md-6">
                         <div class="form-group mb-3">
                             <h6 class="font-14">Corporate :</h6>
-                            <p><a href="{% url 'backoffice:partners:details' 1 %}">{{ document.partner.name }}</a></p>
+                            <p><a href="{% url 'backoffice:partners:details' document.partner.id %}">{{ document.partner.name }}</a></p>
                         </div>
                     </div>
                     <div class="col-md-6">
