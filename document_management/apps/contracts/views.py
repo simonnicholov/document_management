@@ -7,11 +7,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from document_management.apps.documents.models import Document
 from document_management.core.decorators import legal_required
 
-<<<<<<< Updated upstream
-from .forms import ContractForm
-=======
 from .forms import (ContractForm, DeleteForm, ChangeRecordStatusForm)
->>>>>>> Stashed changes
 
 
 def index(request):
