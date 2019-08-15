@@ -169,4 +169,3 @@ class DeleteForm(forms.Form):
         self.document.delete()
 
         return document_number
-
