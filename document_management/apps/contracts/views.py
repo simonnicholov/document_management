@@ -5,7 +5,6 @@ from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 
 from document_management.apps.documents.models import Document
-from document_management.apps.users.models import User
 from document_management.core.decorators import legal_required
 
 from .forms import ContractForm, DeleteForm
