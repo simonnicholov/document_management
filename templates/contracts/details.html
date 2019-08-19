@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% load static %}
+{% load static humanize %}
 
 {% block extra_css %}
     <link href="{% url 'css/style.css' %}"/>
@@ -41,7 +41,7 @@
             <i class="mdi mdi-arrow-left-thick"></i>
             Go Back
         </a>
-        {% if document.is_active and document.status != document.STATUS.done %}
+        {% if document.is_active and document.status != document.STATUS.done and request.user.get_role_id != ROLE_USER_ID %}
             <a href="{% url 'backoffice:contracts:edit' document.id %}" class="btn btn-outline-primary btn-rounded m-1">
                 <i class="mdi mdi-pencil"></i>
                 Edit
@@ -55,13 +55,13 @@
                 Deactivate
             </a>
         {% endif %}
-        {% if not document.is_active %}
+        {% if not document.is_active and request.user.get_role_id != ROLE_USER_ID %}
             <a href="{% url 'backoffice:contracts:change_record_status' document.id %}" class="btn btn-outline-success btn-rounded m-1">
                 <i class="mdi mdi-trash-can"></i>
                 Activate
             </a>
         {% endif %}
-        {% if document.is_active and document.status != document.STATUS.done %}
+        {% if document.is_active and document.status != document.STATUS.done and request.user.get_role_id != ROLE_USER_ID %}
         <a href="{% url 'backoffice:contracts:change_status' document.id %}" class="btn btn-outline-info btn-rounded m-1">
             <i class="mdi mdi-trash-can"></i>
             Change Status
@@ -134,10 +134,18 @@
                             <p># {{ document.number }}</p>
                         </div>
                     </div>
+                </div>
+                <div class="row">
                     <div class="col-md-6">
                         <div class="form-group mb-3">
-                            <h6 class="font-14">Contract Date :</h6>
+                            <h6 class="font-14">Effective Date :</h6>
                             <p>{{ document.effective_date|date:'d M Y' }}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <h6 class="font-14">Expired Date :</h6>
+                            <p>{{ document.expired_date|date:'d M Y' }}</p>
                         </div>
                     </div>
                 </div>
@@ -195,7 +203,7 @@
                     <div class="col-md-6">
                         <div class="form-group mb-3">
                             <h6 class="font-14">Amount :</h6>
-                            <p>Rp. {{ document.amount|default:'0'}}</p>
+                            <p>Rp. {{ document.amount|floatformat:0|intcomma }}</p>
                         </div>
                     </div>
                 </div>

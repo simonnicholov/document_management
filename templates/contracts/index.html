@@ -23,11 +23,13 @@
 </div>     
 
 <div class="row mb-2">
-    <div class="col-md-12 text-center">
-        <a href="{% url 'backoffice:contracts:add' %}">
-            <button type="button" class="btn btn-danger btn-rounded mb-3"><i class="mdi mdi-plus"></i> Create Contract</button>
-        </a>
-    </div>
+    {% if request.user.get_role_id != ROLE_USER_ID %}
+        <div class="col-md-12 text-center">
+            <a href="{% url 'backoffice:contracts:add' %}">
+                <button type="button" class="btn btn-danger btn-rounded mb-3"><i class="mdi mdi-plus"></i> Create Contract</button>
+            </a>
+        </div>
+    {% endif %}
 </div>
 
 <div class="card">
@@ -56,7 +58,7 @@
                     <label>Type</label>
                     <select id="type" name="type" class="form-control select2" data-toggle="select2">
                         <option value="0">- Select -</option>
-                        {% if request.user.get_role_id != settings.ROLE_USER_ID %}
+                        {% if request.user.get_role_id != ROLE_USER_ID %}
                             <option value="1" {% if type == document.TYPE.private %}selected{% endif %}>Private</option>
                         {% endif %}
                         <option value="2" {% if type == document.TYPE.public %}selected{% endif %}>Public</option>

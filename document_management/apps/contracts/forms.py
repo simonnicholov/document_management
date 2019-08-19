@@ -98,7 +98,6 @@ class ContractForm(forms.Form):
         retention_period = self.cleaned_data['retention_period']
 
         defaults = {
-            'number': number,
             'effective_date': effective_date,
             'expired_date': expired_date,
             'subject': subject,
@@ -114,7 +113,6 @@ class ContractForm(forms.Form):
             'ending_period': ending_period,
             'retention_period': retention_period
         }
-        print('defaults : ', defaults)
 
         document, _ = Document.objects.update_or_create(number=number,
                                                         defaults=defaults)

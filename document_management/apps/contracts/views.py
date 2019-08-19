@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -19,6 +20,9 @@ def index(request):
     status = int(request.GET.get('status', 0))
 
     documents = Document.objects.select_related('partner')
+
+    if request.user.get_role_id() == settings.ROLE_USER_ID:
+        type = Document.TYPE.public
 
     if query:
         documents = documents.filter(Q(number__icontains=query) |
@@ -102,8 +106,8 @@ def edit(request, id):
     initial = {
         'number': document.number,
         'subject': document.subject,
-        'effective_date': document.effective_date,
-        'expired_date': document.expired_date,
+        'effective_date': document.effective_date.strftime("%Y-%m-%d"),
+        'expired_date': document.expired_date.strftime("%Y-%m-%d"),
         'location': document.location,
         'category': document.category,
         'type': document.type,
@@ -111,17 +115,17 @@ def edit(request, id):
         'partner': document.partner,
         'amount': document.amount,
         'job_specification': document.job_specification,
-        'beginning_period': document.beginning_period,
-        'ending_period': document.ending_period,
+        'beginning_period': document.beginning_period.strftime("%Y-%m-%d"),
+        'ending_period': document.ending_period.strftime("%Y-%m-%d"),
         'retention_period': document.retention_period
     }
 
     form = ContractForm(data=request.POST or None, initial=initial)
 
-    print(form)
     if form.is_valid():
         form.save()
-        return redirect(reverse('backoffice:contracts:index', args=[document.id]))
+        messages.success(request, f'{document.number} has been updated')
+        return redirect(reverse('backoffice:contracts:details', args=[document.id]))
 
     context = {
         'title': 'Edit Contract',
@@ -162,6 +166,11 @@ def details(request, id):
     document = get_object_or_404(
         Document.objects.select_related('partner', 'location'), id=id
     )
+
+    if request.user.get_role_id() == settings.ROLE_USER_ID and \
+       document.type == Document.TYPE.private:
+        messages.error(request, "You do not have a access to view this document.")
+        return redirect("backoffice:contracts:index")
 
     if document.type == Document.TYPE.private:
         document.badge_type = "badge badge-danger p-1"
