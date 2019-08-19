@@ -12,7 +12,7 @@
                         {% include '_includes/breadcrumb.html' %}
                     </li>
                     <li class="breadcrumb-item"><a href="{% url 'backoffice:contracts:index' %}">Contracts</a></li>
-                    <li class="breadcrumb-item"><a href="{% url 'backoffice:contracts:details' 1 %}">Detail</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'backoffice:contracts:details' document.id %}">Detail</a></li>
                     <li class="breadcrumb-item active">Edit</li>
                 </ol>
             </div>
@@ -26,70 +26,72 @@
 <div class="row">
     <div class="col-12">
 
-        <form action="" method="">
+        <form id="add_form" action="" method="POST" novalidate>
+            {% csrf_token %}
 
             <div class="card">
                 <div class="card-body">
-                    
+
                     <h3>General Information</h3>
                     <hr />
 
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group mb-3">
-                                <label for="nama">Contract Number</label>
-                                <input type="text" id="contractnumber" name="contractnumber" class="form-control">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group mb-3">
-                                <label for="name">Contract Date</label>
-                                <input type="text" id="contractdate" name="contractdate" class="form-control" data-provide="datepicker" data-date-autoclose="true">
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group mb-3">
-                                <label for="nama">Subject</label>
-                                <input type="text" id="subject" name="subject" class="form-control">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Location</label>
-                                <select id="location" name="location" class="form-control select2" data-toggle="select2">
-                                    <option>- Select -</option>
-                                    <option>Banten</option>
-                                    <option>Denpasar</option>
-                                    <option>Jakarta</option>
-                                    <option>Makassar</option>
-                                </select>
+                                <label>Number</label>
+                                <input type="text" name="number" value="{{ form.number.value }}" class="form-control" id="number" />
+                                {{ form.number.errors }}
                             </div>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Category</label>
-                                <select id="category" name="category" class="form-control select2" data-toggle="select2">
-                                    <option>- Select -</option>
-                                    <option>Construction</option>
-                                    <option>Property</option>
-                                    <option>Others</option>
-                                </select>
+                            <div class="form-group mb-3">
+                                <label>Subject</label>
+                                <input type="text" name="subject" value="{{ form.subject.value }}" class="form-control" id="subject" />
+                                {{ form.subject.errors }}
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="form-group">
+                            <div class="form-group mb-3">
+                                <label>Location</label>
+                                {{ form.location }}
+                                {{ form.location.errors }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label>Category</label>
+                                {{ form.category }}
+                                {{ form.category.errors }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
                                 <label>Type</label>
-                                <select id="type" name="type" class="form-control select2" data-toggle="select2">
-                                    <option>- Select -</option>
-                                    <option>Public</option>
-                                    <option>Private</option>
-                                </select>
+                                {{ form.type }}
+                                {{ form.type.errors }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label>Effective Date</label>
+                                <input type="text" id="effective_date" name="effective_date" value="{{ form.effective_date.value }}" class="form-control" data-date-format="yyyy-mm-dd" data-provide="datepicker" data-date-autoclose="true">
+                                {{ form.effective_date.errors }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label>Expired Date</label>
+                                <input type="text" id="expired_date" name="expired_date" value="{{ form.expired_date.value }}" class="form-control" data-date-format="yyyy-mm-dd" data-provide="datepicker" data-date-autoclose="true">
+                                {{ form.expired_date.errors }}
                             </div>
                         </div>
                     </div>
@@ -98,7 +100,7 @@
                         <div class="col-md-12">
                             <div class="form-group mb-3">
                                 <label for="alamat">Description</label>
-                                <textarea id="description" name="description" class="form-control"  rows="3"></textarea>
+                                <textarea id="description" name="description" class="form-control" rows="3">{{ form.description.value }}</textarea>
                             </div>
                         </div>
                     </div>
@@ -110,18 +112,16 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Corporate</label>
-                                <select id="corporate" name="corporate" class="form-control select2" data-toggle="select2">
-                                    <option>- Select -</option>
-                                    <option>PT Mega Maju Selalu</option>
-                                    <option>PT Berkah Indo Makmur</option>
-                                    <option>PT Aman Notaris Indojaya</option>
-                                </select>
+                                {{ form.partner }}
+                                {{ form.partner.errors }}
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group mb-3">
                                 <label for="name">Amount</label>
-                                <input type="text" id="amount" name="amount" class="form-control" />
+                                <input type="text" id="amount_display" name="amount_display" value="{{ form.amount.value|floatformat:'0' }}" class="form-control" />
+                                <input type="hidden" name="amount" value="{{ form.amount.value }}" id="amount"/>
+                                {{ form.amount.errors }}
                             </div>
                         </div>
                     </div>
@@ -132,28 +132,32 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group mb-3">
-                                <label for="npwp">Job specification</label>
-                                <input type="text" id="job_specification" name="job_specification" class="form-control">
+                                <label>Job specification</label>
+                                <input type="text" id="job_specification" name="job_specification" value="{{ form.job_specification.value }}" class="form-control">
+                                {{ form.job_specification.errors }}
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group mb-3">
-                                <label for="alamat">Beginning Period</label>
-                                <input type="text" id="beginning_period" name="beginning_period" class="form-control">
+                                <label>Beginning Period</label>
+                                <input type="text" id="beginning_period" name="beginning_period" class="form-control" value="{{ form.beginning_period.value }}" data-date-format="yyyy-mm-dd" data-provide="datepicker" data-date-autoclose="true">
+                                {{ form.beginning_period.errors }}
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group mb-3">
-                                <label for="alamat">Ending Period</label>
-                                <input type="text" id="ending_period" name="ending_period" class="form-control">
+                                <label>Ending Period</label>
+                                <input type="text" id="ending_period" name="ending_period" class="form-control" value="{{ form.ending_period.value }}" data-date-format="yyyy-mm-dd" data-provide="datepicker" data-date-autoclose="true">
+                                {{ form.ending_period.errors }}
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group mb-3">
-                                <label for="alamat">Retention Period</label>
-                                <input type="text" id="retention_period" name="retention_period" class="form-control">
+                                <label>Retention Period</label>
+                                <input type="number" id="retention_period" name="retention_period" class="form-control" value="{{ form.retention_period.value }}">
+                                {{ form.retention_period.errors }}
                             </div>
                         </div>
                     </div>
@@ -161,9 +165,11 @@
 
                     <div class="row text-center mt-3">
                         <div class="col-md-12">
-                            <button type="submit" class="btn btn-outline-success btn-rounded">Save</button>
+                            <button id="button_submit" type="submit" class="btn btn-outline-success btn-rounded">Save</button>
                         </div>
                     </div>
+
+                    </form>
                 </div>
 
             </div>                
@@ -172,4 +178,23 @@
 
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    $(document).on("keyup", '#amount_display', function(event) {
+        var $this = $(this);
+        var value = $this.val();
+        value = value.replace(/[\D\s\._\-]+/g, "");
+        $this.val(numberWithCommas(value));
+    });
+
+    // Validation on submission
+    $(document).on('click', '#button_submit', function(e) {
+        var amount = $("#amount_display").val().toString().replace(/\,/g, '');
+        amount = parseInt(amount);
+        $("#amount").val(amount);
+        $('#add-form').submit();
+    });
+</script>
 {% endblock %}

@@ -80,7 +80,7 @@ class DocumentLogs(models.Model):
         (3, 'record_status', 'Record Status'),
     )
     document_id = models.IntegerField()
-    document_name = models.CharField(max_length=64)
+    document_subject = models.CharField(max_length=64)
     action = models.PositiveSmallIntegerField(choices=ACTION, blank=True, null=True)
     value = models.CharField(max_length=64, blank=True, null=True)
     reason = models.TextField(blank=True, null=True)
