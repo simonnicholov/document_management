@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% load static humanize %}
+
+{% block content_page %}
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item">
+                        {% include '_includes/breadcrumb.html' %}
+                    </li>
+                    <li class="breadcrumb-item"><a href="{% url 'backoffice:contracts:index' %}">Contracts</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'backoffice:contracts:details' document.id %}">Detail</a></li>
+                    <li class="breadcrumb-item active">Change Status</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Change Status Contract</h4>
+        </div>
+    </div>
+</div>
+
+<div class="mb-3"></div>
+
+<div class="row">
+    <div class="col-12">
+
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <h6 class="font-14">Contract Number :</h6>
+                                <p># {{ document.number }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <h6 class="font-14">Subject :</h6>
+                                <p>{{ document.subject }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <h6 class="font-14">Partner :</h6>
+                                <p># {{ document.partner.name }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <h6 class="font-14">Job Description :</h6>
+                                <p>{{ document.job_description }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h6 class="font-14">Description :</h6>
+                            <p>{{ document.description|default:'-' }}</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group mb-3">
+                                <label>Status</label>
+                                {{ form.status }}
+                                {{ form.status.errors }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group mb-3">
+                                <label for="reason">Reason</label>
+                                <textarea class="form-control" id="reason" name="reason" rows="3"></textarea>
+                                {{ form.reason.errors }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row text-center">
+                <div class="col-md-12">
+                    <button type="submit" class="btn btn-outline-danger btn-rounded">Save</button>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+{% endblock %}

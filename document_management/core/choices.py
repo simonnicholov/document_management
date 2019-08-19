@@ -13,3 +13,10 @@ CATEGORY = Choices(
     (2, 'property', 'Property'),
     (3, 'other', 'Other'),
 )
+
+STATUS = Choices(
+    (0, '-', '--- select ---'),
+    (1, 'ongoing', 'Ongoing'),
+    (2, 'done', 'Done'),
+    (3, 'expired', 'Expired'),
+)

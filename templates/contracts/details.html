@@ -41,7 +41,7 @@
             <i class="mdi mdi-arrow-left-thick"></i>
             Go Back
         </a>
-        {% if document.is_active %}
+        {% if document.is_active and document.status != document.STATUS.done %}
             <a href="{% url 'backoffice:contracts:edit' document.id %}" class="btn btn-outline-primary btn-rounded m-1">
                 <i class="mdi mdi-pencil"></i>
                 Edit
@@ -54,13 +54,14 @@
                 <i class="mdi mdi-trash-can"></i>
                 Deactivate
             </a>
-        {% else %}
+        {% endif %}
+        {% if not document.is_active %}
             <a href="{% url 'backoffice:contracts:change_record_status' document.id %}" class="btn btn-outline-success btn-rounded m-1">
                 <i class="mdi mdi-trash-can"></i>
                 Activate
             </a>
         {% endif %}
-        {% if document.is_active %}
+        {% if document.is_active and document.status != document.STATUS.done %}
         <a href="{% url 'backoffice:contracts:change_status' document.id %}" class="btn btn-outline-info btn-rounded m-1">
             <i class="mdi mdi-trash-can"></i>
             Change Status

@@ -7,7 +7,8 @@ from document_management.apps.documents.models import Document, DocumentLogs
 from document_management.apps.locations.models import Location
 from document_management.apps.partners.models import Partner
 
-from document_management.core.choices import TYPE, CATEGORY
+from document_management.core.choices import TYPE, CATEGORY, STATUS
+from document_management.core.dictionaries import DICT_STATUSES
 from document_management.core.attributes import get_select_attribute
 
 
@@ -136,15 +137,20 @@ class ChangeRecordStatusForm(forms.Form):
             self.document.is_active = False
         else:
             self.document.is_active = True
-        self.document.save()
 
         updated_by = self.user
         updated_date = timezone.now()
         action = DocumentLogs.ACTION.record_status
         value = self.document.is_active
 
-        self.document.logs.create(action=action, value=value,
-                                  updated_by=updated_by, updated_date=updated_date)
+        DocumentLogs.objects.create(document_id=self.document.id,
+                                    document_subject=self.document.subject,
+                                    action=action,
+                                    value=value,
+                                    updated_by=updated_by,
+                                    updated_date=updated_date)
+
+        self.document.save()
 
         return self.document
 
@@ -164,8 +170,50 @@ class DeleteForm(forms.Form):
         action = DocumentLogs.ACTION.delete_record
         deleted_by = self.user
         deleted_date = timezone.now()
-        self.document.logs.create(reason=reason, action=action,
-                                  deleted_by=deleted_by, deleted_date=deleted_date)
+
+        DocumentLogs.objects.create(document_id=self.document.id,
+                                    document_subject=self.document.subject,
+                                    reason=reason,
+                                    action=action,
+                                    deleted_by=deleted_by,
+                                    deleted_date=deleted_date)
+
         self.document.delete()
 
         return document_number
+
+
+class ChangeStatusForm(forms.Form):
+    status = forms.ChoiceField(choices=STATUS, widget=select_widget)
+    reason = forms.CharField(widget=forms.Textarea())
+
+    def __init__(self, document, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.document = document
+        self.user = user
+
+    def clean_status(self):
+        if int(self.cleaned_data['status']) == self.document.status:
+            raise forms.ValidationError("Please select status first",
+                                        code="selected_is_required")
+        return self.cleaned_data['status']
+
+    def save(self, *args, **kwargs):
+        reason = self.cleaned_data['reason']
+        action = DocumentLogs.ACTION.document_status
+        value = DICT_STATUSES[self.cleaned_data['status']]
+        updated_by = self.user
+        updated_date = timezone.now()
+
+        DocumentLogs.objects.create(document_id=self.document.id,
+                                    document_subject=self.document.subject,
+                                    reason=reason,
+                                    action=action,
+                                    value=value,
+                                    updated_by=updated_by,
+                                    updated_date=updated_date)
+
+        self.document.status = int(self.cleaned_data['status'])
+        self.document.save()
+
+        return self.document

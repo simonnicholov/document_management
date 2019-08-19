@@ -2,14 +2,16 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, reverse, get_object_or_404
 
 from document_management.apps.documents.models import Document
 from document_management.core.decorators import legal_required
 
-from .forms import (ContractForm, DeleteForm, ChangeRecordStatusForm)
+from .forms import (ContractForm, DeleteForm, ChangeRecordStatusForm,
+                    ChangeStatusForm)
 
 
+@login_required
 def index(request):
     query = request.GET.get('query', '')
     category = int(request.GET.get('category', 0))
@@ -92,8 +94,39 @@ def add(request):
 
 @legal_required
 def edit(request, id):
+    document = get_object_or_404(
+        Document.objects.select_related('partner', 'location')
+                .filter(is_active=True), id=id
+    )
+
+    initial = {
+        'number': document.number,
+        'subject': document.subject,
+        'effective_date': document.effective_date,
+        'expired_date': document.expired_date,
+        'location': document.location,
+        'category': document.category,
+        'type': document.type,
+        'description': document.description,
+        'partner': document.partner,
+        'amount': document.amount,
+        'job_specification': document.job_specification,
+        'beginning_period': document.beginning_period,
+        'ending_period': document.ending_period,
+        'retention_period': document.retention_period
+    }
+
+    form = ContractForm(data=request.POST or None, initial=initial)
+
+    print(form)
+    if form.is_valid():
+        form.save()
+        return redirect(reverse('backoffice:contracts:index', args=[document.id]))
+
     context = {
-        'title': 'Edit Contract'
+        'title': 'Edit Contract',
+        'document': document,
+        'form': form
     }
     return render(request, 'contracts/edit.html', context)
 
@@ -104,6 +137,10 @@ def delete(request, id):
         Document.objects.select_related('partner', 'location')
                 .filter(is_active=True), id=id
     )
+
+    if document.status == Document.STATUS.done:
+        messages.error(request, "Document # %s status has been done" % (document.number))
+        return redirect(reverse("backoffice:contracts:details", args=[document.id]))
 
     form = DeleteForm(data=request.POST or None, document=document, user=request.user)
 
@@ -155,8 +192,33 @@ def upload(request, id):
 
 @legal_required
 def change_status(request, id):
+    document = get_object_or_404(
+        Document.objects.select_related('partner')
+                .filter(is_active=True), id=id
+    )
+
+    if document.status == Document.STATUS.done:
+        messages.error(request, "Document # %s status has been done" % (document.number))
+        return redirect(reverse("backoffice:contracts:details", args=[document.id]))
+
+    initial = {
+        'status': document.status
+    }
+
+    form = ChangeStatusForm(data=request.POST or None, initial=initial,
+                            document=document, user=request.user)
+
+    if form.is_valid():
+        form.save()
+        messages.success(request, "Document # %s status has been changed into %s" %
+                         (document.number, document.get_status_display().upper()))
+        return redirect(reverse("backoffice:contracts:details",
+                        args=[document.id]))
+
     context = {
-        'title': 'Change Status'
+        'title': 'Change Status',
+        'form': form,
+        'document': document
     }
     return render(request, 'contracts/change_status.html', context)
 
@@ -164,6 +226,11 @@ def change_status(request, id):
 @legal_required
 def change_record_status(request, id):
     document = get_object_or_404(Document, id=id)
+
+    if document.status == Document.STATUS.done:
+        messages.error(request, "Document # %s status has been done" % (document.number))
+        return redirect(reverse("backoffice:contracts:details", args=[document.id]))
+
     form = ChangeRecordStatusForm(document=document, user=request.user)
 
     if form.is_valid():
