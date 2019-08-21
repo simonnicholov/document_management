@@ -58,9 +58,7 @@
                     <label>Type</label>
                     <select id="type" name="type" class="form-control select2" data-toggle="select2">
                         <option value="0">- Select -</option>
-                        {% if request.user.get_role_id != ROLE_USER_ID %}
-                            <option value="1" {% if type == document.TYPE.private %}selected{% endif %}>Private</option>
-                        {% endif %}
+                        <option value="1" {% if type == document.TYPE.private %}selected{% endif %}>Private</option>
                         <option value="2" {% if type == document.TYPE.public %}selected{% endif %}>Public</option>
                     </select>
                 </div>
@@ -99,11 +97,6 @@
                 <tbody>
                     {% for document in page.object_list %}
                         <tr>
-                            {% comment %}
-                            <!-- <td><a class="link" href="{% url 'frontdesk:members:details' membership.id %}">{{ membership.user.name }}</a></td>
-                            <td>{{ membership.user.phone|default:'' }}</td>
-                            <td>{{ membership.user.profile.birthday|date:'d M Y' }}</td> -->
-                            {% endcomment %}
                             <td><a href="{% url 'backoffice:contracts:details' document.id %}"># {{ document.number }}</a></td>
                             <td>{{ document.subject }}</td>
                             <td>{{ document.partner.name }}</td>

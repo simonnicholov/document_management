@@ -3,52 +3,65 @@
 {% load static%}
 
 {% block content_page %}
-<div class="container-fluid pb-4">
-
-    <div class="row">
-        <div class="col-12">
-            <div class="page-title-box">
-                <div class="page-title-right">
-                    <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item">
-                            {% include '_includes/breadcrumb.html' %}
-                        </li>
-                        <li class="breadcrumb-item"><a href="{% url 'backoffice:addendums:index' %}">Addendums</a></li>
-                        <li class="breadcrumb-item active">List</li>
-                    </ol>
-                </div>
-                <h4 class="page-title">Addendums # K00-0001</h4>
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item">
+                        {% include '_includes/breadcrumb.html' %}
+                    </li>
+                    <li class="breadcrumb-item"><a href="{% url 'backoffice:addendums:index' %}">Addendums</a></li>
+                    <li class="breadcrumb-item active">List</li>
+                </ol>
             </div>
+            <h4 class="page-title">Addendums # {{ document.number }}</h4>
         </div>
     </div>
+</div>
 
-    <div class="card">
-        <div class="card-body">            
-            <div class="table-responsive-sm">
-                <table class="table table-sm table-hover table-centered mb-0">
-                    <thead>
+<div class="row mb-2">
+    {% if request.user.get_role_id != ROLE_USER_ID %}
+        <div class="col-md-12 text-center">
+            <a href="{% url 'backoffice:addendums:add' document.id %}">
+                <button type="button" class="btn btn-danger btn-rounded mb-3"><i class="mdi mdi-plus"></i> Create Addendums</button>
+            </a>
+        </div>
+    {% endif %}
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive-sm">
+            <table class="table table-sm table-hover table-centered mb-0">
+                <thead>
+                    <tr>
+                        <th>Number</th>
+                        <th>Subject</th>
+                        <th>Effective Date</th>
+                        <th>Expired Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for addendum in addendums %}
                         <tr>
-                            <th>Number</th>
-                            <th>Subject</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><a href="{% url 'backoffice:addendums:details' 1 %}"># ADS-001</a></td>
-                            <td>Perubahan pasal kontrak kerja</td>
-                            <td><span class="badge badge-warning p-1">Expired</span></td>
+                            <td><a href="{% url 'backoffice:addendums:details' addendum.id %}"># {{ addendum.number }}</a></td>
+                            <td>{{ addendum.subject }}</td>
+                            <td><span class="badge badge-warning p-1">{{ addedum.get_status_display }}</span></td>
                         </tr>
                         <tr>
                             <td><a href="{% url 'backoffice:addendums:details' 1 %}"># ADS-007</a></td>
                             <td>Perubahan tender project</td>
                             <td><span class="badge badge-danger p-1">Expired</span></td>
                         </tr>
-                    </tbody>
-                </table>
-            </div>
+                    {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center"><h4>No Data</h4></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
-
 </div>
 {% endblock %}

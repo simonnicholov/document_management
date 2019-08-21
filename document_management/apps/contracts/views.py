@@ -19,10 +19,11 @@ def index(request):
     type = int(request.GET.get('type', 0))
     status = int(request.GET.get('status', 0))
 
-    documents = Document.objects.select_related('partner')
+    documents = Document.objects.select_related('partner')\
+        .filter(group=settings.GROUP_CONTRACT)
 
-    if request.user.get_role_id() == settings.ROLE_USER_ID:
-        type = Document.TYPE.public
+    # if request.user.get_role_id() == settings.ROLE_USER_ID:
+    #     type = Document.TYPE.public
 
     if query:
         documents = documents.filter(Q(number__icontains=query) |
@@ -173,8 +174,8 @@ def details(request, id):
 
     if request.user.get_role_id() == settings.ROLE_USER_ID and \
        document.type == Document.TYPE.private:
-        messages.error(request, "You do not have a access to view this document.")
-        return redirect("backoffice:contracts:index")
+        messages.error(request, "You do not have an access, but you can request an access to the document first.")
+        return redirect("backoffice:permission_requests")
 
     if document.type == Document.TYPE.private:
         document.badge_type = "badge badge-danger p-1"
