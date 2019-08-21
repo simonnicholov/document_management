@@ -207,9 +207,6 @@ def upload(request, id):
 
     form = UploadForm(data=request.POST or None, files=request.FILES or None,
                       document=document, user=request.user)
-    print('form : ', form)
-    print('errors : ', form.errors)
-    print('form isvalid : ', form.is_valid())
 
     if form.is_valid():
         form.save()
