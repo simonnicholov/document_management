@@ -79,7 +79,7 @@ def index(request):
 
 @legal_required
 def add(request):
-    form = ContractForm(data=request.POST or None)
+    form = ContractForm(data=request.POST or None, user=request.user)
 
     if form.is_valid():
         document = form.save()
@@ -120,7 +120,7 @@ def edit(request, id):
         'retention_period': document.retention_period
     }
 
-    form = ContractForm(data=request.POST or None, initial=initial)
+    form = ContractForm(data=request.POST or None, initial=initial, user=request.user)
 
     if form.is_valid():
         form.save()
