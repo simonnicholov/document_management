@@ -75,9 +75,16 @@ class DocumentFile(models.Model):
 
 class DocumentLogs(models.Model):
     ACTION = Choices(
-        (1, 'delete_record', 'Delete Record'),
-        (2, 'document_status', 'Document Status'),
-        (3, 'record_status', 'Record Status'),
+        (1, 'create_document', 'Create Document'),
+        (2, 'update_document', 'Update Document'),
+        (3, 'delete_document', 'Delete Document'),
+        (4, 'upload_document', 'Upload Document'),
+        (5, 'update_document_status', 'Update Document Status'),
+        (6, 'update_record_status', 'Update Record Status'),
+        (7, 'create_addendum', 'Create Addendum'),
+        (8, 'update_adendum', 'Update Addendum'),
+        (9, 'delete_addendum', 'Delete Addendum'),
+        (10, 'upload_addendum', 'Upload Addendum'),
     )
     document_id = models.IntegerField()
     document_subject = models.CharField(max_length=64)
@@ -88,9 +95,6 @@ class DocumentLogs(models.Model):
     updated_by = models.ForeignKey('users.User', related_name="updated_logs",
                                    on_delete=models.CASCADE, blank=True, null=True)
     updated_date = models.DateTimeField(blank=True, null=True)
-    deleted_by = models.ForeignKey('users.User', related_name="deleted_logs",
-                                   on_delete=models.CASCADE, blank=True, null=True)
-    deleted_date = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
         return str(self.id)

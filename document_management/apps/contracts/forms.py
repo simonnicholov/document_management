@@ -44,6 +44,10 @@ class ContractForm(forms.Form):
     ending_period = forms.DateField(input_formats=["%Y-%m-%d"])
     retention_period = forms.IntegerField(min_value=1, max_value=7300, required=False)
 
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.user = user
+
     def clean_category(self):
         if self.cleaned_data['category'] == "0":
             raise forms.ValidationError("Please select item in the list", code="field_is_required")
@@ -116,8 +120,19 @@ class ContractForm(forms.Form):
             'retention_period': retention_period
         }
 
-        document, _ = Document.objects.update_or_create(number=number,
-                                                        defaults=defaults)
+        document, created = Document.objects.update_or_create(number=number,
+                                                              defaults=defaults)
+
+        if created:
+            action = DocumentLogs.ACTION.create_document
+        else:
+            action = DocumentLogs.ACTION.update_document
+
+        DocumentLogs.objects.create(document_id=document.id,
+                                    document_subject=subject,
+                                    action=action,
+                                    updated_by=self.user,
+                                    updated_date=timezone.now())
 
         return document
 
@@ -140,7 +155,7 @@ class ChangeRecordStatusForm(forms.Form):
 
         updated_by = self.user
         updated_date = timezone.now()
-        action = DocumentLogs.ACTION.record_status
+        action = DocumentLogs.ACTION.update_document_status
         value = self.document.is_active
 
         DocumentLogs.objects.create(document_id=self.document.id,
@@ -150,7 +165,7 @@ class ChangeRecordStatusForm(forms.Form):
                                     updated_by=updated_by,
                                     updated_date=updated_date)
 
-        self.document.save()
+        self.document.save(update_fields=['is_active'])
 
         return self.document
 
@@ -167,16 +182,16 @@ class DeleteForm(forms.Form):
         document_number = self.document.number
 
         reason = self.cleaned_data['reason']
-        action = DocumentLogs.ACTION.delete_record
-        deleted_by = self.user
-        deleted_date = timezone.now()
+        action = DocumentLogs.ACTION.delete_document
+        updated_by = self.user
+        updated_date = timezone.now()
 
         DocumentLogs.objects.create(document_id=self.document.id,
                                     document_subject=self.document.subject,
                                     reason=reason,
                                     action=action,
-                                    deleted_by=deleted_by,
-                                    deleted_date=deleted_date)
+                                    updated_by=updated_by,
+                                    updated_date=updated_date)
 
         self.document.delete()
 
@@ -200,7 +215,7 @@ class ChangeStatusForm(forms.Form):
 
     def save(self, *args, **kwargs):
         reason = self.cleaned_data['reason']
-        action = DocumentLogs.ACTION.document_status
+        action = DocumentLogs.ACTION.update_document_status
         value = DICT_STATUSES[self.cleaned_data['status']]
         updated_by = self.user
         updated_date = timezone.now()
@@ -214,7 +229,29 @@ class ChangeStatusForm(forms.Form):
                                     updated_date=updated_date)
 
         self.document.status = int(self.cleaned_data['status'])
-        self.document.save()
+        self.document.save(update_fields=['status'])
+
+        return self.document
+
+
+class UploadForm(forms.Form):
+    file = forms.FileField(validators=[FileExtensionValidator(allowed_extensions=['pdf'])])
+
+    def __init__(self, document, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.document = document
+        self.user = user
+
+    def save(self, *args, **kwargs):
+        self.document.files.create(file=self.cleaned_data['file'])
+        self.document.total_document = self.document.total_document + 1
+        self.document.save(update_fields=['total_document'])
+
+        DocumentLogs.objects.create(document_id=self.document.id,
+                                    document_subject=self.document.subject,
+                                    action=DocumentLogs.ACTION.upload_document,
+                                    updated_by=self.user,
+                                    updated_date=timezone.now())
 
         return self.document
 
