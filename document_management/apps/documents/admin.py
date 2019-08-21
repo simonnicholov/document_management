@@ -13,7 +13,7 @@ class DocumentFileAdmin(admin.ModelAdmin):
     search_fields = ('id', 'document',)
 
     def document_group(self, obj):
-        return obj.document.get_document_type_display()
+        return obj.document.get_group_display()
     document_group.short_description = 'Group'
 
     def document_category(self, obj):

@@ -5,11 +5,11 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 
-from document_management.apps.documents.models import Document
+from document_management.apps.documents.models import Document, DocumentFile
 from document_management.core.decorators import legal_required
 
 from .forms import (ContractForm, DeleteForm, ChangeRecordStatusForm,
-                    ChangeStatusForm)
+                    ChangeStatusForm, UploadForm)
 
 
 @login_required
@@ -103,6 +103,10 @@ def edit(request, id):
                 .filter(is_active=True), id=id
     )
 
+    if document.status == Document.STATUS.done:
+        messages.error(request, "Document # %s status has already done" % (document.number))
+        return redirect(reverse("backoffice:contracts:details", args=[document.id]))
+
     initial = {
         'number': document.number,
         'subject': document.subject,
@@ -143,7 +147,7 @@ def delete(request, id):
     )
 
     if document.status == Document.STATUS.done:
-        messages.error(request, "Document # %s status has been done" % (document.number))
+        messages.error(request, "Document # %s status has already done" % (document.number))
         return redirect(reverse("backoffice:contracts:details", args=[document.id]))
 
     form = DeleteForm(data=request.POST or None, document=document, user=request.user)
@@ -193,8 +197,30 @@ def details(request, id):
 
 @legal_required
 def upload(request, id):
+    document = get_object_or_404(
+        Document.objects.filter(is_active=True), id=id
+    )
+
+    if document.status == Document.STATUS.done:
+        messages.error(request, "Document # %s status has already done" % (document.number))
+        return redirect(reverse("backoffice:contracts:details", args=[document.id]))
+
+    form = UploadForm(data=request.POST or None, files=request.FILES or None,
+                      document=document, user=request.user)
+    print('form : ', form)
+    print('errors : ', form.errors)
+    print('form isvalid : ', form.is_valid())
+
+    if form.is_valid():
+        form.save()
+        messages.success(request, "Document # %s files has already uploaded" %
+                         (document.number))
+        return redirect(reverse("backoffice:contracts:details", args=[document.id]))
+
     context = {
-        'title': 'Upload Contract'
+        'title': 'Upload Contract',
+        'document': document,
+        'form': form
     }
     return render(request, 'contracts/upload.html', context)
 
@@ -207,7 +233,7 @@ def change_status(request, id):
     )
 
     if document.status == Document.STATUS.done:
-        messages.error(request, "Document # %s status has been done" % (document.number))
+        messages.error(request, "Document # %s status has already done" % (document.number))
         return redirect(reverse("backoffice:contracts:details", args=[document.id]))
 
     initial = {
@@ -237,7 +263,7 @@ def change_record_status(request, id):
     document = get_object_or_404(Document, id=id)
 
     if document.status == Document.STATUS.done:
-        messages.error(request, "Document # %s status has been done" % (document.number))
+        messages.error(request, "Document # %s status has already done" % (document.number))
         return redirect(reverse("backoffice:contracts:details", args=[document.id]))
 
     form = ChangeRecordStatusForm(document=document, user=request.user)
@@ -254,3 +280,14 @@ def change_record_status(request, id):
         return redirect("backoffice:contracts:index")
 
     return redirect("backoffice:contracts:index")
+
+
+@login_required
+def preview(request, id):
+    document_file = get_object_or_404(DocumentFile, id=id)
+
+    context = {
+        'title': 'Preview',
+        'document_file': document_file
+    }
+    return render(request, 'contracts/preview.html', context)
