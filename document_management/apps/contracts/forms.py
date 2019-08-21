@@ -1,15 +1,17 @@
 from django import forms
 from django.conf import settings
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import (MinValueValidator, MaxValueValidator,
+                                    FileExtensionValidator)
 from django.utils import timezone
 
-from document_management.apps.documents.models import Document, DocumentLogs
+from document_management.apps.documents.models import (Document, DocumentLogs)
 from document_management.apps.locations.models import Location
 from document_management.apps.partners.models import Partner
 
+from document_management.core.attributes import get_select_attribute
 from document_management.core.choices import TYPE, CATEGORY, STATUS
 from document_management.core.dictionaries import DICT_STATUSES
-from document_management.core.attributes import get_select_attribute
+# from django.core.validators import FileExtensionValidator
 
 
 select_widget = get_select_attribute()
@@ -213,5 +215,19 @@ class ChangeStatusForm(forms.Form):
 
         self.document.status = int(self.cleaned_data['status'])
         self.document.save()
+
+        return self.document
+
+
+class UploadForm(forms.Form):
+    file = forms.FileField(validators=[FileExtensionValidator(allowed_extensions=['csv', 'zip', 'pdf', 'docx'])])
+
+    def __init__(self, document, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.document = document
+        self.user = user
+
+    def save(self, *args, **kwargs):
+        self.document.files.create(file=self.cleaned_data['file'])
 
         return self.document
