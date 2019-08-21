@@ -1,6 +1,7 @@
 from django import forms
 from django.conf import settings
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import (MinValueValidator, MaxValueValidator,
+                                    FileExtensionValidator)
 from django.utils import timezone
 
 from document_management.apps.documents.models import Document, DocumentLogs
@@ -9,10 +10,7 @@ from document_management.apps.partners.models import Partner
 
 from document_management.core.choices import TYPE, CATEGORY, STATUS
 from document_management.core.dictionaries import DICT_STATUSES
-<<<<<<< Updated upstream
 from document_management.core.attributes import get_select_attribute
-=======
->>>>>>> Stashed changes
 
 
 select_widget = get_select_attribute()
