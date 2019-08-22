@@ -86,8 +86,8 @@ class DocumentLogs(models.Model):
         (9, 'delete_addendum', 'Delete Addendum'),
         (10, 'upload_addendum', 'Upload Addendum'),
     )
-    document_id = models.IntegerField()
-    document_subject = models.CharField(max_length=64)
+    document_id = models.IntegerField(blank=True, null=True)
+    document_subject = models.CharField(max_length=64, blank=True, null=True)
     addendum_id = models.IntegerField(blank=True, null=True)
     addendum_subject = models.CharField(max_length=64, blank=True, null=True)
     action = models.PositiveSmallIntegerField(choices=ACTION, blank=True, null=True)

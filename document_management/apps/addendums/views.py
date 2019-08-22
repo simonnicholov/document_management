@@ -44,9 +44,22 @@ def add(request, id):
         Document.objects.filter(is_active=True), id=id
     )
 
+    if document.type == Document.TYPE.private:
+        document.badge_type = "badge badge-danger p-1"
+    else:
+        document.badge_type = "badge badge-success p-1"
+
+    if document.status == Document.STATUS.ongoing:
+        document.badge_status = "badge badge-warning p-1"
+    elif document.status == Document.STATUS.done:
+        document.badge_status = "badge badge-success p-1"
+    elif document.status == Document.STATUS.expired:
+        document.badge_status = "badge badge-danger p-1"
+
     form = AddendumForm(data=request.POST or None, document=document,
                         user=request.user)
-
+    print(form.is_valid())
+    print(form.errors)
     if form.is_valid():
         addendum = form.save()
         messages.success(request, f'{addendum.number} has been added')
