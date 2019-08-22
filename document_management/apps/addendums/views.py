@@ -9,7 +9,6 @@ from document_management.core.decorators import legal_required
 from .forms import (AddendumForm)
 
 
-
 @login_required
 def index(request):
     context = {
