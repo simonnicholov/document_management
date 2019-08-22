@@ -1,9 +1,12 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 
 # from document_management.apps.addendums.models import Addendum
 from document_management.apps.documents.models import Document
 from document_management.core.decorators import legal_required
+
+from .forms import (AddendumForm)
 
 
 @login_required
@@ -37,8 +40,25 @@ def details(request, id):
 
 @legal_required
 def add(request, id):
+    document = get_object_or_404(
+        Document.objects.filter(is_active=True), id=id
+    )
+
+    form = AddendumForm(data=request.POST or None, document=document,
+                        user=request.user)
+
+    if form.is_valid():
+        addendum = form.save()
+        messages.success(request, f'{addendum.number} has been added')
+        return redirect('backoffice:contracts:index')
+    else:
+        if form.has_error('__all__'):
+            messages.error(request, form.non_field_errors()[0])
+
     context = {
-        'title': 'Add Addendum'
+        'title': 'Add Addendum',
+        'form': form,
+        'document': document
     }
     return render(request, 'addendums/add.html', context)
 

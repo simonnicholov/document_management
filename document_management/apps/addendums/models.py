@@ -1,3 +1,4 @@
+from django.core.validators import MinValueValidator
 from django.db import models
 
 from model_utils.fields import AutoCreatedField
@@ -12,7 +13,13 @@ class Addendum(models.Model):
     subject = models.CharField(max_length=64)
     effective_date = models.DateField(blank=True, null=True)
     expired_date = models.DateField(blank=True, null=True)
+    amount = models.FloatField(validators=[MinValueValidator(0)], blank=True, null=True)
     description = models.TextField(blank=True, null=True)
+
+    job_specification = models.CharField(max_length=256, blank=True, null=True)
+    beginning_period = models.DateField(blank=True, null=True)
+    ending_period = models.DateField(blank=True, null=True)
+    retention_period = models.PositiveSmallIntegerField(blank=True, null=True)
 
     is_active = models.BooleanField('active', default=True)
     created = AutoCreatedField()

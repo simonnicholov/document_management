@@ -88,6 +88,8 @@ class DocumentLogs(models.Model):
     )
     document_id = models.IntegerField()
     document_subject = models.CharField(max_length=64)
+    addendum_id = models.IntegerField(blank=True, null=True)
+    addendum_subject = models.CharField(max_length=64, blank=True, null=True)
     action = models.PositiveSmallIntegerField(choices=ACTION, blank=True, null=True)
     value = models.CharField(max_length=64, blank=True, null=True)
     reason = models.TextField(blank=True, null=True)
