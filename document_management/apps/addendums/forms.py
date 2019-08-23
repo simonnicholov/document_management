@@ -77,7 +77,7 @@ class AddendumForm(forms.Form):
             'retention_period': retention_period
         }
 
-        addendum, created = Addendum.objects.update_or_create(number=number,
+        addendum, created = Addendum.objects.update_or_create(document=self.document, number=number,
                                                               defaults=defaults)
 
         if created:
