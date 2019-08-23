@@ -47,12 +47,8 @@
                         <tr>
                             <td><a href="{% url 'backoffice:addendums:details' addendum.id %}"># {{ addendum.number }}</a></td>
                             <td>{{ addendum.subject }}</td>
-                            <td><span class="badge badge-warning p-1">{{ addedum.get_status_display }}</span></td>
-                        </tr>
-                        <tr>
-                            <td><a href="{% url 'backoffice:addendums:details' 1 %}"># ADS-007</a></td>
-                            <td>Perubahan tender project</td>
-                            <td><span class="badge badge-danger p-1">Expired</span></td>
+                            <td>{{ addendum.effective_date|date:'d M Y' }}</td>
+                            <td>{{ addendum.expired_date|date:'d M Y' }}</td>
                         </tr>
                     {% empty %}
                         <tr>

@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import (render, redirect, reverse, get_object_or_404)
 
 # from document_management.apps.addendums.models import Addendum
 from document_management.apps.documents.models import Document
@@ -58,12 +58,11 @@ def add(request, id):
 
     form = AddendumForm(data=request.POST or None, document=document,
                         user=request.user)
-    print(form.is_valid())
-    print(form.errors)
+
     if form.is_valid():
         addendum = form.save()
         messages.success(request, f'{addendum.number} has been added')
-        return redirect('backoffice:contracts:index')
+        return redirect(reverse('backoffice:addendums:lists', args=[document.id]))
     else:
         if form.has_error('__all__'):
             messages.error(request, form.non_field_errors()[0])
