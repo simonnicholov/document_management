@@ -254,17 +254,3 @@ class UploadForm(forms.Form):
                                     updated_date=timezone.now())
 
         return self.document
-
-
-class UploadForm(forms.Form):
-    file = forms.FileField(validators=[FileExtensionValidator(allowed_extensions=['csv', 'zip', 'pdf', 'docx'])])
-
-    def __init__(self, document, user, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.document = document
-        self.user = user
-
-    def save(self, *args, **kwargs):
-        self.document.files.create(file=self.cleaned_data['file'])
-
-        return self.document
