@@ -158,7 +158,7 @@ def upload(request, id):
         addendum = form.save()
         messages.success(request, "Addendum # %s files has already uploaded" %
                          (addendum.number))
-        return redirect(reverse("backoffice:addendums:details", args=[addendum.document.id]))
+        return redirect(reverse("backoffice:addendums:details", args=[addendum.id]))
 
     context = {
         'title': 'Upload Addendum',

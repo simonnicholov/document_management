@@ -21,12 +21,12 @@ class AddendumAdmin(admin.ModelAdmin):
 
 
 class AddendumFileAdmin(admin.ModelAdmin):
-    list_display = ['id', 'addendum', 'file', 'document_document', 'document_category', 'document_type']
+    list_display = ['id', 'addendum', 'file', 'document_group', 'document_category', 'document_type']
     search_fields = ('id', 'addendum',)
 
-    def document_document(self, obj):
-        return obj.addendum.document.get_document_type_display()
-    document_document.short_description = 'Document'
+    def document_group(self, obj):
+        return obj.addendum.document.get_group_display()
+    document_group.short_description = 'Group'
 
     def document_category(self, obj):
         return obj.addendum.document.get_category_display()

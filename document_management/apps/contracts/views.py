@@ -225,7 +225,7 @@ def upload(request, id):
         'document': document,
         'form': form
     }
-    return render(request, 'addendums/upload.html', context)
+    return render(request, 'contracts/upload.html', context)
 
 
 @legal_required

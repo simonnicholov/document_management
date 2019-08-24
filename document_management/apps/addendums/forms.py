@@ -142,14 +142,14 @@ class UploadForm(forms.Form):
 
     def save(self, *args, **kwargs):
         self.addendum.files.create(file=self.cleaned_data['file'])
-        self.addendum.document.total_addendum = self.document.total_addendum + 1
+        self.addendum.document.total_addendum = self.addendum.document.total_addendum + 1
         self.addendum.document.save(update_fields=['total_addendum'])
 
-        DocumentLogs.objects.create(document_id=self.document.id,
-                                    document_subject=self.document.subject,
+        DocumentLogs.objects.create(document_id=self.addendum.document.id,
+                                    document_subject=self.addendum.document.subject,
                                     addendum_id=self.addendum.id,
                                     addendum_subject=self.addendum.subject,
-                                    action=DocumentLogs.ACTION.upload_document,
+                                    action=DocumentLogs.ACTION.upload_addendum,
                                     updated_by=self.user,
                                     updated_date=timezone.now())
 

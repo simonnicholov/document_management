@@ -45,7 +45,7 @@
                     <h3>Addendum Files</h3>
                     <hr />
                     
-                    {% for file in addendum.addendum_files.all %}
+                    {% for file in addendum.files.all %}
                         <div class="card mb-2 shadow-none border">
                             <div class="p-2">
                                 <div class="row align-items-center">
@@ -57,7 +57,7 @@
                                         </div>
                                     </div>
                                     <div class="col pl-0">
-                                        <a href="{% url 'backoffice:contracts:preview' file.id %}" target="_blank" class="text-muted font-weight-bold">{{ file.document.subject }} - {{ forloop.counter }}</a>
+                                        <a href="{% url 'backoffice:addendums:preview' file.id %}" target="_blank" class="text-muted font-weight-bold">{{ file.addendum.subject }} - {{ forloop.counter }}</a>
                                     </div>
                                 </div>
                             </div>
