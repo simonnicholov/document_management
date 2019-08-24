@@ -100,8 +100,41 @@ def add(request, id):
 
 @legal_required
 def edit(request, id):
+    addendum = get_object_or_404(
+        Addendum.objects.select_related('document')
+                .filter(is_active=True), id=id
+    )
+
+    if addendum.document.status == Document.STATUS.done:
+        messages.error(request, "Addendum can not be change, the %s # %s status has already done"
+                       % (addendum.document.get_group_display().lower(), addendum.document.number))
+        return redirect(reverse("backoffice:addendums:details", args=[addendum.id]))
+
+    initial = {
+        'number': addendum.number,
+        'subject': addendum.subject,
+        'effective_date': addendum.effective_date.strftime("%Y-%m-%d"),
+        'description': addendum.description,
+        'amount': addendum.amount,
+        'job_specification': addendum.job_specification,
+        'beginning_period': addendum.beginning_period.strftime("%Y-%m-%d"),
+        'ending_period': addendum.ending_period.strftime("%Y-%m-%d"),
+        'retention_period': addendum.retention_period
+    }
+
+    form = AddendumForm(data=request.POST or None, initial=initial,
+                        document=addendum.document, user=request.user)
+
+    if form.is_valid():
+        form.save()
+        messages.success(request, f'{addendum.number} has been updated')
+        return redirect(reverse('backoffice:addendums:details', args=[addendum.id]))
+
     context = {
-        'title': 'Edit Addendum'
+        'title': 'Edit Addendum',
+        'addendum': addendum,
+        'document': addendum.document,
+        'form': form
     }
     return render(request, 'addendums/edit.html', context)
 
