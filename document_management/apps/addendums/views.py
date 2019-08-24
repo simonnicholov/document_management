@@ -165,7 +165,7 @@ def upload(request, id):
         'addendum': addendum,
         'form': form
     }
-    return render(request, 'contracts/upload.html', context)
+    return render(request, 'addendums/upload.html', context)
 
 
 @login_required
