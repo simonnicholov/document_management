@@ -7,7 +7,7 @@ from document_management.apps.addendums.models import Addendum
 from document_management.apps.documents.models import Document
 from document_management.core.decorators import legal_required
 
-from .forms import (AddendumForm)
+from .forms import (AddendumForm, ChangeRecordStatusForm)
 
 
 @login_required
@@ -21,7 +21,7 @@ def index(request):
 @login_required
 def lists(request, id):
     document = get_object_or_404(Document, id=id)
-    addendums = document.addendums.filter(is_active=True)
+    addendums = document.addendums.all()
 
     context = {
         'title': 'List Addendums',
@@ -42,17 +42,10 @@ def details(request, id):
         messages.error(request, "You do not have an access, but you can request an access to the document first.")
         return redirect("backoffice:permission_requests")
 
-    if addendum.document.type == Document.TYPE.private:
-        addendum.badge_type = "badge badge-danger p-1"
+    if addendum.is_active:
+        addendum.record_status_class = "badge badge-success p-1 ml-1"
     else:
-        addendum.badge_type = "badge badge-success p-1"
-
-    if addendum.document.status == Document.STATUS.ongoing:
-        addendum.badge_status = "badge badge-warning p-1"
-    elif addendum.document.status == Document.STATUS.done:
-        addendum.badge_status = "badge badge-success p-1"
-    elif addendum.document.status == Document.STATUS.expired:
-        addendum.badge_status = "badge badge-danger p-1"
+        addendum.record_status_class = "badge badge-danger p-1 ml-1"
 
     context = {
         'title': 'Detail Addendum',
@@ -166,7 +159,24 @@ def preview(request, id):
 
 @legal_required
 def update_record_status(request, id):
-    context = {
-        'title': 'Update Record Status'
-    }
-    return render(request, 'addendums/update_record_status.html', context)
+    addendum = get_object_or_404(Addendum, id=id)
+
+    if addendum.document.status == Document.STATUS.done:
+        messages.error(request, "Addendum can not be change, the %s # %s status has already done"
+                       % (addendum.document.get_group_display().lower(), addendum.document.number))
+        return redirect(reverse("backoffice:addendums:details", args=[addendum.id]))
+
+    form = ChangeRecordStatusForm(addendum=addendum, user=request.user)
+
+    if form.is_valid():
+        addendum = form.save()
+
+        if addendum.is_active:
+            string_status = "activated"
+        else:
+            string_status = "deactivated"
+
+        messages.success(request, "Addendum # %s has been %s" % (addendum.number, string_status))
+        return redirect(reverse("backoffice:addendums:lists", args=[addendum.document.id]))
+
+    return redirect(reverse("backoffice:addendums:lists", args=[addendum.document.id]))
