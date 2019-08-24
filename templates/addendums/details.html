@@ -3,128 +3,163 @@
 {% load static%}
 
 {% block content_page %}
-<div class="container-fluid pb-4">
-
-    <div class="row">
-        <div class="col-12">
-            <div class="page-title-box">
-                <div class="page-title-right">
-                    <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item">
-                            {% include '_includes/breadcrumb.html' %}
-                        </li>
-                        <li class="breadcrumb-item"><a href="{% url 'backoffice:addendums:index' %}">Addendum</a></li>
-                        <li class="breadcrumb-item active">Detail</li>
-                    </ol>
-                </div>
-                <h4 class="page-title">Detail Addendum</h4>
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item">
+                        {% include '_includes/breadcrumb.html' %}
+                    </li>
+                    <li class="breadcrumb-item"><a href="{% url 'backoffice:addendums:index' %}">Addendum</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'backoffice:addendums:details' addendum.id %}">Detail</a></li>
+                    <li class="breadcrumb-item active">{{ addendum.number }}</li>
+                </ol>
             </div>
+            <h4 class="page-title">Detail Addendum</h4>
         </div>
     </div>
+</div>
 
-
-    <div class="row">
-        <div class="col-lg-12 mb-2 text-center">
-            <a href="{% url 'backoffice:addendums:index' %}" class="btn btn-outline-secondary btn-rounded m-1">
-                <i class="mdi mdi-arrow-left-thick"></i>
-                Go Back
-            </a>
-            <a href="{% url 'backoffice:addendums:edit' 1 %}" class="btn btn-outline-primary btn-rounded m-1">
-                <i class="mdi mdi-pencil"></i>
-                Edit
-            </a>
-            <a href="{% url 'backoffice:addendums:delete' 1 %}" class="btn btn-outline-danger btn-rounded m-1">
-                <i class="mdi mdi-trash-can"></i>
-                Delete
-            </a>
-            <!-- TODO : Ada Logika untuk Deactivate dan Activate -->
-            <a href="{% url 'backoffice:addendums:update_record_status' 1 %}" class="btn btn-outline-danger btn-rounded m-1">
-                <i class="mdi mdi-trash-can"></i>
-                Deactivate
-            </a>
-            <a href="{% url 'backoffice:addendums:update_record_status' 1 %}" class="btn btn-outline-success btn-rounded m-1">
-                <i class="mdi mdi-trash-can"></i>
-                Activate
-            </a>
-            <a href="{% url 'backoffice:addendums:upload' 1 %}" class="btn btn-outline-info btn-rounded m-1">
-                <i class="mdi mdi-upload"></i>
-                Upload
-            </a>
-            <a href="{% url 'backoffice:addendums:preview' 1 %}" class="btn btn-outline-warning btn-rounded m-1">
-                <i class="mdi mdi-refresh"></i>
-                Preview
-            </a>
+{% if not addendum.is_active %}
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="alert alert-info alert-dismissible bg-danger text-white border-0 fade show" role="alert">
+            <strong>INFO !</strong>&nbsp;&nbsp; Addendum is not active !
         </div>
     </div>
+</div>
+{% endif %}
 
-    <div class="row">
-        <div class="col-12">
+{% if request.user.get_role_id == ROLE_USER_ID %}
+    {% include 'addendums/includes/with_user_access.html' %}
+{% else %}
+    {% include 'addendums/includes/with_non_user_access.html' %}
+{% endif %}
+
+<div class="row">
+    <div class="col-4">
 
             <div class="card">
                 <div class="card-body">
-
-                    <h3>General Information</h3>
+                    <h3>Addendum Files</h3>
                     <hr />
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group mb-3">
-                                <h6 class="font-14">Number :</h6>
-                                <p># AD-001</p>
+                    
+                    {% for file in document.files.all %}
+                        <div class="card mb-2 shadow-none border">
+                            <div class="p-2">
+                                <div class="row align-items-center">
+                                    <div class="col-auto">
+                                        <div class="avatar-sm">
+                                            <span class="avatar-title bg-primary-lighten text-primary rounded">
+                                                .PDF
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col pl-0">
+                                        <a href="{% url 'backoffice:contracts:preview' file.id %}" target="_blank" class="text-muted font-weight-bold">{{ file.document.subject }} - {{ forloop.counter }}</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group mb-3">
-                                <h6 class="font-14">Status :</h6>
-                                <p><span class="badge badge-success p-1">Active</span></p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h6 class="font-14">Subject :</h6>
-                            <p>Perubahan pasal kontrak kerja</p>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h6 class="font-14">Description :</h6>
-                            <p>-</p>
-                        </div>
-                    </div>
-
-                    <h3>Addendum Information</h3>
-                    <hr/>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group mb-3">
-                                <h6 class="font-14">Nomor MoU / Contract :</h6>
-                                <p><a href="{% url 'backoffice:contracts:details' 1 %}"># K00-0001</a></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group mb-3">
-                                <h6 class="font-14">Type :</h6>
-                                <p>Contract</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group mb-3">
-                                <h6 class="font-14">Category :</h6>
-                                <p>Construction</p>
-                            </div>
-                        </div>
-                    </div>
-
+                    {% empty %}
+                        <h5 class="text-center p-2">No Document</h5>
+                    {% endfor %}
                 </div>
             </div>
-
+    
         </div>
+    <div class="col-8">
+
+        <div class="card">
+            <div class="card-body">
+
+                <h3>Addendum Information <small><span class="badge badge-success p-1 ml-1">{{ addendum.is_active|yesno:'Active, Inactive' }}</span></small></h3>
+                <hr />
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <h6 class="font-14">Number :</h6>
+                            <p># {{ addendum.number }}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <h6 class="font-14">Subject :</h6>
+                            <p>{{ addendum.subject }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <h6 class="font-14">Effective Date :</h6>
+                            <p># {{ addendum.effective_date|date:'d M Y' }}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <h6 class="font-14">Expired Date :</h6>
+                            <p>{{ addendum.expired_date|date:'d M Y' }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <h6 class="font-14">Job Specification :</h6>
+                            <p>{{ addendum.job_specification }}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <h6 class="font-14">Beginning Period :</h6>
+                            <p>{{ addendum.beginning_period|date:'d M Y' }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <h6 class="font-14">Ending Period :</h6>
+                            <p># {{ addendum.ending_period|date:'d M Y' }}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <h6 class="font-14">Retention Period :</h6>
+                            <p>{{ addendum.retention_period }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <h6 class="font-14">Description :</h6>
+                        <p>{{ addendum.description }}</p>
+                    </div>
+                </div>
+                
+                <div class="row mt-2"></div>
+
+                <h3>Document Information</h3>
+                <hr/>
+
+                {% if addendum.document.group == GROUP_CONTRACT %}
+                    {% include 'addendums/includes/with_contract.html' %}
+                {% elif addendum.document.group == GROUP_MOU %}
+                    {% include 'addendums/includes/with_mou.html' %}
+                {% elif addendum.document.grouo == GROUP_READING_NEWS %}
+                    {% include 'addendums/includes/with_reading_news.html' %}
+                {% endif %}
+
+            </div>
+        </div>
+
     </div>
 </div>
 {% endblock %}

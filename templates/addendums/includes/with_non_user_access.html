@@ -1,0 +1,37 @@
+<div class="row {% if addendum.is_active %}mt-3{% endif %} mb-2">
+    <div class="col-lg-12 mb-2 text-center">
+        <a href="{% url 'backoffice:addendums:index' %}" class="btn btn-outline-secondary btn-rounded m-1">
+            <i class="mdi mdi-arrow-left-thick"></i>
+            Go Back
+        </a>
+        <a href="{% url 'backoffice:addendums:lists' addendum.document.id %}" class="btn btn-outline-secondary btn-rounded m-1">
+            <i class="mdi mdi-arrow-left-thick"></i>
+            Back to list
+        </a>
+        <a href="{% url 'backoffice:addendums:edit' addendum.id %}" class="btn btn-outline-primary btn-rounded m-1">
+            <i class="mdi mdi-pencil"></i>
+            Edit
+        </a>
+        <a href="{% url 'backoffice:addendums:delete' addendum.id %}" class="btn btn-outline-danger btn-rounded m-1">
+            <i class="mdi mdi-trash-can"></i>
+            Delete
+        </a>
+        <!-- TODO : Ada Logika untuk Deactivate dan Activate -->
+        <a href="{% url 'backoffice:addendums:update_record_status' addendum.id %}" class="btn btn-outline-danger btn-rounded m-1">
+            <i class="mdi mdi-trash-can"></i>
+            Deactivate
+        </a>
+        <a href="{% url 'backoffice:addendums:update_record_status' addendum.id %}" class="btn btn-outline-success btn-rounded m-1">
+            <i class="mdi mdi-trash-can"></i>
+            Activate
+        </a>
+        <a href="{% url 'backoffice:addendums:upload' addendum.id %}" class="btn btn-outline-info btn-rounded m-1">
+            <i class="mdi mdi-upload"></i>
+            Upload
+        </a>
+        <a href="{% url 'backoffice:addendums:preview' addendum.id %}" class="btn btn-outline-warning btn-rounded m-1">
+            <i class="mdi mdi-refresh"></i>
+            Preview
+        </a>
+    </div>
+</div>
