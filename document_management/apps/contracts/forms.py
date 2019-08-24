@@ -155,7 +155,7 @@ class ChangeRecordStatusForm(forms.Form):
 
         updated_by = self.user
         updated_date = timezone.now()
-        action = DocumentLogs.ACTION.update_document_status
+        action = DocumentLogs.ACTION.update_document_record_status
         value = self.document.is_active
 
         DocumentLogs.objects.create(document_id=self.document.id,

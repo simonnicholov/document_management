@@ -80,11 +80,12 @@ class DocumentLogs(models.Model):
         (3, 'delete_document', 'Delete Document'),
         (4, 'upload_document', 'Upload Document'),
         (5, 'update_document_status', 'Update Document Status'),
-        (6, 'update_record_status', 'Update Record Status'),
+        (6, 'update_document_record_status', 'Update Document Record Status'),
         (7, 'create_addendum', 'Create Addendum'),
         (8, 'update_adendum', 'Update Addendum'),
         (9, 'delete_addendum', 'Delete Addendum'),
         (10, 'upload_addendum', 'Upload Addendum'),
+        (11, 'update_addendum_record_status', 'Update Addendum Status'),
     )
     document_id = models.IntegerField(blank=True, null=True)
     document_subject = models.CharField(max_length=64, blank=True, null=True)

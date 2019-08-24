@@ -45,7 +45,7 @@
                     <h3>Addendum Files</h3>
                     <hr />
                     
-                    {% for file in document.files.all %}
+                    {% for file in addendum.addendum_files.all %}
                         <div class="card mb-2 shadow-none border">
                             <div class="p-2">
                                 <div class="row align-items-center">
@@ -74,7 +74,7 @@
         <div class="card">
             <div class="card-body">
 
-                <h3>Addendum Information <small><span class="badge badge-success p-1 ml-1">{{ addendum.is_active|yesno:'Active, Inactive' }}</span></small></h3>
+                <h3>Addendum Information <small><span class="{{ addendum.record_status_class }}">{{ addendum.is_active|yesno:'Active, Inactive' }}</span></small></h3>
                 <hr />
 
                 <div class="row">

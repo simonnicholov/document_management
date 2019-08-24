@@ -94,3 +94,38 @@ class AddendumForm(forms.Form):
                                     updated_date=timezone.now())
 
         return addendum
+
+
+class ChangeRecordStatusForm(forms.Form):
+
+    def __init__(self, addendum, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.addendum = addendum
+        self.user = user
+
+    def is_valid(self):
+        return True
+
+    def save(self, *args, **kwargs):
+        if self.addendum.is_active:
+            self.addendum.is_active = False
+        else:
+            self.addendum.is_active = True
+
+        updated_by = self.user
+        updated_date = timezone.now()
+        action = DocumentLogs.ACTION.update_addendum_record_status
+        value = self.addendum.is_active
+
+        DocumentLogs.objects.create(document_id=self.addendum.document.id,
+                                    document_subject=self.addendum.document.subject,
+                                    addendum_id=self.addendum.id,
+                                    addendum_subject=self.addendum.subject,
+                                    action=action,
+                                    value=value,
+                                    updated_by=updated_by,
+                                    updated_date=updated_date)
+
+        self.addendum.save(update_fields=['is_active'])
+
+        return self.addendum
