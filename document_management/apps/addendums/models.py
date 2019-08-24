@@ -29,8 +29,8 @@ class Addendum(models.Model):
 
 
 class AddendumFile(models.Model):
-    addendum = models.OneToOneField('addendums.Addendum', related_name="addendum_files",
-                                    on_delete=models.CASCADE)
+    addendum = models.ForeignKey('addendums.Addendum', related_name="files",
+                                 on_delete=models.CASCADE)
     file = models.FileField(upload_to=FilenameGenerator('addendum_file'))
     is_active = models.BooleanField('active', default=True)
     created = AutoCreatedField()

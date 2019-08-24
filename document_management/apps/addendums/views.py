@@ -7,7 +7,7 @@ from document_management.apps.addendums.models import Addendum
 from document_management.apps.documents.models import Document
 from document_management.core.decorators import legal_required
 
-from .forms import (AddendumForm, ChangeRecordStatusForm)
+from .forms import (AddendumForm, ChangeRecordStatusForm, UploadForm)
 
 
 @login_required
@@ -143,10 +143,29 @@ def delete(request, id):
 
 @legal_required
 def upload(request, id):
+    addendum = get_object_or_404(
+        Addendum.objects.filter(is_active=True), id=id
+    )
+
+    if addendum.document.status == Document.STATUS.done:
+        messages.error(request, "Document # %s status has already done" % (addendum.document.number))
+        return redirect(reverse("backoffice:addendums:details", args=[addendum.document.id]))
+
+    form = UploadForm(data=request.POST or None, files=request.FILES or None,
+                      addendum=addendum, user=request.user)
+
+    if form.is_valid():
+        addendum = form.save()
+        messages.success(request, "Addendum # %s files has already uploaded" %
+                         (addendum.number))
+        return redirect(reverse("backoffice:addendums:details", args=[addendum.document.id]))
+
     context = {
-        'title': 'Upload Addendum'
+        'title': 'Upload Addendum',
+        'addendum': addendum,
+        'form': form
     }
-    return render(request, 'addendums/upload.html', context)
+    return render(request, 'contracts/upload.html', context)
 
 
 @login_required
