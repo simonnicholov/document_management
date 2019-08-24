@@ -1,6 +1,7 @@
 from django import forms
 from django.conf import settings
-from django.core.validators import (MinValueValidator, MaxValueValidator)
+from django.core.validators import (MinValueValidator, MaxValueValidator,
+                                    FileExtensionValidator)
 from django.utils import timezone
 
 from document_management.apps.addendums.models import Addendum
@@ -127,5 +128,29 @@ class ChangeRecordStatusForm(forms.Form):
                                     updated_date=updated_date)
 
         self.addendum.save(update_fields=['is_active'])
+
+        return self.addendum
+
+
+class UploadForm(forms.Form):
+    file = forms.FileField(validators=[FileExtensionValidator(allowed_extensions=['pdf'])])
+
+    def __init__(self, addendum, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.addendum = addendum
+        self.user = user
+
+    def save(self, *args, **kwargs):
+        self.addendum.files.create(file=self.cleaned_data['file'])
+        self.addendum.document.total_addendum = self.document.total_addendum + 1
+        self.addendum.document.save(update_fields=['total_addendum'])
+
+        DocumentLogs.objects.create(document_id=self.document.id,
+                                    document_subject=self.document.subject,
+                                    addendum_id=self.addendum.id,
+                                    addendum_subject=self.addendum.subject,
+                                    action=DocumentLogs.ACTION.upload_document,
+                                    updated_by=self.user,
+                                    updated_date=timezone.now())
 
         return self.addendum
