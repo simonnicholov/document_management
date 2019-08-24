@@ -1,8 +1,9 @@
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import (render, redirect, reverse, get_object_or_404)
 
-# from document_management.apps.addendums.models import Addendum
+from document_management.apps.addendums.models import Addendum
 from document_management.apps.documents.models import Document
 from document_management.core.decorators import legal_required
 
@@ -32,8 +33,30 @@ def lists(request, id):
 
 @login_required
 def details(request, id):
+    addendum = get_object_or_404(
+        Addendum.objects.select_related('document'), id=id
+    )
+
+    if request.user.get_role_id() == settings.ROLE_USER_ID and \
+       addendum.document.type == Document.TYPE.private:
+        messages.error(request, "You do not have an access, but you can request an access to the document first.")
+        return redirect("backoffice:permission_requests")
+
+    if addendum.document.type == Document.TYPE.private:
+        addendum.badge_type = "badge badge-danger p-1"
+    else:
+        addendum.badge_type = "badge badge-success p-1"
+
+    if addendum.document.status == Document.STATUS.ongoing:
+        addendum.badge_status = "badge badge-warning p-1"
+    elif addendum.document.status == Document.STATUS.done:
+        addendum.badge_status = "badge badge-success p-1"
+    elif addendum.document.status == Document.STATUS.expired:
+        addendum.badge_status = "badge badge-danger p-1"
+
     context = {
-        'title': 'Detail Addendum'
+        'title': 'Detail Addendum',
+        'addendum': addendum
     }
     return render(request, 'addendums/details.html', context)
 
