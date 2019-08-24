@@ -194,7 +194,6 @@ def details(request, id):
     else:
         document.record_status_class = "badge badge-danger p-1 ml-1"
 
-
     context = {
         'title': 'Details Contract',
         'document': document
