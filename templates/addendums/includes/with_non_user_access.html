@@ -8,26 +8,31 @@
             <i class="mdi mdi-arrow-left-thick"></i>
             Back to list
         </a>
-        <a href="{% url 'backoffice:addendums:edit' addendum.id %}" class="btn btn-outline-primary btn-rounded m-1">
-            <i class="mdi mdi-pencil"></i>
-            Edit
-        </a>
-        <a href="{% url 'backoffice:addendums:delete' addendum.id %}" class="btn btn-outline-danger btn-rounded m-1">
-            <i class="mdi mdi-trash-can"></i>
-            Delete
-        </a>
-        <!-- TODO : Ada Logika untuk Deactivate dan Activate -->
-        <a href="{% url 'backoffice:addendums:update_record_status' addendum.id %}" class="btn btn-outline-danger btn-rounded m-1">
-            <i class="mdi mdi-trash-can"></i>
-            Deactivate
-        </a>
-        <a href="{% url 'backoffice:addendums:update_record_status' addendum.id %}" class="btn btn-outline-success btn-rounded m-1">
-            <i class="mdi mdi-trash-can"></i>
-            Activate
-        </a>
-        <a href="{% url 'backoffice:addendums:upload' addendum.id %}" class="btn btn-outline-info btn-rounded m-1">
-            <i class="mdi mdi-upload"></i>
-            Upload
-        </a>
+        {% if addendum.is_active and addendum.document.status != document.STATUS.done %}
+            <a href="{% url 'backoffice:addendums:edit' addendum.id %}" class="btn btn-outline-primary btn-rounded m-1">
+                <i class="mdi mdi-pencil"></i>
+                Edit
+            </a>
+            <a href="{% url 'backoffice:addendums:delete' addendum.id %}" class="btn btn-outline-danger btn-rounded m-1">
+                <i class="mdi mdi-trash-can"></i>
+                Delete
+            </a>
+            <a href="{% url 'backoffice:addendums:update_record_status' addendum.id %}" class="btn btn-outline-danger btn-rounded m-1">
+                <i class="mdi mdi-trash-can"></i>
+                Deactivate
+            </a>
+        {% endif %}
+        {% if not addendum.is_active %}
+            <a href="{% url 'backoffice:addendums:update_record_status' addendum.id %}" class="btn btn-outline-success btn-rounded m-1">
+                <i class="mdi mdi-trash-can"></i>
+                Activate
+            </a>
+        {% endif %}
+        {% if addendum.is_active and addendum.document.status != document.STATUS.done %}
+            <a href="{% url 'backoffice:addendums:upload' addendum.id %}" class="btn btn-outline-info btn-rounded m-1">
+                <i class="mdi mdi-upload"></i>
+                Upload
+            </a>
+        {% endif %}
     </div>
 </div>

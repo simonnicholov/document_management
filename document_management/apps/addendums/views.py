@@ -56,7 +56,8 @@ def details(request, id):
 
     context = {
         'title': 'Detail Addendum',
-        'addendum': addendum
+        'addendum': addendum,
+        'document': addendum.document
     }
     return render(request, 'addendums/details.html', context)
 
