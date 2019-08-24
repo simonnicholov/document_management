@@ -178,16 +178,16 @@ def details(request, id):
         return redirect("backoffice:permission_requests")
 
     if document.type == Document.TYPE.private:
-        document.badge_type = "badge badge-danger p-1"
+        document.badge_type_class = "badge badge-danger p-1"
     else:
-        document.badge_type = "badge badge-success p-1"
+        document.badge_type_class = "badge badge-success p-1"
 
     if document.status == Document.STATUS.ongoing:
-        document.badge_status = "badge badge-warning p-1"
+        document.badge_status_class = "badge badge-warning p-1"
     elif document.status == Document.STATUS.done:
-        document.badge_status = "badge badge-success p-1"
+        document.badge_status_class = "badge badge-success p-1"
     elif document.status == Document.STATUS.expired:
-        document.badge_status = "badge badge-danger p-1"
+        document.badge_status_class = "badge badge-danger p-1"
 
     if document.is_active:
         document.record_status_class = "badge badge-success p-1 ml-1"
