@@ -103,10 +103,10 @@ class DocumentLogs(models.Model):
         (27, 'update_official_record_record_status', 'Update Offical Record Record Status'),
 
         # Addendum Relational
-        (31, 'create_addendum_relational', 'Create Addendum Relation'),
+        (31, 'create_addendum_relational', 'Create Addendum Relational'),
         (32, 'update_addendum_relational', 'Update Addendum Relational'),
         (33, 'delete_addendum_relational', 'Delete Addendum Relational'),
-        (34, 'upload_addendum_file_reltional', 'Upload File Addendum Relational'),
+        (34, 'upload_addendum_file_relational', 'Upload File Addendum Relational'),
         (35, 'delete_addendum_file_relational', 'Delete File Addendum Relational'),
         (36, 'update_addendum_relational_record_status', 'Update Addendum Relational Record Status'),
 

@@ -84,10 +84,19 @@
                             <p># {{ addendum.number }}</p>
                         </div>
                     </div>
+                </div>
+                
+                <div class="row">
                     <div class="col-md-6">
                         <div class="form-group mb-3">
                             <h6 class="font-14">Subject :</h6>
                             <p>{{ addendum.subject }}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <h6 class="font-14">Signature Date :</h6>
+                            <p># {{ addendum.signature_date|date:'d M Y' }}</p>
                         </div>
                     </div>
                 </div>
@@ -112,21 +121,6 @@
                         <div class="form-group mb-3">
                             <h6 class="font-14">Job Specification :</h6>
                             <p>{{ addendum.job_specification }}</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group mb-3">
-                            <h6 class="font-14">Beginning Period :</h6>
-                            <p>{{ addendum.beginning_period|date:'d M Y' }}</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group mb-3">
-                            <h6 class="font-14">Ending Period :</h6>
-                            <p># {{ addendum.ending_period|date:'d M Y' }}</p>
                         </div>
                     </div>
                     <div class="col-md-6">
