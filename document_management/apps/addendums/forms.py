@@ -165,7 +165,6 @@ class DeleteForm(forms.Form):
         self.user = user
 
     def save(self, *args, **kwargs):
-        print('save ...')
         addendum_number = self.addendum.number
 
         reason = self.cleaned_data['reason']

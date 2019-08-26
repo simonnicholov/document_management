@@ -145,8 +145,7 @@ def delete(request, id):
         return redirect(reverse("backoffice:addendums:details", args=[addendum.document.id]))
 
     form = DeleteForm(data=request.POST or None, addendum=addendum, user=request.user)
-    print('form : ', form)
-    print('form errors : ', form.errors)
+
     if form.is_valid():
         form.save()
         messages.success(request, "Addendum # %s has been deleted" % addendum.number)
