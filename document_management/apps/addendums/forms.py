@@ -10,6 +10,7 @@ from document_management.apps.documents.models import DocumentLogs
 
 class AddendumForm(forms.Form):
     number = forms.CharField(max_length=32)
+    signature_date = forms.DateField(input_formats=["%Y-%m-%d"])
     effective_date = forms.DateField(input_formats=["%Y-%m-%d"])
     subject = forms.CharField(max_length=64)
     description = forms.CharField(widget=forms.Textarea(), required=False)
@@ -36,31 +37,28 @@ class AddendumForm(forms.Form):
         if self.errors:
             return cleaned_data
 
+        signature_date = cleaned_data['signature_date']
         effective_date = cleaned_data['effective_date']
         self.expired_date = self.document.expired_date
 
-        if effective_date > self.expired_date:
-            raise forms.ValidationError("Effective date can not be greater than expired date",
+        if signature_date > effective_date:
+            raise forms.ValidationError("Signature date can not be greater than effective date",
                                         code="invalid_date_range")
 
-        beginning_period = cleaned_data['beginning_period']
-        ending_period = cleaned_data['ending_period']
-
-        if beginning_period > ending_period:
-            raise forms.ValidationError("Beginning period can not be greater than ending period",
+        if effective_date > self.expired_date:
+            raise forms.ValidationError("Effective date can not be greater than expired date",
                                         code="invalid_date_range")
 
         return cleaned_data
 
     def save(self, *args, **kwargs):
         number = self.cleaned_data['number']
+        signature_date = self.cleaned_data['signature_date']
         effective_date = self.cleaned_data['effective_date']
         expired_date = self.expired_date
         subject = self.cleaned_data['subject']
         amount = self.cleaned_data['amount']
         job_specification = self.cleaned_data['job_specification']
-        beginning_period = self.cleaned_data['beginning_period']
-        ending_period = self.cleaned_data['ending_period']
 
         # Optional
         description = self.cleaned_data['description']
@@ -68,13 +66,12 @@ class AddendumForm(forms.Form):
 
         defaults = {
             'subject': subject,
+            'signature_date': signature_date,
             'effective_date': effective_date,
             'expired_date': expired_date,
             'description': description,
             'amount': amount,
             'job_specification': job_specification,
-            'beginning_period': beginning_period,
-            'ending_period': ending_period,
             'retention_period': retention_period
         }
 
@@ -82,9 +79,9 @@ class AddendumForm(forms.Form):
                                                               defaults=defaults)
 
         if created:
-            action = DocumentLogs.ACTION.create_addendum
+            action = DocumentLogs.ACTION.create_addendum_relational
         else:
-            action = DocumentLogs.ACTION.update_adendum
+            action = DocumentLogs.ACTION.update_addendum_relational
 
         DocumentLogs.objects.create(document_id=self.document.id,
                                     document_subject=self.document.subject,
@@ -115,7 +112,7 @@ class ChangeRecordStatusForm(forms.Form):
 
         updated_by = self.user
         updated_date = timezone.now()
-        action = DocumentLogs.ACTION.update_addendum_record_status
+        action = DocumentLogs.ACTION.update_addendum_relational_record_status
         value = self.addendum.is_active
 
         DocumentLogs.objects.create(document_id=self.addendum.document.id,
@@ -149,7 +146,7 @@ class UploadForm(forms.Form):
                                     document_subject=self.addendum.document.subject,
                                     addendum_id=self.addendum.id,
                                     addendum_subject=self.addendum.subject,
-                                    action=DocumentLogs.ACTION.upload_addendum,
+                                    action=DocumentLogs.ACTION.upload_addendum_file_relational,
                                     updated_by=self.user,
                                     updated_date=timezone.now())
 
@@ -168,7 +165,7 @@ class DeleteForm(forms.Form):
         addendum_number = self.addendum.number
 
         reason = self.cleaned_data['reason']
-        action = DocumentLogs.ACTION.delete_addendum
+        action = DocumentLogs.ACTION.delete_addendum_relational
         updated_by = self.user
         updated_date = timezone.now()
 

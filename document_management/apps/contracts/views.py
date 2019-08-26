@@ -111,6 +111,7 @@ def edit(request, id):
     initial = {
         'number': document.number,
         'subject': document.subject,
+        'signature_date': document.signature_date.strftime("%Y-%m-%d"),
         'effective_date': document.effective_date.strftime("%Y-%m-%d"),
         'expired_date': document.expired_date.strftime("%Y-%m-%d"),
         'location': document.location,
@@ -120,8 +121,6 @@ def edit(request, id):
         'partner': document.partner,
         'amount': document.amount,
         'job_specification': document.job_specification,
-        'beginning_period': document.beginning_period.strftime("%Y-%m-%d"),
-        'ending_period': document.ending_period.strftime("%Y-%m-%d"),
         'retention_period': document.retention_period
     }
 

@@ -91,6 +91,16 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6">
+                        <h6 class="font-14">Subject :</h6>
+                        <p>{{ document.subject }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="font-14">Signature Date :</h6>
+                        <p>{{ document.signature_date|date:'d M Y' }}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
                         <div class="form-group mb-3">
                             <h6 class="font-14">Effective Date :</h6>
                             <p>{{ document.effective_date|date:'d M Y' }}</p>
@@ -103,12 +113,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                        <div class="col-md-12">
-                            <h6 class="font-14">Subject :</h6>
-                            <p>{{ document.subject }}</p>
-                        </div>
-                    </div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group mb-3">
@@ -172,41 +176,19 @@
                             <p>{{ document.job_specification|default:'-' }}</p>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group mb-3">
-                            <h6 class="font-14">Beginning Execution :</h6>
-                            <p>{{ document.beginning_period|date:'d M Y'|default:'-' }}</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group mb-3">
-                            <h6 class="font-14">Ending Execution :</h6>
-                            <p>{{ document.ending_period|date:'d M Y'|default:'-'}}</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="form-group mb-3">
                             <h6 class="font-14">Retention Period :</h6>
                             <p>{{ document.retention_period }}</p>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
 
     </div>
 </div>
 
-<!-- <h1>Preview Document</h1>
-<div class="row">
-    <div class="col-lg-12">
-        <iframe id="iframe" width="100%" height="700px" src="http://127.0.0.1:8000/media/document_file/2019/8/20/8000100622192012-84470908-formf.pdf#toolbar=0"></iframe>
-        <iframe src="https://docs.google.com/gview?url=http://127.0.0.1:8000/media/document_file/2019/8/20/format-penawaran-setelah-negosiasi.docx&embedded=true"></iframe>
-    </div>
-</div> -->
 {% endblock %}
 
 

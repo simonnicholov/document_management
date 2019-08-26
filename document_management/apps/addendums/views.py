@@ -107,12 +107,11 @@ def edit(request, id):
     initial = {
         'number': addendum.number,
         'subject': addendum.subject,
+        'signature_date': addendum.signature_date.strftime("%Y-%m-%d"),
         'effective_date': addendum.effective_date.strftime("%Y-%m-%d"),
         'description': addendum.description,
         'amount': addendum.amount,
         'job_specification': addendum.job_specification,
-        'beginning_period': addendum.beginning_period.strftime("%Y-%m-%d"),
-        'ending_period': addendum.ending_period.strftime("%Y-%m-%d"),
         'retention_period': addendum.retention_period
     }
 

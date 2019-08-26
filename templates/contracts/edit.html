@@ -82,6 +82,16 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group mb-3">
+                                <label>Signature Date</label>
+                                <input type="text" id="signature_date" name="signature_date" value="{{ form.signature_date.value }}" class="form-control" data-date-format="yyyy-mm-dd" data-provide="datepicker" data-date-autoclose="true">
+                                {{ form.signature_date.errors }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
                                 <label>Effective Date</label>
                                 <input type="text" id="effective_date" name="effective_date" value="{{ form.effective_date.value }}" class="form-control" data-date-format="yyyy-mm-dd" data-provide="datepicker" data-date-autoclose="true">
                                 {{ form.effective_date.errors }}
@@ -135,22 +145,6 @@
                                 <label>Job specification</label>
                                 <input type="text" id="job_specification" name="job_specification" value="{{ form.job_specification.value }}" class="form-control">
                                 {{ form.job_specification.errors }}
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group mb-3">
-                                <label>Beginning Period</label>
-                                <input type="text" id="beginning_period" name="beginning_period" class="form-control" value="{{ form.beginning_period.value }}" data-date-format="yyyy-mm-dd" data-provide="datepicker" data-date-autoclose="true">
-                                {{ form.beginning_period.errors }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group mb-3">
-                                <label>Ending Period</label>
-                                <input type="text" id="ending_period" name="ending_period" class="form-control" value="{{ form.ending_period.value }}" data-date-format="yyyy-mm-dd" data-provide="datepicker" data-date-autoclose="true">
-                                {{ form.ending_period.errors }}
                             </div>
                         </div>
                         <div class="col-md-6">

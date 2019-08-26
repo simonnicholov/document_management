@@ -56,7 +56,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group mb-3">
-                            <h6 class="font-14">Category :</h6>
+                            <h6 class="font-14">Status :</h6>
                             <p><span class="{{ document.badge_status }}">{{ document.get_status_display }}</span></p>
                         </div>
                     </div>
@@ -125,22 +125,6 @@
                                 <label>Job specification</label>
                                 <input type="text" id="job_specification" name="job_specification" class="form-control">
                                 {{ form.job_specification.errors }}
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group mb-3">
-                                <label>Beginning Period</label>
-                                <input type="text" id="beginning_period" name="beginning_period" class="form-control"  data-date-format="yyyy-mm-dd" data-provide="datepicker" data-date-autoclose="true">
-                                {{ form.beginning_period.errors }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group mb-3">
-                                <label>Ending Period</label>
-                                <input type="text" id="ending_period" name="ending_period" class="form-control" data-date-format="yyyy-mm-dd" data-provide="datepicker" data-date-autoclose="true">
-                                {{ form.ending_period.errors }}
                             </div>
                         </div>
                         <div class="col-md-6">

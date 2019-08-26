@@ -19,6 +19,7 @@ select_widget = get_select_attribute()
 
 class ContractForm(forms.Form):
     number = forms.CharField(max_length=32)
+    signature_date = forms.DateField(input_formats=["%Y-%m-%d"])
     effective_date = forms.DateField(input_formats=["%Y-%m-%d"])
     expired_date = forms.DateField(input_formats=["%Y-%m-%d"])
     subject = forms.CharField(max_length=64)
@@ -40,8 +41,6 @@ class ContractForm(forms.Form):
                                       (f'Can not greater than {settings.MAX_VALIDATOR_TEXT} '))
                     ])
     job_specification = forms.CharField(max_length=256)
-    beginning_period = forms.DateField(input_formats=["%Y-%m-%d"])
-    ending_period = forms.DateField(input_formats=["%Y-%m-%d"])
     retention_period = forms.IntegerField(min_value=1, max_value=7300, required=False)
 
     def __init__(self, user, *args, **kwargs):
@@ -66,24 +65,23 @@ class ContractForm(forms.Form):
         if self.errors:
             return cleaned_data
 
+        signature_date = cleaned_data['signature_date']
         effective_date = cleaned_data['effective_date']
         expired_date = cleaned_data['expired_date']
 
-        if effective_date > expired_date:
-            raise forms.ValidationError("Effective date can not be greater than expired date",
+        if signature_date > effective_date:
+            raise forms.ValidationError("Signature date can not be greater than effective date",
                                         code="invalid_date_range")
 
-        beginning_period = cleaned_data['beginning_period']
-        ending_period = cleaned_data['ending_period']
-
-        if beginning_period > ending_period:
-            raise forms.ValidationError("Beginning period can not be greater than ending period",
+        if effective_date > expired_date:
+            raise forms.ValidationError("Effective date can not be greater than expired date",
                                         code="invalid_date_range")
 
         return cleaned_data
 
     def save(self, *args, **kwargs):
         number = self.cleaned_data['number']
+        signature_date = self.cleaned_data['signature_date']
         effective_date = self.cleaned_data['effective_date']
         expired_date = self.cleaned_data['expired_date']
         subject = self.cleaned_data['subject']
@@ -93,8 +91,6 @@ class ContractForm(forms.Form):
         partner = self.cleaned_data['partner']
         amount = self.cleaned_data['amount']
         job_specification = self.cleaned_data['job_specification']
-        beginning_period = self.cleaned_data['beginning_period']
-        ending_period = self.cleaned_data['ending_period']
 
         # Mandatory, but this is hardcoded
         group = settings.GROUP_CONTRACT
@@ -104,6 +100,7 @@ class ContractForm(forms.Form):
         retention_period = self.cleaned_data['retention_period']
 
         defaults = {
+            'signature_date': signature_date,
             'effective_date': effective_date,
             'expired_date': expired_date,
             'subject': subject,
@@ -115,8 +112,6 @@ class ContractForm(forms.Form):
             'partner': partner,
             'amount': amount,
             'job_specification': job_specification,
-            'beginning_period': beginning_period,
-            'ending_period': ending_period,
             'retention_period': retention_period
         }
 
@@ -124,9 +119,9 @@ class ContractForm(forms.Form):
                                                               defaults=defaults)
 
         if created:
-            action = DocumentLogs.ACTION.create_document
+            action = DocumentLogs.ACTION.create_contract
         else:
-            action = DocumentLogs.ACTION.update_document
+            action = DocumentLogs.ACTION.update_contract
 
         DocumentLogs.objects.create(document_id=document.id,
                                     document_subject=subject,
@@ -155,7 +150,7 @@ class ChangeRecordStatusForm(forms.Form):
 
         updated_by = self.user
         updated_date = timezone.now()
-        action = DocumentLogs.ACTION.update_document_record_status
+        action = DocumentLogs.ACTION.update_contract_record_status
         value = self.document.is_active
 
         DocumentLogs.objects.create(document_id=self.document.id,
@@ -182,7 +177,7 @@ class DeleteForm(forms.Form):
         document_number = self.document.number
 
         reason = self.cleaned_data['reason']
-        action = DocumentLogs.ACTION.delete_document
+        action = DocumentLogs.ACTION.delete_contract
         updated_by = self.user
         updated_date = timezone.now()
 
@@ -215,7 +210,7 @@ class ChangeStatusForm(forms.Form):
 
     def save(self, *args, **kwargs):
         reason = self.cleaned_data['reason']
-        action = DocumentLogs.ACTION.update_document_status
+        action = DocumentLogs.ACTION.update_contract_status
         value = DICT_STATUSES[self.cleaned_data['status']]
         updated_by = self.user
         updated_date = timezone.now()
@@ -249,7 +244,7 @@ class UploadForm(forms.Form):
 
         DocumentLogs.objects.create(document_id=self.document.id,
                                     document_subject=self.document.subject,
-                                    action=DocumentLogs.ACTION.upload_document,
+                                    action=DocumentLogs.ACTION.upload_contract_file,
                                     updated_by=self.user,
                                     updated_date=timezone.now())
 
