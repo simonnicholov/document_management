@@ -154,3 +154,33 @@ class UploadForm(forms.Form):
                                     updated_date=timezone.now())
 
         return self.addendum
+
+
+class DeleteForm(forms.Form):
+    reason = forms.CharField(widget=forms.Textarea())
+
+    def __init__(self, addendum, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.addendum = addendum
+        self.user = user
+
+    def save(self, *args, **kwargs):
+        print('save ...')
+        addendum_number = self.addendum.number
+
+        reason = self.cleaned_data['reason']
+        action = DocumentLogs.ACTION.delete_addendum
+        updated_by = self.user
+        updated_date = timezone.now()
+
+        DocumentLogs.objects.create(document_id=self.addendum.document.id,
+                                    document_subject=self.addendum.document.subject,
+                                    addendum_id=self.addendum.id,
+                                    reason=reason,
+                                    action=action,
+                                    updated_by=updated_by,
+                                    updated_date=updated_date)
+
+        self.addendum.delete()
+
+        return addendum_number
