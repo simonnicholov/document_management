@@ -22,8 +22,6 @@ class AddendumForm(forms.Form):
                     ])
 
     job_specification = forms.CharField(max_length=256)
-    beginning_period = forms.DateField(input_formats=["%Y-%m-%d"])
-    ending_period = forms.DateField(input_formats=["%Y-%m-%d"])
     retention_period = forms.IntegerField(min_value=1, max_value=7300, required=False)
 
     def __init__(self, document, user, *args, **kwargs):
@@ -37,15 +35,24 @@ class AddendumForm(forms.Form):
         if self.errors:
             return cleaned_data
 
-        signature_date = cleaned_data['signature_date']
-        effective_date = cleaned_data['effective_date']
-        self.expired_date = self.document.expired_date
+        addendum_signature_date = cleaned_data['signature_date']
+        addendum_effective_date = cleaned_data['effective_date']
 
-        if signature_date > effective_date:
+        self.expired_date = self.document.expired_date
+        document_signature_date = self.document.signature_date
+
+        group = self.document.get_group_display().lower()
+
+        if addendum_signature_date < document_signature_date:
+            raise forms.ValidationError("Signature date addendum can not be greater than signature date %s"
+                                        % group,
+                                        code="invalid_date_range")
+
+        if addendum_signature_date > addendum_effective_date:
             raise forms.ValidationError("Signature date can not be greater than effective date",
                                         code="invalid_date_range")
 
-        if effective_date > self.expired_date:
+        if addendum_effective_date > self.expired_date:
             raise forms.ValidationError("Effective date can not be greater than expired date",
                                         code="invalid_date_range")
 

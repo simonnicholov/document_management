@@ -75,7 +75,8 @@ def add(request, id):
 
     form = AddendumForm(data=request.POST or None, document=document,
                         user=request.user)
-
+    print('form is valid : ', form.is_valid())
+    print('form errors : ', form.errors)
     if form.is_valid():
         addendum = form.save()
         messages.success(request, f'{addendum.number} has been added')
