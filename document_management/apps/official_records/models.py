@@ -6,8 +6,8 @@ from model_utils.fields import AutoCreatedField
 from document_management.core.utils import FilenameGenerator
 
 
-class Addendum(models.Model):
-    document = models.ForeignKey('documents.Document', related_name="addendums",
+class OfficialRecord(models.Model):
+    document = models.ForeignKey('documents.Document', related_name="official_records",
                                  on_delete=models.CASCADE)
     number = models.CharField(max_length=32)
     subject = models.CharField(max_length=64)
@@ -27,10 +27,10 @@ class Addendum(models.Model):
         return f"Number ({self.number}) : {self.subject}"
 
 
-class AddendumFile(models.Model):
-    addendum = models.ForeignKey('addendums.Addendum', related_name="files",
-                                 on_delete=models.CASCADE)
-    file = models.FileField(upload_to=FilenameGenerator('addendum_file'))
+class OfficialRecordFile(models.Model):
+    official_record = models.ForeignKey('official_records.OfficialRecord', related_name="files",
+                                        on_delete=models.CASCADE)
+    file = models.FileField(upload_to=FilenameGenerator('official_record_file'))
     is_active = models.BooleanField('active', default=True)
     created = AutoCreatedField()
 
