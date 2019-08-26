@@ -3,11 +3,11 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import (render, redirect, reverse, get_object_or_404)
 
-from document_management.apps.addendums.models import Addendum
+from document_management.apps.addendums.models import Addendum, AddendumFile
 from document_management.apps.documents.models import Document
 from document_management.core.decorators import legal_required
 
-from .forms import (AddendumForm, ChangeRecordStatusForm, UploadForm)
+from .forms import (AddendumForm, ChangeRecordStatusForm, UploadForm, DeleteForm)
 
 
 @login_required
@@ -135,8 +135,26 @@ def edit(request, id):
 
 @legal_required
 def delete(request, id):
+    addendum = get_object_or_404(
+        Addendum.objects.select_related('document')
+                        .filter(is_active=True), id=id
+    )
+
+    if addendum.document.status == Document.STATUS.done:
+        messages.error(request, "Addendum # %s status has already done" % (addendum.document.number))
+        return redirect(reverse("backoffice:addendums:details", args=[addendum.document.id]))
+
+    form = DeleteForm(data=request.POST or None, addendum=addendum, user=request.user)
+
+    if form.is_valid():
+        form.save()
+        messages.success(request, "Addendum # %s has been deleted" % addendum.number)
+        return redirect(reverse("backoffice:addendums:lists", args=[addendum.document.id]))
+
     context = {
-        'title': 'Delete Addendum'
+        'title': 'Delete Addendum',
+        'addendum': addendum,
+        'form': form
     }
     return render(request, 'addendums/delete.html', context)
 
@@ -144,7 +162,8 @@ def delete(request, id):
 @legal_required
 def upload(request, id):
     addendum = get_object_or_404(
-        Addendum.objects.filter(is_active=True), id=id
+        Addendum.objects.select_related('document')
+                .filter(is_active=True), id=id
     )
 
     if addendum.document.status == Document.STATUS.done:
@@ -170,15 +189,18 @@ def upload(request, id):
 
 @login_required
 def preview(request, id):
+    addendum_file = get_object_or_404(AddendumFile, id=id)
+
     context = {
-        'title': 'Preview Addendum'
+        'title': 'Preview Addendum',
+        'addendum_file': addendum_file
     }
     return render(request, 'addendums/preview.html', context)
 
 
 @legal_required
-def update_record_status(request, id):
-    addendum = get_object_or_404(Addendum, id=id)
+def change_record_status(request, id):
+    addendum = get_object_or_404(Addendum.objects.select_related('document'), id=id)
 
     if addendum.document.status == Document.STATUS.done:
         messages.error(request, "Addendum can not be change, the %s # %s status has already done"

@@ -17,13 +17,13 @@
                 <i class="mdi mdi-trash-can"></i>
                 Delete
             </a>
-            <a href="{% url 'backoffice:addendums:update_record_status' addendum.id %}" class="btn btn-outline-danger btn-rounded m-1">
+            <a href="{% url 'backoffice:addendums:change_record_status' addendum.id %}" class="btn btn-outline-danger btn-rounded m-1">
                 <i class="mdi mdi-trash-can"></i>
                 Deactivate
             </a>
         {% endif %}
         {% if not addendum.is_active %}
-            <a href="{% url 'backoffice:addendums:update_record_status' addendum.id %}" class="btn btn-outline-success btn-rounded m-1">
+            <a href="{% url 'backoffice:addendums:change_record_status' addendum.id %}" class="btn btn-outline-success btn-rounded m-1">
                 <i class="mdi mdi-trash-can"></i>
                 Activate
             </a>
