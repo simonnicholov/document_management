@@ -68,3 +68,13 @@ ul.errorlist {
     position: relative;
     bottom: 4px;;
 }
+
+h3 small {
+    position: relative;
+    top: 0px;
+    bottom: 0px;
+
+    &.badge {
+        font-size: 12px;
+    }
+}
