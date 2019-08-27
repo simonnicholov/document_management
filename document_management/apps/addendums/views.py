@@ -1,6 +1,10 @@
+from datetime import datetime
+
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Q
 from django.shortcuts import (render, redirect, reverse, get_object_or_404)
 
 from document_management.apps.addendums.models import Addendum, AddendumFile
@@ -12,8 +16,52 @@ from .forms import (AddendumForm, ChangeRecordStatusForm, UploadForm, DeleteForm
 
 @login_required
 def index(request):
+    query = request.GET.get('query', '')
+    category = int(request.GET.get('category', 0))
+    group = int(request.GET.get('group', 0))
+    signature_date = request.GET.get('signature_date', '')
+
+    if query or category > 0 or group > 0 or signature_date:
+        addendums = Addendum.objects.select_related('document')
+
+        if signature_date:
+            signature_date = datetime.strptime(signature_date, '%Y-%m-%d').date()
+            addendums = addendums.filter(signature_date=signature_date)
+
+        if category > 0:
+            addendums = addendums.filter(document__category=category)
+
+        if group > 0:
+            addendums = addendums.filter(document__group=group)
+
+        if query:
+            addendums = addendums.filter(Q(number__icontains=query) |
+                                         Q(subject__icontains=query))
+
+        addendums = addendums.order_by('-id')
+    else:
+        addendums = []
+
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(addendums, 25)
+    try:
+        page = paginator.page(page)
+    except PageNotAnInteger:
+        page = paginator.page(1)
+    except EmptyPage:
+        page = paginator.page(paginator.num_pages)
+
     context = {
-        'title': 'Search Addendums'
+        'title': 'Search Addendums',
+        'document': Document,
+        'page': page,
+        'total_data': paginator.count,
+        'total_pages': paginator.num_pages,
+        'query': query,
+        'category': category,
+        'group': group,
+        'signature_date': signature_date
     }
     return render(request, 'addendums/index.html', context)
 
@@ -21,7 +69,7 @@ def index(request):
 @login_required
 def lists(request, id):
     document = get_object_or_404(Document, id=id)
-    addendums = document.addendums.all()
+    addendums = document.addendums.order_by('-id')
 
     context = {
         'title': 'List Addendums',

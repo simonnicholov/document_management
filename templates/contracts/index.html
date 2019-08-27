@@ -102,7 +102,7 @@
                             <td>{{ document.partner.name }}</td>
                             <td>{{ document.effective_date|date:'d M Y' }}</td>
                             <td>{{ document.get_category_display }}</td>
-                            <td><span class="{{ document.badge_type }}}">{{ document.get_type_display }}</span></td>
+                            <td><span class="{{ document.badge_type }}">{{ document.get_type_display }}</span></td>
                             <td><span class="{{ document.badge_status }}">{{ document.get_status_display }}</span></td>
                         </tr>
                     {% empty %}

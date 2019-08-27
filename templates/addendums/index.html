@@ -24,35 +24,49 @@
 
 <div class="card">
     <div class="card-body">
+        <form action="" method="GET">
         <div class="row mt-1">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <label>Search</label>
                 <div class="form-group">
-                    <input type="text" id="simpleinput" class="form-control" placeholder="Searching ...">
+                    <input type="text" id="query" name="query"
+                           {% if query %}value='{{ query }}'{% endif %}
+                           class="form-control" placeholder="Searching ...">
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
+                <label>Signature Date</label>
                 <div class="form-group">
-                    <label>Type</label>
-                    <select id="type" name="type" class="form-control select2" data-toggle="select2">
-                        <option>- Select -</option>
-                        <option>Contract</option>
-                        <option>MoU</option>
+                    <input type="text" id="signature_date" name="signature_date"
+                           {% if signature_date %}value='{{ signature_date }}'{% endif %}
+                           class="form-control datepicker" data-date-format="yyyy-mm-dd" data-provide="datepicker"
+                           data-date-autoclose="true" placeholder="Signature Date ...">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Group</label>
+                    <select id="group" name="group" class="form-control select2" data-toggle="select2">
+                        <option value="0">- Select -</option>
+                        <option value="1" {% if group == document.GROUP.contract %}selected{% endif %}>Contract</option>
+                        <option value="2" {% if group == document.GROUP.mou %}selected{% endif %}>MoU</option>
+                        <option value="3" {% if group == document.GROUP.official_record %}selected{% endif %}>Official Record</option>
                     </select>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="form-group">
                     <label>Category</label>
                     <select id="category" name="category" class="form-control select2" data-toggle="select2">
-                        <option>- Select -</option>
-                        <option>Construction</option>
-                        <option>Property</option>
-                        <option>Others</option>
+                        <option value="0">- Select -</option>
+                        <option value="1" {% if category == document.CATEGORY.construction %}selected{% endif %}>Construction</option>
+                        <option value="2" {% if category == document.CATEGORY.property %}selected{% endif %}>Property</option>
+                        <option value="3"" {% if category == document.CATEGORY.other %}selected{% endif %}>Others</option>
                     </select>
                 </div>
             </div>
         </div>
+        </form>
     </div>
 </div>
 
@@ -65,21 +79,61 @@
                         <th>Number</th>
                         <th>Subject</th>
                         <th>Date</th>
-                        <th>Type</th>
+                        <th>Group</th>
                         <th>Category</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td><a href="{% url 'backoffice:addendums:details' 1 %}"># ADS-001</a></td>
-                        <td>Perubahan pasal kontrak kerja</td>
-                        <td>25 Mei 2019</td>
-                        <td>Contract</td>
-                        <td>Construction</td>
-                    </tr>
+                    {% for addendum in page.object_list %}
+                        <tr>
+                            <td><a href="{% url 'backoffice:addendums:details' addendum.id %}"># {{ addendum.number }}</a></td>
+                            <td>{{ addendum.subject }}</td>
+                            <td>{{ addendum.signature_date|date:'d M Y' }}</td>
+                            <td>{{ addendum.get_group_display }}</td>
+                            <td>{{ addendum.get_category_display }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center"><h4>No Data</h4></td>
+                        </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+
+{% if page.has_other_pages %}
+<div class="row justify-content-between ml-1 mr-1">
+    <div class="col-xs-3 text-left">
+        {% if page.has_previous %}
+            <a href="?page={{ page.previous_page_number }}&query={{ query }}&signature_date={{ signature_date }}&group={{ group }}&category={{ category }}" class="btn btn-outline-info btn-rounded">Prev</a>
+        {% endif %}
+    </div>
+    <div class="text-muted mt-2">
+        Page {{ page.number }} of {{ total_pages }} from {{ total_data }} documents
+    </div>
+    <div class="col-xs-3 text-right">
+        {% if page.has_next %}
+            <a href="?page={{ page.next_page_number }}&query={{ query }}&signature_datey={{ signature_date }}&group={{ group }}&category={{ category }}" class="btn btn-outline-info btn-rounded">Next</a>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    $(document).on("change", "select[data-toggle='select2'], .datepicker", function(){
+        $("form").submit();
+    });
+
+    $("input[type='text']").on("keypress", function() {
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if (keycode == '13') {
+            $("form").submit();
+        }
+    });
+</script>
 {% endblock %}
