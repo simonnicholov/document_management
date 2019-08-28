@@ -57,14 +57,6 @@ def dashboard_user(request):
     return render(request, 'dashboard_user.html', context)
 
 
-@user_required
-def permission_requests(request):
-    context = {
-        'title': 'Permission Requests'
-    }
-    return render(request, 'permission_requests.html', context)
-
-
 @legal_required
 def approval_requests(request):
     context = {

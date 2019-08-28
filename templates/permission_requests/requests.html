@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% load static%}
+
+{% block content_page %}
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item">
+                        {% include '_includes/breadcrumb.html' %}
+                    </li>
+                    <li class="breadcrumb-item"><a href="{% url 'backoffice:permission_requests:index' %}">Permission Requests</a></li>
+                    <li class="breadcrumb-item active">Request</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Request for an Access</h4>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-3"></div>
+
+<div class="row">
+    <div class="col-12">
+
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="card">
+                <div class="card-body">
+                    
+                    <h3>Document Information</h3>
+                    <hr />
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <h6 class="font-14">Number :</h6>
+                                <p># {{ addendum.number }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <h6 class="font-14">Subject :</h6>
+                                <p>{{ addendum.subject }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <h6 class="font-14">Job Specification :</h6>
+                                <p>{{ addendum.job_specification }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <h6 class="font-14">Group :</h6>
+                                <p>{{ addendum.get_group_display }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <h6 class="font-14">Type :</h6>
+                                <p>{{ addendum.get_type_display }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <h6 class="font-14">Category :</h6>
+                                <p>{{ addendum.get_category_display }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <h6 class="font-14">Status :</h6>
+                                <p>{{ addendum.get_status_display }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h6 class="font-14">Description :</h6>
+                            <p>{{ addendum.description }}</p>
+                        </div>
+                    </div>
+
+                    <div class="row text-center mt-3">
+                        <div class="col-md-12">
+                            <button id="button_submit" type="submit" class="btn btn-outline-success btn-rounded">Request</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

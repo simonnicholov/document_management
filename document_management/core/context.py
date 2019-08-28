@@ -10,6 +10,6 @@ def context_constant(request):
         'MESSAGE_ERROR': settings.MESSAGE_ERROR,
         'GROUP_CONTRACT': settings.GROUP_CONTRACT,
         'GROUP_MOU': settings.GROUP_MOU,
-        'GROUP_READING_NEWS': settings.GROUP_READING_NEWS
+        'GROUP_OFFICIAL_RECORD': settings.GROUP_OFFICIAL_RECORD
     }
     return context
