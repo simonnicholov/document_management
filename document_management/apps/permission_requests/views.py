@@ -12,7 +12,7 @@ def index(request):
 
 
 @user_required
-def requests(request, id, type):
+def requests(request, id, group):
     context = {
         'title': 'Request Permission'
     }
