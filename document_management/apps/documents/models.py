@@ -12,12 +12,15 @@ class Document(models.Model):
         (1, 'contract', 'Contract'),
         (2, 'mou', 'MoU'),
         (3, 'official_record', 'Offical Record'),
+        (4, 'company_regulation', 'Company Regulation'),
     )
 
     CATEGORY = Choices(
         (1, 'construction', 'Construction'),
         (2, 'property', 'Property'),
-        (3, 'other', 'Other'),
+        (3, 'director_decisions', 'Director Decisions'),
+        (4, 'circular_letter', 'Circular Letter'),
+        (5, 'other', 'Other'),
     )
 
     TYPE = Choices(

@@ -22,9 +22,6 @@ def index(request):
     documents = Document.objects.select_related('partner')\
         .filter(group=settings.GROUP_CONTRACT)
 
-    # if request.user.get_role_id() == settings.ROLE_USER_ID:
-    #     type = Document.TYPE.public
-
     if query:
         documents = documents.filter(Q(number__icontains=query) |
                                      Q(subject__icontains=query) |
@@ -174,7 +171,7 @@ def details(request, id):
     if request.user.get_role_id() == settings.ROLE_USER_ID and \
        document.type == Document.TYPE.private:
         messages.error(request, "You do not have an access, but you can request an access to the document first.")
-        return redirect("backoffice:permission_requests")
+        return redirect(reverse("backoffice:permission_requests:requests", args=[document.id, document.group]))
 
     if document.type == Document.TYPE.private:
         document.badge_type_class = "badge badge-danger p-1"

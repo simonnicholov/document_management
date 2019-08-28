@@ -12,6 +12,8 @@ urlpatterns = [
     path('location/', include('document_management.apps.locations.urls', namespace="locations")),
     path('partner/', include('document_management.apps.partners.urls', namespace="partners")),
     path('configuration/', include('document_management.apps.configurations.urls', namespace="configurations")),
+    path('permission-requests/', include('document_management.apps.permission_requests.urls'),
+         name="permission_requests"),
 
     # documents urls
     path('contracts/', include('document_management.apps.contracts.urls', namespace="contracts")),
@@ -22,7 +24,7 @@ urlpatterns = [
 
     path('dashboard/legal', views.dashboard_legal, name="dashboard_legal"),
     path('dashboard/user', views.dashboard_user, name="dashboard_user"),
-    path('permission-requests/', views.permission_requests, name="permission_requests"),
+
     path('approval-requests/', views.approval_requests, name="approval_requests"),
     path('change-password/', views.change_password, name="change_password"),
 ]
