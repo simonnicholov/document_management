@@ -27,6 +27,7 @@ def index(request):
         if signature_date:
             signature_date = datetime.strptime(signature_date, '%Y-%m-%d').date()
             addendums = addendums.filter(signature_date=signature_date)
+            signature_date = signature_date.strftime("%Y-%m-%d")
 
         if category > 0:
             addendums = addendums.filter(document__category=category)
