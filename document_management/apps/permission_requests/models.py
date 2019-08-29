@@ -1,32 +1,34 @@
 from django.db import models
 
+from model_utils import Choices
 from model_utils.fields import AutoCreatedField
 
 
 class PermissionRequest(models.Model):
-    documents = models.ForeignKey('documents.Document', related_name="documents",
-                                  on_delete=models.CASCADE, blank=True, null=True)
+    document = models.ForeignKey('documents.Document', related_name="permission_requests",
+                                 on_delete=models.CASCADE, blank=True, null=True)
+    reason = models.CharField(default=None, max_length=256)
 
-    has_approved = models.BooleanField(default=False)
-    user_approval = models.ForeignKey('users.User', related_name='user_approval',
-                                      on_delete=models.CASCADE, blank=True, null=True)
-    approved_date = models.DateTimeField()
+    STATUS = Choices(
+        (1, 'approved', 'Approved'),
+        (2, 'rejected', 'Rejected'),
+        (3, 'request', 'Request'),
+    )
 
-    has_canceled = models.BooleanField(default=False)
-    user_cancellation = models.ForeignKey('users.User', related_name='user_cancellation',
-                                          on_delete=models.CASCADE, blank=True, null=True)
-    canceled_date = models.DateTimeField()
+    status = models.PositiveSmallIntegerField(choices=STATUS, default=STATUS.request)
+    user_action = models.ForeignKey('users.User', related_name='user_action',
+                                    on_delete=models.CASCADE, blank=True, null=True)
+    action_reason = models.CharField(max_length=256, blank=True, null=True)
+    action_date = models.DateTimeField(blank=True, null=True)
 
     has_viewed = models.BooleanField(default=False)
-    user_view = models.ForeignKey('users.User', related_name='user_view',
-                                  on_delete=models.CASCADE, blank=True, null=True)
-    viewed_date = models.DateTimeField()
+    viewed_date = models.DateTimeField(blank=True, null=True)
 
-    user_request = models.ForeignKey('users.User', related_name='user_request',
-                                     on_delete=models.CASCADE)
+    user = models.ForeignKey('users.User', related_name='user_request',
+                             on_delete=models.CASCADE)
 
     is_active = models.BooleanField('active', default=True)
     created = AutoCreatedField()
 
     def __str__(self):
-        return f"Number ({self.number}) : {self.subject}"
+        return str(self.id)

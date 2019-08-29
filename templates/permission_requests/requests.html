@@ -37,7 +37,7 @@
                         <div class="col-md-6">
                             <div class="form-group mb-3">
                                 <h6 class="font-14">Number :</h6>
-                                <p># {{ addendum.number }}</p>
+                                <p># {{ document.number }}</p>
                             </div>
                         </div>
                     </div>
@@ -46,13 +46,13 @@
                         <div class="col-md-6">
                             <div class="form-group mb-3">
                                 <h6 class="font-14">Subject :</h6>
-                                <p>{{ addendum.subject }}</p>
+                                <p>{{ document.subject }}</p>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group mb-3">
                                 <h6 class="font-14">Job Specification :</h6>
-                                <p>{{ addendum.job_specification }}</p>
+                                <p>{{ document.job_specification }}</p>
                             </div>
                         </div>
                     </div>
@@ -61,13 +61,13 @@
                         <div class="col-md-6">
                             <div class="form-group mb-3">
                                 <h6 class="font-14">Group :</h6>
-                                <p>{{ addendum.get_group_display }}</p>
+                                <p>{{ document.get_group_display }}</p>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group mb-3">
                                 <h6 class="font-14">Type :</h6>
-                                <p>{{ addendum.get_type_display }}</p>
+                                <p><span class="{{ document.badge_type_class  }}">{{ document.get_type_display }}</span></p>
                             </div>
                         </div>
                     </div>
@@ -76,13 +76,13 @@
                         <div class="col-md-6">
                             <div class="form-group mb-3">
                                 <h6 class="font-14">Category :</h6>
-                                <p>{{ addendum.get_category_display }}</p>
+                                <p>{{ document.get_category_display }}</p>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group mb-3">
                                 <h6 class="font-14">Status :</h6>
-                                <p>{{ addendum.get_status_display }}</p>
+                                <p><span class="{{ document.badge_status_class }}">{{ document.get_status_display }}</span></p>
                             </div>
                         </div>
                     </div>
@@ -90,18 +90,33 @@
                     <div class="row">
                         <div class="col-md-12">
                             <h6 class="font-14">Description :</h6>
-                            <p>{{ addendum.description }}</p>
-                        </div>
-                    </div>
-
-                    <div class="row text-center mt-3">
-                        <div class="col-md-12">
-                            <button id="button_submit" type="submit" class="btn btn-outline-success btn-rounded">Request</button>
+                            <p>{{ document.description }}</p>
                         </div>
                     </div>
 
                 </div>
             </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group mb-3">
+                                <label for="reason">Reason</label>
+                                <textarea class="form-control" id="reason" name="reason" rows="3"></textarea>
+                                {{ form.reason.errors }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row text-center mt-3">
+                <div class="col-md-12">
+                    <button id="button_submit" type="submit" class="btn btn-outline-success btn-rounded">Request</button>
+                </div>
+            </div>
+
         </form>
     </div>
 </div>
