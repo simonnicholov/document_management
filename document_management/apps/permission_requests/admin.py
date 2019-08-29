@@ -4,8 +4,8 @@ from document_management.apps.permission_requests.models import PermissionReques
 
 
 class PermissionRequestAdmin(admin.ModelAdmin):
-    list_display = ['id', 'documents', 'user_request']
-    search_fields = ('id', 'documents', 'user_request')
+    list_display = ['id', 'document', 'user']
+    search_fields = ('id', 'document', 'user')
 
 
 admin.site.register(PermissionRequest, PermissionRequestAdmin)

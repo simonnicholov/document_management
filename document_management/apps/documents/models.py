@@ -4,6 +4,8 @@ from django.db import models
 from model_utils import Choices
 from model_utils.fields import AutoCreatedField
 
+from document_management.apps.users.models import User
+from document_management.apps.permission_requests.models import PermissionRequest
 from document_management.core.utils import FilenameGenerator
 
 
@@ -63,6 +65,10 @@ class Document(models.Model):
 
     def __str__(self):
         return f"Number ({self.number}) : {self.subject}"
+
+    def validate_request_permission(self, user: User) -> bool:
+        return self.permission_requests.all()\
+            .filter(user=user, status=PermissionRequest.STATUS.request).exists()
 
 
 class DocumentFile(models.Model):
