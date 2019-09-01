@@ -120,7 +120,18 @@ def requests(request, id, group):
 
 @user_required
 def details(request, id):
+    permission_request = get_object_or_404(
+        PermissionRequest.objects.select_related('document', 'user_action'), id=id)
+
+    if permission_request.status == PermissionRequest.STATUS.request:
+        permission_request.badge_status_class = "badge badge-info p-1"
+    elif permission_request.status == PermissionRequest.STATUS.approved:
+        permission_request.badge_status_class = "badge badge-success p-1"
+    elif permission_request.status == PermissionRequest.STATUS.rejected:
+        permission_request.badge_status_class = "badge badge-danger p-1"
+
     context = {
-        'title': 'Details Permission'
+        'title': 'Details Permission',
+        'permission_request': permission_request
     }
     return render(request, 'permission_requests/details.html', context)
