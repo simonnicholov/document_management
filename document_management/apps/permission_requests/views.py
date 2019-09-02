@@ -23,7 +23,7 @@ def index(request):
     permission_requests = PermissionRequest.objects.select_related('document', 'user')
 
     if query:
-        permission_requests = permission_requests.filter(Q(document__number__istarswith=query) |
+        permission_requests = permission_requests.filter(Q(document__number__istartswith=query) |
                                                          Q(document__subject__istartswith=query))
 
     if request_date:
