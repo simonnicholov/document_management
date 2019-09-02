@@ -57,14 +57,6 @@ def dashboard_user(request):
     return render(request, 'dashboard_user.html', context)
 
 
-@legal_required
-def approval_requests(request):
-    context = {
-        'title': 'Approval Requests'
-    }
-    return render(request, 'approval_requests.html', context)
-
-
 @login_required
 def change_password(request):
     form = PasswordChangeForm(user=request.user, data=request.POST or None)

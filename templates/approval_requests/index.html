@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% load static %}
+{% load static%}
 
 {% block content_page %}
 <div class="row">
@@ -11,10 +11,10 @@
                     <li class="breadcrumb-item">
                         {% include '_includes/breadcrumb.html' %}
                     </li>
-                    <li class="breadcrumb-item active">Permission Requests</li>
+                    <li class="breadcrumb-item active">Approval Requests</li>
                 </ol>
             </div>
-            <h4 class="page-title">Permission Requests</h4>
+            <h4 class="page-title">Approval Requests</h4>
         </div>
     </div>
 </div>
@@ -76,31 +76,34 @@
             <table class="table table-sm table-hover table-centered mb-0">
                 <thead>
                     <tr>
-                        <th>Subject</th>
+                        <th>Action</th>
                         <th>Request Date</th>
-                        <th>Status</th>
+                        <th>User</th>
+                        <th>Subject</th>
                         <th>Group</th>
+                        <th>Category</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for permission_request in page.object_list %}
                         <tr>
                             <td>
-                                <a href="{% url 'backoffice:permission_requests:details' permission_request.id  %}">
-                                    {{ permission_request.document.subject }}
-                                </a>
+                                {% if permission_request.status == permission_request.STATUS.request %}
+                                    <a href="{% url 'backoffice:approval_requests:approve' permission_request.id %}" class="btn btn-outline-success btn-rounded">Approve</button>
+                                    <a href="{% url 'backoffice:approval_requests:reject' permission_request.id %}" class="btn btn-outline-danger btn-rounded ml-2">Reject</button>
+                                {% endif %}
                             </td>
-                            <td>{{ permission_request.created|date:'d M Y' }}</td>
-                            <td>
-                                <span class="{{ permission_request.badge_status_class }}">
-                                    {{ permission_request.get_status_display }}
-                                </span>
-                            </td>
+                            <td><a href="#">{{ permission_request.created|date:'d M Y H:i:s' }}</a></td>
+                            <td>{{ permission_request.user.name }}</td>
+                            <td>{{ permission_request.document.subject  }}</td>
                             <td>{{ permission_request.document.get_group_display }}</td>
+                            <td>{{ permission_request.document.get_category_display }}</td>
+                            <td><span class="{{ permission_request.badge_status_class }}">{{ permission_request.get_status_display }}</span></td>
                         </tr>
                     {% empty %}
                         <tr>
-                            <td colspan="4" class="text-center"><h4>No Data</h4></td>
+                            <td colspan="7" class="text-center"><h4>No Data</h4></td>
                         </tr>
                     {% endfor %}
                 </tbody>

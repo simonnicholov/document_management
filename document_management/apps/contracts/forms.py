@@ -11,7 +11,6 @@ from document_management.apps.partners.models import Partner
 from document_management.core.attributes import get_select_attribute
 from document_management.core.choices import TYPE, CATEGORY, STATUS
 from document_management.core.dictionaries import DICT_STATUSES
-# from django.core.validators import FileExtensionValidator
 
 
 select_widget = get_select_attribute()
