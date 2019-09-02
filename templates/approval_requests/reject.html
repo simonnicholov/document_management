@@ -11,12 +11,11 @@
                     <li class="breadcrumb-item">
                         {% include '_includes/breadcrumb.html' %}
                     </li>
-                    <li class="breadcrumb-item"><a href="{% url 'backoffice:contracts:index' %}">Contracts</a></li>
-                    <li class="breadcrumb-item"><a href="{% url 'backoffice:contracts:details' document.id %}">Detail</a></li>
-                    <li class="breadcrumb-item active">Delete</li>
+                    <li class="breadcrumb-item"><a href="{% url 'backoffice:approval_requests:index' %}">Approval Request</a></li>
+                    <li class="breadcrumb-item active">Reject</li>
                 </ol>
             </div>
-            <h4 class="page-title">Delete Contract</h4>
+            <h4 class="page-title">Reject Approval Request</h4>
         </div>
     </div>
 </div>
@@ -31,61 +30,56 @@
             <div class="card">
                 <div class="card-body">
 
+                    <h3>Document Information</h3>
+                    <hr/>
+
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group mb-3">
-                                <h6 class="font-14">Contract Number :</h6>
-                                <p># {{ document.number }}</p>
+                                <h6 class="font-14">Number :</h6>
+                                <p># {{ permission_request.document.number }}</p>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group mb-3">
                                 <h6 class="font-14">Subject :</h6>
-                                <p>{{ document.subject }}</p>
+                                <p>{{ permission_request.document.subject }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <h6 class="font-14">Group :</h6>
+                                <p>{{ permission_request.document.get_group_display }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <h6 class="font-14">Category :</h6>
+                                <p>{{ permission_request.document.get_category_display }}</p>
                             </div>
                         </div>
                     </div>
 
+                    <h3>Request Information</h3>
+                    <hr>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group mb-3">
-                                <h6 class="font-14">Corporate :</h6>
-                                <p>{{ document.partner.name }}</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group mb-3">
-                                <h6 class="font-14">Amount :</h6>
-                                <p>Rp. {{ document.amount|floatformat:0|intcomma }}</p>
+                                <h6 class="font-14">Request Date :</h6>
+                                <p>{{ permission_request.created|date:'d M Y H:i:s' }}</p>
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group mb-3">
-                                <h6 class="font-14">Status:</h6>
-                                <p><span class="badge badge-danger p-1">Expired</span></p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group mb-3">
-                                <h6 class="font-14">Job Specification :</h6>
-                                <p>Memasang marmer</p>
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="row">
                         <div class="col-md-12">
-                            <h6 class="font-14">Description :</h6>
-                            <p>{{ document.description|default:'-' }}</p>
+                            <div class="form-group mb-3">
+                                <h6 class="font-14">Reason :</h6>
+                                <p>{{ permission_request.reason }}</p>
+                            </div>
                         </div>
                     </div>
-
                 </div>
             </div>
 
@@ -105,7 +99,7 @@
 
             <div class="row text-center">
                 <div class="col-md-12">
-                    <button type="submit" class="btn btn-outline-danger btn-rounded">Delete</button>
+                    <button type="submit" class="btn btn-outline-danger btn-rounded">Reject</button>
                 </div>
             </div>
 

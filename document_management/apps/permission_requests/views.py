@@ -20,10 +20,10 @@ def index(request):
     status = int(request.GET.get('status', 0))
     group = int(request.GET.get('group', 0))
 
-    permission_requests = PermissionRequest.objects.select_related('document')
+    permission_requests = PermissionRequest.objects.select_related('document', 'user')
 
     if query:
-        permission_requests = permission_requests.filter(Q(document__number__icontains=query) |
+        permission_requests = permission_requests.filter(Q(document__number__istarswith=query) |
                                                          Q(document__subject__istartswith=query))
 
     if request_date:

@@ -60,7 +60,7 @@ INSTALLED_APPS = [
     'document_management.apps.documents',
     'document_management.apps.company_regulations',
     'document_management.apps.permission_requests',
-    'document_management.apps.official_records',
+    'document_management.apps.official_records'
 ]
 
 MIDDLEWARE = [
