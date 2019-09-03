@@ -11,6 +11,6 @@ class RequestPermissionForm(forms.Form):
 
     def save(self, *args, **kwargs):
         self.document.permission_requests.create(reason=self.cleaned_data['reason'],
-                                                 user_request=self.user)
+                                                 user=self.user)
 
         return self.document

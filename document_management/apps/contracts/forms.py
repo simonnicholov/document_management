@@ -9,7 +9,7 @@ from document_management.apps.locations.models import Location
 from document_management.apps.partners.models import Partner
 
 from document_management.core.attributes import get_select_attribute
-from document_management.core.choices import TYPE, CATEGORY, STATUS
+from document_management.core.choices import TYPE, DOCUMENT_CATEGORY, STATUS
 from document_management.core.dictionaries import DICT_STATUSES
 
 
@@ -26,7 +26,7 @@ class ContractForm(forms.Form):
         queryset=Location.objects.filter(is_active=True).order_by('name'),
         empty_label=settings.EMPTY_LABEL, widget=select_widget
     )
-    category = forms.ChoiceField(choices=CATEGORY, widget=select_widget)
+    category = forms.ChoiceField(choices=DOCUMENT_CATEGORY, widget=select_widget)
     type = forms.ChoiceField(choices=TYPE, widget=select_widget)
     description = forms.CharField(widget=forms.Textarea(), required=False)
 

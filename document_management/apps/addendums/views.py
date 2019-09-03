@@ -171,6 +171,9 @@ def edit(request, id):
         form.save()
         messages.success(request, f'{addendum.number} has been updated')
         return redirect(reverse('backoffice:addendums:details', args=[addendum.id]))
+    else:
+        if form.has_error('__all__'):
+            messages.error(request, form.non_field_errors()[0])
 
     context = {
         'title': 'Edit Addendum',
