@@ -34,7 +34,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group mb-3">
-                                <h6 class="font-14">Contract Number :</h6>
+                                <h6 class="font-14">Number :</h6>
                                 <p># {{ document.number }}</p>
                             </div>
                         </div>
@@ -65,7 +65,7 @@
                         <div class="col-md-6">
                             <div class="form-group mb-3">
                                 <h6 class="font-14">Status:</h6>
-                                <p><span class="badge badge-danger p-1">Expired</span></p>
+                                <p><span class="{{ document.badge_status_class }}">{{ document.get_status_display }}</span></p>
                             </div>
                         </div>
                     </div>

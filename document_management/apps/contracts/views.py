@@ -147,6 +147,13 @@ def delete(request, id):
         messages.error(request, "Document # %s status has already done" % (document.number))
         return redirect(reverse("backoffice:contracts:details", args=[document.id]))
 
+    if document.status == Document.STATUS.ongoing:
+        document.badge_status_class = "badge badge-warning p-1"
+    elif document.status == Document.STATUS.done:
+        document.badge_status_class = "badge badge-success p-1"
+    elif document.status == Document.STATUS.expired:
+        document.badge_status_class = "badge badge-danger p-1"
+
     form = DeleteForm(data=request.POST or None, document=document, user=request.user)
 
     if form.is_valid():
@@ -170,7 +177,7 @@ def details(request, id):
 
     if request.user.get_role_id() == settings.ROLE_USER_ID and \
        document.type == Document.TYPE.private:
-        messages.error(request, "You do not have an access, but you can request an access to the document first.")
+        messages.error(request, "You do not have an access, but you can request an access.")
         return redirect(reverse("backoffice:permission_requests:requests", args=[document.id, document.group]))
 
     if document.type == Document.TYPE.private:

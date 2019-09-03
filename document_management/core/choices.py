@@ -7,11 +7,17 @@ TYPE = Choices(
     (2, 'public', 'Public'),
 )
 
-CATEGORY = Choices(
+DOCUMENT_CATEGORY = Choices(
     (0, '-', '--- select ---'),
     (1, 'construction', 'Construction'),
     (2, 'property', 'Property'),
-    (3, 'other', 'Other'),
+    (5, 'other', 'Other'),
+)
+
+COMPANY_CATEGORY = Choices(
+    (0, '-', '--- select ---'),
+    (3, 'director_decisions', 'Director Decisions'),
+    (4, 'circular_letter', 'Circular Letter'),
 )
 
 STATUS = Choices(

@@ -40,20 +40,28 @@ class AddendumForm(forms.Form):
 
         self.expired_date = self.document.expired_date
         document_signature_date = self.document.signature_date
+        document_effective_date = self.document.effective_date
 
         group = self.document.get_group_display().lower()
 
         if addendum_signature_date < document_signature_date:
-            raise forms.ValidationError("Signature date addendum can not be greater than signature date %s"
+            raise forms.ValidationError("Signature date addendum can not less than signature date %s"
                                         % group,
                                         code="invalid_date_range")
 
         if addendum_signature_date > addendum_effective_date:
-            raise forms.ValidationError("Signature date can not be greater than effective date",
+            raise forms.ValidationError("Signature date addendum can not greater than effective date %s"
+                                        % group,
+                                        code="invalid_date_range")
+
+        if addendum_effective_date < document_effective_date:
+            raise forms.ValidationError("Effective date addendum can not less than effective date %s"
+                                        % group,
                                         code="invalid_date_range")
 
         if addendum_effective_date > self.expired_date:
-            raise forms.ValidationError("Effective date can not be greater than expired date",
+            raise forms.ValidationError("Effective date addendum can not greater than expired date %s"
+                                        % group,
                                         code="invalid_date_range")
 
         return cleaned_data
