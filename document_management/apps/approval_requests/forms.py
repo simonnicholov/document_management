@@ -5,20 +5,22 @@ from document_management.apps.permission_requests.models import PermissionReques
 
 
 class ApproveForm(forms.Form):
+    reason = forms.CharField(widget=forms.Textarea(), required=False)
 
     def __init__(self, permission_request, user, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.permission_request = permission_request
         self.user = user
 
-    def is_valid(self):
-        return True
-
     def save(self, *args, **kwargs):
+        reason = self.cleaned_data['reason'] if self.cleaned_data['reason'] else None
+
         self.permission_request.status = PermissionRequest.STATUS.approved
+        self.permission_request.action_reason = reason
         self.permission_request.user_action = self.user
         self.permission_request.action_date = timezone.now()
-        self.permission_request.save(update_fields=['status', 'user_action', 'action_date'])
+        self.permission_request.save(update_fields=['status', 'action_reason',
+                                                    'user_action', 'action_date'])
 
         return self.permission_request
 

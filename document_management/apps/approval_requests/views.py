@@ -90,15 +90,24 @@ def approve(request, id):
                        % (permission_request.document.number, permission_request_status_display))
         return redirect("backoffice:approval_requests:index")
 
-    form = ApproveForm(permission_request=permission_request, user=request.user)
+    form = ApproveForm(data=request.POST or None, permission_request=permission_request,
+                       user=request.user)
 
     if form.is_valid():
         permission_request = form.save()
         messages.success(request, "Request # %s has been approved"
                          % (permission_request.document.number))
         return redirect("backoffice:approval_requests:index")
+    else:
+        if form.has_error('__all__'):
+            messages.error(request, form.non_field_errors()[0])
 
-    return redirect("backoffice:approval_requests:index")
+    context = {
+        'title': 'Approve Requests',
+        'form': form,
+        'permission_request': permission_request
+    }
+    return render(request, 'approval_requests/approve.html', context)
 
 
 @legal_required
@@ -135,3 +144,15 @@ def reject(request, id):
         'permission_request': permission_request
     }
     return render(request, 'approval_requests/reject.html', context)
+
+
+@legal_required
+def details(request, id):
+    permission_request = get_object_or_404(
+        PermissionRequest.objects.select_related('document'), id=id)
+
+    context = {
+        'title': 'Reject Requests',
+        'permission_request': permission_request
+    }
+    return render(request, 'approval_requests/details.html', context)

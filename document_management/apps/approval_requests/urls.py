@@ -6,5 +6,6 @@ app_name = 'approval_requests'
 urlpatterns = [
     path('', views.index, name="index"),
     path('<int:id>/approve/', views.approve, name="approve"),
+    path('<int:id>/details/', views.details, name="details"),
     path('<int:id>/reject/', views.reject, name="reject"),
 ]
