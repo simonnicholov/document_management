@@ -28,14 +28,16 @@
             <i class="mdi mdi-arrow-left-thick"></i>
             Go Back
         </a>
-        <a href="{% url 'backoffice:approval_requests:reject' permission_request.id %}" class="btn btn-outline-danger btn-rounded m-1">
-            <i class="mdi mdi-thumb-down"></i>
-            Reject
-        </a>
-        <a href="{% url 'backoffice:approval_requests:approve' permission_request.id %}" class="btn btn-outline-success btn-rounded m-1">
-            <i class="mdi mdi-thumb-up"></i>
-            Approve
-        </a>
+        {% if permission_request.status == permission_request.STATUS.request %}
+            <a href="{% url 'backoffice:approval_requests:reject' permission_request.id %}" class="btn btn-outline-danger btn-rounded m-1">
+                <i class="mdi mdi-thumb-down"></i>
+                Reject
+            </a>
+            <a href="{% url 'backoffice:approval_requests:approve' permission_request.id %}" class="btn btn-outline-success btn-rounded m-1">
+                <i class="mdi mdi-thumb-up"></i>
+                Approve
+            </a>
+        {% endif %}
     </div>
 </div>
     

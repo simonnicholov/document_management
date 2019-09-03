@@ -89,7 +89,7 @@ def approve(request, id):
         messages.error(request, "Request # %s status has already %s"
                        % (permission_request.document.number, permission_request_status_display))
         return redirect("backoffice:approval_requests:index")
-    print(request.POST)
+
     form = ApproveForm(data=request.POST or None, permission_request=permission_request,
                        user=request.user)
 
