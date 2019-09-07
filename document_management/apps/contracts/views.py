@@ -257,7 +257,7 @@ def change_status(request, id):
                         args=[document.id]))
 
     context = {
-        'title': 'Change Status',
+        'title': 'Change Status Contract',
         'form': form,
         'document': document
     }
@@ -293,7 +293,7 @@ def preview(request, id):
     document_file = get_object_or_404(DocumentFile, id=id)
 
     context = {
-        'title': 'Preview',
+        'title': 'Preview Contract',
         'document_file': document_file
     }
     return render(request, 'contracts/preview.html', context)

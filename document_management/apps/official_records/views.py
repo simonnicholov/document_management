@@ -69,6 +69,14 @@ def preview(request, id=None):
 
 
 @legal_required
+def change_status(request, id):
+    context = {
+        'title': 'Change Status Official Records',
+    }
+    return render(request, 'official_records/preview.html', context)
+
+
+@legal_required
 def change_record_status(request, id=None):
     context = {
         'title': 'Change Record Official Records',
