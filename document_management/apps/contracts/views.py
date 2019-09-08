@@ -172,7 +172,8 @@ def delete(request, id):
 @login_required
 def details(request, id):
     document = get_object_or_404(
-        Document.objects.select_related('partner', 'location'), id=id
+        Document.objects.select_related('partner', 'location')
+                .filter(group=settings.GROUP_CONTRACT), id=id
     )
 
     if request.user.get_role_id() == settings.ROLE_USER_ID and \

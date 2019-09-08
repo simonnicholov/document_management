@@ -1,15 +1,70 @@
 {% extends 'base.html' %}
 
-{% load static humanize %}
-
-{% block extra_css %}
-    <link href="{% url 'css/style.css' %}"/>
-{% endblock %}
+{% load static%}
 
 {% block content_page %}
-<h1>List Official Record</h1>
-{% endblock %}
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item">
+                        {% include '_includes/breadcrumb.html' %}
+                    </li>
+                    <li class="breadcrumb-item"><a href="{% url 'backoffice:official_records:index' %}">Official Records</a></li>
+                    <li class="breadcrumb-item active">List</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Official Records # {{ document.number }}</h4>
+        </div>
+    </div>
+</div>
 
+<div class="row mt-3 mb-2">
+    <div class="col-lg-12 text-center">
+        {% if request.user.get_role_id != ROLE_USER_ID %}
+            <a href="{% url 'backoffice:contracts:details' document.id %}" class="btn btn-outline-secondary btn-rounded m-1 mb-3">
+                <i class="mdi mdi-arrow-left-thick"></i>
+                Back to {{ document.get_group_display }}
+            </a>
+        {% endif %}
+        <a href="{% url 'backoffice:official_records:add' document.id %}" class="btn btn-danger btn-rounded m-1 mb-3">
+            <i class="mdi mdi-plus"></i>
+            Create Official Record
+        </a>
+    </div>
+</div>
 
-{% block extra_js %}
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive-sm">
+            <table class="table table-sm table-hover table-centered mb-0">
+                <thead>
+                    <tr>
+                        <th>Number</th>
+                        <th>Subject</th>
+                        <th>Signature Date</th>
+                        <th>Effective Date</th>
+                        <th>Expired Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for official_record in official_records %}
+                        <tr>
+                            <td><a href="{% url 'backoffice:official_records:details' official_record.id %}"># {{ official_record.number }}</a></td>
+                            <td>{{ official_record.subject }}</td>
+                            <td>{{ official_record.signature_date|date:'d M Y' }}</td>
+                            <td>{{ official_record.effective_date|date:'d M Y' }}</td>
+                            <td>{{ official_record.expired_date|date:'d M Y' }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center"><h4>No Data</h4></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 {% endblock %}
