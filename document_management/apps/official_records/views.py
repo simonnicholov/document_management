@@ -11,7 +11,7 @@ from document_management.apps.documents.models import Document
 from document_management.apps.official_records.models import OfficialRecord
 from document_management.core.decorators import legal_required
 
-from .forms import (UnrelatedForm)
+from .forms import UnrelatedForm
 
 
 @login_required
