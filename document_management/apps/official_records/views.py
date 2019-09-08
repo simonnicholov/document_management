@@ -85,8 +85,7 @@ def unrelated(request):
         'query': query,
         'category': category,
         'type': type,
-        'status': status,
-        'is_related': True
+        'status': status
     }
     return render(request, 'official_records/unrelated/index.html', context)
 
@@ -122,7 +121,8 @@ def unrelated_details(request, id):
 
     context = {
         'title': 'Unrelated Details Official Records',
-        'document': document
+        'document': document,
+        'is_related': True
     }
     return render(request, 'official_records/unrelated/details.html', context)
 
