@@ -122,7 +122,7 @@ def unrelated_details(request, id):
     context = {
         'title': 'Unrelated Details Official Records',
         'document': document,
-        'is_related': True
+        'is_related': False
     }
     return render(request, 'official_records/unrelated/details.html', context)
 
@@ -170,7 +170,7 @@ def unrelated_upload(request, id=None):
     return render(request, 'official_records/unrelated/upload.html', context)
 
 
-@legal_required
+@login_required
 def unrelated_preview(request, id=None):
     context = {
         'title': 'Unrelated Preview Official Records',
@@ -263,3 +263,59 @@ def related_lists(request, id):
         'document': document
     }
     return render(request, 'official_records/lists.html', context)
+
+
+@login_required
+def related_details(request, id=None):
+    context = {
+        'title': 'Related Details Official Records',
+    }
+    return render(request, 'official_records/related/details.html', context)
+
+
+@legal_required
+def related_add(request, id=None):
+    context = {
+        'title': 'Related Add Official Records',
+    }
+    return render(request, 'official_records/related/add.html', context)
+
+
+@legal_required
+def related_edit(request, id=None):
+    context = {
+        'title': 'Related Edit Official Records',
+    }
+    return render(request, 'official_records/related/edit.html', context)
+
+
+@legal_required
+def related_delete(request, id=None):
+    context = {
+        'title': 'Related Delete Official Records',
+    }
+    return render(request, 'official_records/related/delete.html', context)
+
+
+@legal_required
+def related_upload(request, id=None):
+    context = {
+        'title': 'Related Upload Official Records',
+    }
+    return render(request, 'official_records/related/upload.html', context)
+
+
+@login_required
+def related_preview(request, id=None):
+    context = {
+        'title': 'Related Preview Official Records',
+    }
+    return render(request, 'official_records/related/preview.html', context)
+
+
+@legal_required
+def related_change_record_status(request, id=None):
+    context = {
+        'title': 'Related Change Record Official Records',
+    }
+    return render(request, 'official_records/related/add.html', context)
