@@ -1,14 +1,17 @@
 from datetime import datetime
 
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 
 from document_management.apps.documents.models import Document
 from document_management.apps.official_records.models import OfficialRecord
 from document_management.core.decorators import legal_required
+
+from .forms import (UnrelatedForm)
 
 
 @login_required
@@ -97,8 +100,19 @@ def unrelated_details(request, id):
 
 @legal_required
 def unrelated_add(request, id=None):
+    form = UnrelatedForm(data=request.POST or None, user=request.user)
+
+    if form.is_valid():
+        document = form.save()
+        messages.success(request, f'{document.number} has been added')
+        return redirect('backoffice:official_records:unrelated')
+    else:
+        if form.has_error('__all__'):
+            messages.error(request, form.non_field_errors()[0])
+
     context = {
         'title': 'Unrelated Add Official Records',
+        'form': form
     }
     return render(request, 'official_records/unrelated/add.html', context)
 
@@ -106,7 +120,7 @@ def unrelated_add(request, id=None):
 @legal_required
 def unrelated_edit(request, id=None):
     context = {
-        'title': 'Unrelated Edit Official Records',
+     'title': 'Unrelated Edit Official Records',
     }
     return render(request, 'official_records/unrelated/edit.html', context)
 
