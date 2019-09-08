@@ -99,7 +99,7 @@
                 <tbody>
                     {% for document in page.object_list %}
                         <tr>
-                            <td><a href="{% url 'backoffice:contracts:details' document.id %}"># {{ document.number }}</a></td>
+                            <td><a href="{% url 'backoffice:official_records:unrelated_details' document.id %}"># {{ document.number }}</a></td>
                             <td>{{ document.subject }}</td>
                             <td>{{ document.partner.name }}</td>
                             <td>{{ document.effective_date|date:'d M Y' }}</td>

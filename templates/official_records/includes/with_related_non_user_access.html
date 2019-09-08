@@ -1,0 +1,39 @@
+<div class="row {% if document.is_active %}mt-3{% endif %} mb-2">
+    <div class="col-lg-12 mb-2 text-center">
+        <a href="{% url 'backoffice:official_records:related' %}" class="btn btn-outline-secondary btn-rounded m-1">
+            <i class="mdi mdi-arrow-left-thick"></i>
+            Go Back
+        </a>
+        {% if document.is_active and document.status != document.STATUS.done %}
+            <a href="{% url 'backoffice:official_records:related_edit' document.id %}" class="btn btn-outline-primary btn-rounded m-1">
+                <i class="mdi mdi-pencil"></i>
+                Edit
+            </a>
+            <a href="{% url 'backoffice:official_records:related_delete' document.id %}" class="btn btn-outline-danger btn-rounded m-1">
+                <i class="mdi mdi-trash-can"></i>
+                Delete
+            </a>
+            <a href="{% url 'backoffice:official_records:related_change_record_status' document.id %}" class="btn btn-outline-danger btn-rounded m-1">
+                <i class="mdi mdi-trash-can"></i>
+                Deactivate
+            </a>
+        {% endif %}
+        {% if not document.is_active %}
+            <a href="{% url 'backoffice:official_records:related_change_record_status' document.id %}" class="btn btn-outline-success btn-rounded m-1">
+                <i class="mdi mdi-trash-can"></i>
+                Activate
+            </a>
+        {% endif %}
+        {% if document.is_active and document.status != document.STATUS.done %}
+        <a href="{% url 'backoffice:official_records:related_change_status' document.id %}" class="btn btn-outline-info btn-rounded m-1">
+            <i class="mdi mdi-trash-can"></i>
+            Change Status
+        </a>
+        <a href="{% url 'backoffice:official_records:related_upload' document.id %}" class="btn btn-outline-info btn-rounded m-1">
+            <i class="mdi mdi-upload"></i>
+            Upload
+        </a>
+        {% endif %}
+    </div>
+</div>
+    

@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, reverse, get_object_or_404
 
 from document_management.apps.documents.models import Document
 from document_management.apps.official_records.models import OfficialRecord
@@ -85,15 +85,44 @@ def unrelated(request):
         'query': query,
         'category': category,
         'type': type,
-        'status': status
+        'status': status,
+        'is_related': True
     }
     return render(request, 'official_records/unrelated/index.html', context)
 
 
 @login_required
 def unrelated_details(request, id):
+    document = get_object_or_404(
+        Document.objects.select_related('partner', 'location')
+                .filter(group=settings.GROUP_OFFICIAL_RECORD), id=id
+    )
+
+    if request.user.get_role_id() == settings.ROLE_USER_ID and \
+       document.type == Document.TYPE.private:
+        messages.error(request, "You do not have an access, but you can request an access.")
+        return redirect(reverse("backoffice:permission_requests:requests", args=[document.id, document.group]))
+
+    if document.type == Document.TYPE.private:
+        document.badge_type_class = "badge badge-danger p-1"
+    else:
+        document.badge_type_class = "badge badge-success p-1"
+
+    if document.status == Document.STATUS.ongoing:
+        document.badge_status_class = "badge badge-warning p-1"
+    elif document.status == Document.STATUS.done:
+        document.badge_status_class = "badge badge-success p-1"
+    elif document.status == Document.STATUS.expired:
+        document.badge_status_class = "badge badge-danger p-1"
+
+    if document.is_active:
+        document.record_status_class = "badge badge-success p-1 ml-1"
+    else:
+        document.record_status_class = "badge badge-danger p-1 ml-1"
+
     context = {
         'title': 'Unrelated Details Official Records',
+        'document': document
     }
     return render(request, 'official_records/unrelated/details.html', context)
 
