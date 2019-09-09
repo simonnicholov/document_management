@@ -11,7 +11,9 @@ from document_management.apps.documents.models import Document
 from document_management.apps.official_records.models import OfficialRecord
 from document_management.core.decorators import legal_required
 
-from .forms import UnrelatedOfficialRecordForm
+from .forms import (UnrelatedOfficialRecordForm, UnrelatedDeleteForm,
+                    UnrelatedChangeRecordStatusForm, UnrelatedChangeStatusForm,
+                    UnrelatedUploadForm)
 
 
 @login_required
@@ -148,24 +150,104 @@ def unrelated_add(request, id=None):
 
 @legal_required
 def unrelated_edit(request, id=None):
+    document = get_object_or_404(
+        Document.objects.select_related('partner', 'location')
+                .filter(is_active=True), id=id
+    )
+
+    if document.status == Document.STATUS.done:
+        messages.error(request, "Document # %s status has already done" % (document.number))
+        return redirect(reverse("backoffice:official_records:unrelated_details", args=[document.id]))
+
+    initial = {
+        'number': document.number,
+        'subject': document.subject,
+        'signature_date': document.signature_date.strftime("%Y-%m-%d"),
+        'effective_date': document.effective_date.strftime("%Y-%m-%d"),
+        'expired_date': document.expired_date.strftime("%Y-%m-%d"),
+        'location': document.location,
+        'category': document.category,
+        'type': document.type,
+        'description': document.description,
+        'partner': document.partner,
+        'amount': document.amount,
+        'job_specification': document.job_specification,
+        'retention_period': document.retention_period
+    }
+
+    form = UnrelatedOfficialRecordForm(data=request.POST or None,
+                                       initial=initial, user=request.user)
+
+    if form.is_valid():
+        form.save()
+        messages.success(request, f'{document.number} has been updated')
+        return redirect(reverse('backoffice:official_records:unrelated_details', args=[document.id]))
+
     context = {
         'title': 'Unrelated Edit Official Records',
+        'document': document,
+        'form': form
     }
     return render(request, 'official_records/unrelated/edit.html', context)
 
 
 @legal_required
 def unrelated_delete(request, id=None):
+    document = get_object_or_404(
+        Document.objects.select_related('partner', 'location')
+                .filter(is_active=True), id=id
+    )
+
+    if document.status == Document.STATUS.done:
+        messages.error(request, "Document # %s status has already done" % (document.number))
+        return redirect(reverse("backoffice:official_records:unrelated_details", args=[document.id]))
+
+    if document.status == Document.STATUS.ongoing:
+        document.badge_status_class = "badge badge-warning p-1"
+    elif document.status == Document.STATUS.done:
+        document.badge_status_class = "badge badge-success p-1"
+    elif document.status == Document.STATUS.expired:
+        document.badge_status_class = "badge badge-danger p-1"
+
+    form = UnrelatedDeleteForm(data=request.POST or None, document=document,
+                               user=request.user)
+
+    if form.is_valid():
+        form.save()
+        messages.success(request, "Document # %s has been deleted" % document.number)
+        return redirect("backoffice:official_records:unrelated")
+
     context = {
         'title': 'Unrelated Delete Official Records',
+        'document': document,
+        'form': form
     }
     return render(request, 'official_records/unrelated/delete.html', context)
 
 
 @legal_required
 def unrelated_upload(request, id=None):
+    document = get_object_or_404(
+        Document.objects.filter(is_active=True), id=id
+    )
+
+    if document.status == Document.STATUS.done:
+        messages.error(request, "Document # %s status has already done" % (document.number))
+        return redirect(reverse("backoffice:official_records:unrelated_details", args=[document.id]))
+
+    form = UnrelatedUploadForm(data=request.POST or None, files=request.FILES or None,
+                               document=document, user=request.user)
+
+    if form.is_valid():
+        form.save()
+        messages.success(request, "Document # %s files has already uploaded" %
+                         (document.number))
+        return redirect(reverse("backoffice:official_records:unrelated_details", args=[document.id]))
+
     context = {
         'title': 'Unrelated Upload Official Records',
+        'document': document,
+        'form': form
     }
     return render(request, 'official_records/unrelated/upload.html', context)
 
@@ -180,18 +262,59 @@ def unrelated_preview(request, id=None):
 
 @legal_required
 def unrelated_change_status(request, id):
+    document = get_object_or_404(
+        Document.objects.select_related('partner')
+                .filter(is_active=True), id=id
+    )
+
+    if document.status == Document.STATUS.done:
+        messages.error(request, "Document # %s status has already done" % (document.number))
+        return redirect(reverse("backoffice:official_records:unrelated_details", args=[document.id]))
+
+    initial = {
+        'status': document.status
+    }
+
+    form = UnrelatedChangeStatusForm(data=request.POST or None, initial=initial,
+                                     document=document, user=request.user)
+
+    if form.is_valid():
+        form.save()
+        messages.success(request, "Document # %s status has been changed into %s" %
+                         (document.number, document.get_status_display().upper()))
+        return redirect(reverse("backoffice:official_records:unrelated_details",
+                        args=[document.id]))
+
     context = {
         'title': 'Unrelated Change Status Official Records',
+        'form': form,
+        'document': document
     }
-    return render(request, 'official_records/unrelated/preview.html', context)
+    return render(request, 'official_records/unrelated/change_status.html', context)
 
 
 @legal_required
 def unrelated_change_record_status(request, id=None):
-    context = {
-        'title': 'Unrelated Change Record Official Records',
-    }
-    return render(request, 'official_records/unrelated/add.html', context)
+    document = get_object_or_404(Document, id=id)
+
+    if document.status == Document.STATUS.done:
+        messages.error(request, "Document # %s status has already done" % (document.number))
+        return redirect(reverse("backoffice:official_records:unrelated_details", args=[document.id]))
+
+    form = UnrelatedChangeRecordStatusForm(document=document, user=request.user)
+
+    if form.is_valid():
+        document = form.save()
+
+        if document.is_active:
+            string_status = "activated"
+        else:
+            string_status = "deactivated"
+
+        messages.success(request, "Document # %s has been %s" % (document.number, string_status))
+        return redirect("backoffice:official_records:unrelated")
+
+    return redirect("backoffice:official_records:unrelated")
 
 
 '''
