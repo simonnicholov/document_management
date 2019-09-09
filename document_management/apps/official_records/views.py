@@ -372,7 +372,7 @@ def related(request):
         'group': group,
         'signature_date': signature_date
     }
-    return render(request, 'official_records/related.html', context)
+    return render(request, 'official_records/related/index.html', context)
 
 
 @login_required
@@ -385,7 +385,7 @@ def related_lists(request, id):
         'official_records': official_records,
         'document': document
     }
-    return render(request, 'official_records/lists.html', context)
+    return render(request, 'official_records/related/lists.html', context)
 
 
 @login_required
