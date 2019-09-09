@@ -16,11 +16,12 @@
                         {% include '_includes/breadcrumb.html' %}
                     </li>
                     <li class="breadcrumb-item"><a href="{% url 'backoffice:official_records:index' %}">Official Records</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'backoffice:official_records:unrelated' %}">Unrelated</a></li>
                     <li class="breadcrumb-item"><a href="{% url 'backoffice:official_records:unrelated_details' document.id %}">Detail</a></li>
                     <li class="breadcrumb-item active"># {{ document.number }}</li>
                 </ol>
             </div>
-            <h4 class="page-title">Unrelated Detail Official Record</h4>
+            <h4 class="page-title">Detail Unrelated Official Record</h4>
         </div>
     </div>
 </div>
@@ -28,8 +29,8 @@
 {% if not document.is_active %}
 <div class="row mt-4">
     <div class="col-12">
-        <div class="alert alert-info alert-dismissible bg-danger text-white border-0 fade show" role="alert">
-            <strong>INFO !</strong>&nbsp;&nbsp; Document is not active !
+        <div class="alert alert-info alert-dismissible bg-warning text-white border-0 fade show" role="alert">
+            <strong>INFO !</strong>&nbsp;&nbsp; Official Record is not active !
         </div>
     </div>
 </div>
@@ -71,7 +72,7 @@
                         </div>
                     </div>
                 {% empty %}
-                    <h5 class="text-center p-2">No Document</h5>
+                    <h5 class="text-center p-2">No File</h5>
                 {% endfor %}
             </div>
         </div>

@@ -1,6 +1,7 @@
 from django import forms
 from django.conf import settings
-from django.core.validators import (MinValueValidator, MaxValueValidator)
+from django.core.validators import (MinValueValidator, MaxValueValidator,
+                                    FileExtensionValidator)
 from django.utils import timezone
 
 from document_management.apps.documents.models import (Document, DocumentLogs)
@@ -8,7 +9,8 @@ from document_management.apps.locations.models import Location
 from document_management.apps.partners.models import Partner
 
 from document_management.core.attributes import get_select_attribute
-from document_management.core.choices import TYPE, DOCUMENT_CATEGORY
+from document_management.core.choices import TYPE, DOCUMENT_CATEGORY, STATUS
+from document_management.core.dictionaries import DICT_STATUSES
 
 
 select_widget = get_select_attribute()
@@ -127,3 +129,122 @@ class UnrelatedOfficialRecordForm(forms.Form):
                                     updated_date=timezone.now())
 
         return document
+
+
+class UnrelatedChangeRecordStatusForm(forms.Form):
+
+    def __init__(self, document, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.document = document
+        self.user = user
+
+    def is_valid(self):
+        return True
+
+    def save(self, *args, **kwargs):
+        if self.document.is_active:
+            self.document.is_active = False
+        else:
+            self.document.is_active = True
+
+        updated_by = self.user
+        updated_date = timezone.now()
+        action = DocumentLogs.ACTION.update_official_record_record_status
+        value = self.document.is_active
+
+        DocumentLogs.objects.create(document_id=self.document.id,
+                                    document_subject=self.document.subject,
+                                    action=action,
+                                    value=value,
+                                    updated_by=updated_by,
+                                    updated_date=updated_date)
+
+        self.document.save(update_fields=['is_active'])
+
+        return self.document
+
+
+class UnrelatedDeleteForm(forms.Form):
+    reason = forms.CharField(widget=forms.Textarea())
+
+    def __init__(self, document, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.document = document
+        self.user = user
+
+    def save(self, *args, **kwargs):
+        document_number = self.document.number
+
+        reason = self.cleaned_data['reason']
+        action = DocumentLogs.ACTION.delete_official_record
+        updated_by = self.user
+        updated_date = timezone.now()
+
+        DocumentLogs.objects.create(document_id=self.document.id,
+                                    document_subject=self.document.subject,
+                                    reason=reason,
+                                    action=action,
+                                    updated_by=updated_by,
+                                    updated_date=updated_date)
+
+        self.document.delete()
+
+        return document_number
+
+
+class UnrelatedChangeStatusForm(forms.Form):
+    status = forms.ChoiceField(choices=STATUS, widget=select_widget)
+    reason = forms.CharField(widget=forms.Textarea())
+
+    def __init__(self, document, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.document = document
+        self.user = user
+
+    def clean_status(self):
+        if int(self.cleaned_data['status']) == self.document.status:
+            raise forms.ValidationError("Please select status first",
+                                        code="selected_is_required")
+        return self.cleaned_data['status']
+
+    def save(self, *args, **kwargs):
+        reason = self.cleaned_data['reason']
+        action = DocumentLogs.ACTION.update_official_record_status
+        value = DICT_STATUSES[self.cleaned_data['status']]
+        updated_by = self.user
+        updated_date = timezone.now()
+
+        DocumentLogs.objects.create(document_id=self.document.id,
+                                    document_subject=self.document.subject,
+                                    reason=reason,
+                                    action=action,
+                                    value=value,
+                                    updated_by=updated_by,
+                                    updated_date=updated_date)
+
+        self.document.status = int(self.cleaned_data['status'])
+        self.document.save(update_fields=['status'])
+
+        return self.document
+
+
+class UnrelatedUploadForm(forms.Form):
+    file = forms.FileField(validators=[FileExtensionValidator(allowed_extensions=['pdf'])])
+
+    def __init__(self, document, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.document = document
+        self.user = user
+
+    def save(self, *args, **kwargs):
+        self.document.files.create(file=self.cleaned_data['file'])
+        self.document.total_official_record = self.document.total_official_record + 1
+        self.document.save(update_fields=['total_official_record'])
+
+        DocumentLogs.objects.create(document_id=self.document.id,
+                                    document_subject=self.document.subject,
+                                    action=DocumentLogs.ACTION.upload_official_record_file,
+                                    updated_by=self.user,
+                                    updated_date=timezone.now())
+
+        return self.document
