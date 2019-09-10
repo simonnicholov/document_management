@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+
+{% load static%}
+
+{% block content_page %}
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item">
+                        {% include '_includes/breadcrumb.html' %}
+                    </li>
+                    <li class="breadcrumb-item"><a href="{% url 'backoffice:official_records:index' %}">Official Records</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'backoffice:official_records:related' %}">Related</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'backoffice:official_records:related_details' official_record.id %}">Detail</a></li>
+                    <li class="breadcrumb-item active"># {{ official_record.number }}</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Detail Related Official Record</h4>
+        </div>
+    </div>
+</div>
+
+{% if not official_record.is_active %}
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="alert alert-info alert-dismissible bg-danger text-white border-0 fade show" role="alert">
+            <strong>INFO !</strong>&nbsp;&nbsp; Official record is not active !
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% if request.user.get_role_id == ROLE_USER_ID %}
+    {% include 'official_records/includes/with_related_user_access.html' %}
+{% else %}
+    {% include 'official_records/includes/with_related_non_user_access.html' %}
+{% endif %}
+
+<div class="row">
+    <div class="col-4">
+
+            <div class="card">
+                <div class="card-body">
+                    <h3>Official Record Files</h3>
+                    <hr />
+                    
+                    {% for file in official_record.files.all %}
+                        <div class="card mb-2 shadow-none border">
+                            <div class="p-2">
+                                <div class="row align-items-center">
+                                    <div class="col-auto">
+                                        <div class="avatar-sm">
+                                            <span class="avatar-title bg-primary-lighten text-primary rounded">
+                                                .PDF
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col pl-0">
+                                        <a href="{% url 'backoffice:official_records:related_preview' file.id %}" target="_blank" class="text-muted font-weight-bold">{{ file.official_record.subject }} - {{ forloop.counter }}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <h5 class="text-center p-2">No File</h5>
+                    {% endfor %}
+                </div>
+            </div>
+    
+        </div>
+    <div class="col-8">
+
+        <div class="card">
+            <div class="card-body">
+
+                <h3>Official Record Information <small><span class="{{ official_record.record_status_class }}">{{ official_record.is_active|yesno:'Active, Inactive' }}</span></small></h3>
+                <hr />
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <h6 class="font-14">Number :</h6>
+                            <p># {{ official_record.number }}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <h6 class="font-14">Subject :</h6>
+                            <p>{{ official_record.subject }}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <h6 class="font-14">Signature Date :</h6>
+                            <p># {{ official_record.signature_date|date:'d M Y' }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <h6 class="font-14">Effective Date :</h6>
+                            <p># {{ official_record.effective_date|date:'d M Y' }}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <h6 class="font-14">Expired Date :</h6>
+                            <p>{{ official_record.expired_date|date:'d M Y' }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <h6 class="font-14">Job Specification :</h6>
+                            <p>{{ official_record.job_specification }}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <h6 class="font-14">Retention Period :</h6>
+                            <p>{{ official_record.retention_period }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <h6 class="font-14">Description :</h6>
+                        <p>{{ official_record.description }}</p>
+                    </div>
+                </div>
+
+                {% if official_record.document.group == GROUP_CONTRACT %}
+                    {% include 'official_records/includes/with_contract.html' %}
+                {% elif official_record.document.group == GROUP_MOU %}
+                    {% include 'official_records/includes/with_mou.html' %}
+                {% endif %}
+
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

@@ -15,6 +15,8 @@ from .forms import (UnrelatedOfficialRecordForm, UnrelatedDeleteForm,
                     UnrelatedChangeRecordStatusForm, UnrelatedChangeStatusForm,
                     UnrelatedUploadForm)
 
+from .forms import RelatedOfficialRecordForm
+
 
 @login_required
 def index(request):
@@ -390,16 +392,61 @@ def related_lists(request, id):
 
 @login_required
 def related_details(request, id=None):
+    official_record = get_object_or_404(
+        OfficialRecord.objects.select_related('document'), id=id
+    )
+
+    if request.user.get_role_id() == settings.ROLE_USER_ID and \
+       official_record.document.type == Document.TYPE.private:
+        messages.error(request, "You do not have an access, but you can request an access to the document first.")
+        return redirect("backoffice:permission_requests")
+
+    if official_record.is_active:
+        official_record.record_status_class = "badge badge-success p-1 ml-1"
+    else:
+        official_record.record_status_class = "badge badge-danger p-1 ml-1"
+
     context = {
         'title': 'Related Details Official Records',
+        'official_record': official_record,
+        'document': official_record.document
     }
     return render(request, 'official_records/related/details.html', context)
 
 
 @legal_required
 def related_add(request, id=None):
+    document = get_object_or_404(
+        Document.objects.filter(is_active=True), id=id
+    )
+
+    if document.type == Document.TYPE.private:
+        document.badge_type = "badge badge-danger p-1"
+    else:
+        document.badge_type = "badge badge-success p-1"
+
+    if document.status == Document.STATUS.ongoing:
+        document.badge_status = "badge badge-warning p-1"
+    elif document.status == Document.STATUS.done:
+        document.badge_status = "badge badge-success p-1"
+    elif document.status == Document.STATUS.expired:
+        document.badge_status = "badge badge-danger p-1"
+
+    form = RelatedOfficialRecordForm(data=request.POST or None, document=document,
+                                     user=request.user)
+
+    if form.is_valid():
+        addendum = form.save()
+        messages.success(request, f'{addendum.number} has been added')
+        return redirect(reverse('backoffice:official_records:related_lists', args=[document.id]))
+    else:
+        if form.has_error('__all__'):
+            messages.error(request, form.non_field_errors()[0])
+
     context = {
         'title': 'Related Add Official Records',
+        'form': form,
+        'document': document
     }
     return render(request, 'official_records/related/add.html', context)
 

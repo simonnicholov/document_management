@@ -10,7 +10,7 @@ urlpatterns = [
     path('unrelated/', views.unrelated, name="unrelated"),
 
     path('unrelated/<int:id>/preview/', views.unrelated_preview, name="unrelated_preview"),
-    # path('related/<int:id>/preview/', views.related_preview, name="related_preview"),
+    path('related/<int:id>/preview/', views.related_preview, name="related_preview"),
 
     path('unrelated/add/', views.unrelated_add, name="unrelated_add"),
     path('related/<int:id>/add/', views.related_add, name="related_add"),

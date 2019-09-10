@@ -25,10 +25,6 @@
             </a>
         {% endif %}
         {% if document.is_active and document.status != document.STATUS.done %}
-        <a href="{% url 'backoffice:official_records:related_change_status' document.id %}" class="btn btn-outline-info btn-rounded m-1">
-            <i class="mdi mdi-trash-can"></i>
-            Change Status
-        </a>
         <a href="{% url 'backoffice:official_records:related_upload' document.id %}" class="btn btn-outline-info btn-rounded m-1">
             <i class="mdi mdi-upload"></i>
             Upload
