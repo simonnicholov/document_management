@@ -139,39 +139,11 @@
                     </div>
                 </div>
 
-                <div class="row mt-2"></div>
-
-                <h3>Document Information</h3>
-                <hr/>
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group mb-3">
-                            <h6 class="font-14">Number :</h6>
-                            <p><a href="{% url 'backoffice:contracts:details' official_record.document.id %}"># {{ official_record.document.number }}</a></p>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group mb-3">
-                            <h6 class="font-14">Subject :</h6>
-                            <p>{{ official_record.document.subject }}</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group mb-3">
-                            <h6 class="font-14">Group :</h6>
-                            <p>{{ official_record.document.get_group_display }}</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group mb-3">
-                            <h6 class="font-14">Category :</h6>
-                            <p>{{ official_record.document.get_category_display }}</p>
-                        </div>
-                    </div>
-                </div>
+                {% if official_record.document.group == GROUP_CONTRACT %}
+                    {% include 'official_records/includes/with_contract.html' %}
+                {% elif official_record.document.group == GROUP_MOU %}
+                    {% include 'official_records/includes/with_mou.html' %}
+                {% endif %}
 
             </div>
         </div>
