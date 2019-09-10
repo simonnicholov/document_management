@@ -7,6 +7,7 @@ from django.utils import timezone
 from document_management.apps.documents.models import (Document, DocumentLogs)
 from document_management.apps.locations.models import Location
 from document_management.apps.partners.models import Partner
+from document_management.apps.official_records.models import OfficialRecord
 
 from document_management.core.attributes import get_select_attribute
 from document_management.core.choices import TYPE, DOCUMENT_CATEGORY, STATUS
@@ -248,3 +249,105 @@ class UnrelatedUploadForm(forms.Form):
                                     updated_date=timezone.now())
 
         return self.document
+
+
+class RelatedOfficialRecordForm(forms.Form):
+    number = forms.CharField(max_length=32)
+    signature_date = forms.DateField(input_formats=["%Y-%m-%d"])
+    effective_date = forms.DateField(input_formats=["%Y-%m-%d"])
+    subject = forms.CharField(max_length=64)
+    description = forms.CharField(widget=forms.Textarea(), required=False)
+
+    amount = forms.FloatField(
+        validators=[MinValueValidator(0),
+                    MaxValueValidator(settings.MAX_VALIDATOR_AMOUNT,
+                                      (f'Can not greater than {settings.MAX_VALIDATOR_TEXT} '))
+                    ])
+
+    job_specification = forms.CharField(max_length=256)
+    retention_period = forms.IntegerField(min_value=1, max_value=7300, required=False)
+
+    def __init__(self, document, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.document = document
+        self.user = user
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        if self.errors:
+            return cleaned_data
+
+        addendum_signature_date = cleaned_data['signature_date']
+        addendum_effective_date = cleaned_data['effective_date']
+
+        self.expired_date = self.document.expired_date
+        document_signature_date = self.document.signature_date
+        document_effective_date = self.document.effective_date
+
+        group = self.document.get_group_display().lower()
+
+        if addendum_signature_date < document_signature_date:
+            raise forms.ValidationError("Signature date official record can not less than signature date %s"
+                                        % group,
+                                        code="invalid_date_range")
+
+        if addendum_signature_date > addendum_effective_date:
+            raise forms.ValidationError("Signature date official record can not greater than effective date %s"
+                                        % group,
+                                        code="invalid_date_range")
+
+        if addendum_effective_date < document_effective_date:
+            raise forms.ValidationError("Effective date official record can not less than effective date %s"
+                                        % group,
+                                        code="invalid_date_range")
+
+        if addendum_effective_date > self.expired_date:
+            raise forms.ValidationError("Effective date official record can not greater than expired date %s"
+                                        % group,
+                                        code="invalid_date_range")
+
+        return cleaned_data
+
+    def save(self, *args, **kwargs):
+        number = self.cleaned_data['number']
+        signature_date = self.cleaned_data['signature_date']
+        effective_date = self.cleaned_data['effective_date']
+        expired_date = self.expired_date
+        subject = self.cleaned_data['subject']
+        amount = self.cleaned_data['amount']
+        job_specification = self.cleaned_data['job_specification']
+
+        # Optional
+        description = self.cleaned_data['description']
+        retention_period = self.cleaned_data['retention_period']
+
+        defaults = {
+            'subject': subject,
+            'signature_date': signature_date,
+            'effective_date': effective_date,
+            'expired_date': expired_date,
+            'description': description,
+            'amount': amount,
+            'job_specification': job_specification,
+            'retention_period': retention_period
+        }
+
+        official_record, created = OfficialRecord.objects.\
+            update_or_create(document=self.document, number=number,
+                             defaults=defaults)
+
+        if created:
+            action = DocumentLogs.ACTION.create_official_record_relational
+        else:
+            action = DocumentLogs.ACTION.update_official_record_relational
+
+        DocumentLogs.objects.create(document_id=self.document.id,
+                                    document_subject=self.document.subject,
+                                    official_record_id=official_record.id,
+                                    official_record_subject=official_record.subject,
+                                    action=action,
+                                    updated_by=self.user,
+                                    updated_date=timezone.now())
+
+        return official_record
