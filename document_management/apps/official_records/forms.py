@@ -17,7 +17,12 @@ from document_management.core.dictionaries import DICT_STATUSES
 select_widget = get_select_attribute()
 
 
-class UnrelatedOfficialRecordForm(forms.Form):
+'''
+Unrelated Area
+'''
+
+
+class UnrelatedForm(forms.Form):
     number = forms.CharField(max_length=32)
     signature_date = forms.DateField(input_formats=["%Y-%m-%d"])
     effective_date = forms.DateField(input_formats=["%Y-%m-%d"])
@@ -251,7 +256,12 @@ class UnrelatedUploadForm(forms.Form):
         return self.document
 
 
-class RelatedOfficialRecordForm(forms.Form):
+'''
+Related Area
+'''
+
+
+class RelatedForm(forms.Form):
     number = forms.CharField(max_length=32)
     signature_date = forms.DateField(input_formats=["%Y-%m-%d"])
     effective_date = forms.DateField(input_formats=["%Y-%m-%d"])
@@ -353,7 +363,66 @@ class RelatedOfficialRecordForm(forms.Form):
         return official_record
 
 
-class RelatedOfficialRecordDeleteForm(forms.Form):
+class RelatedChangeRecordStatusForm(forms.Form):
+
+    def __init__(self, official_record, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.official_record = official_record
+        self.user = user
+
+    def is_valid(self):
+        return True
+
+    def save(self, *args, **kwargs):
+        if self.official_record.is_active:
+            self.official_record.is_active = False
+        else:
+            self.official_record.is_active = True
+
+        updated_by = self.user
+        updated_date = timezone.now()
+        action = DocumentLogs.ACTION.update_official_record_relational_record_status
+        value = self.official_record.is_active
+
+        DocumentLogs.objects.create(document_id=self.official_record.document.id,
+                                    document_subject=self.official_record.document.subject,
+                                    official_record_id=self.official_record.id,
+                                    official_record_subject=self.official_record.subject,
+                                    action=action,
+                                    value=value,
+                                    updated_by=updated_by,
+                                    updated_date=updated_date)
+
+        self.official_record.save(update_fields=['is_active'])
+
+        return self.official_record
+
+
+class RelatedUploadForm(forms.Form):
+    file = forms.FileField(validators=[FileExtensionValidator(allowed_extensions=['pdf'])])
+
+    def __init__(self, official_record, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.official_record = official_record
+        self.user = user
+
+    def save(self, *args, **kwargs):
+        self.official_record.files.create(file=self.cleaned_data['file'])
+        self.official_record.document.total_official_record = self.official_record.document.total_addendum + 1
+        self.official_record.document.save(update_fields=['total_official_record'])
+
+        DocumentLogs.objects.create(document_id=self.official_record.document.id,
+                                    document_subject=self.official_record.document.subject,
+                                    official_record_id=self.official_record.id,
+                                    official_record_subject=self.official_record.subject,
+                                    action=DocumentLogs.ACTION.upload_official_record_file_relational,
+                                    updated_by=self.user,
+                                    updated_date=timezone.now())
+
+        return self.official_record
+
+
+class RelatedDeleteForm(forms.Form):
     reason = forms.CharField(widget=forms.Textarea())
 
     def __init__(self, official_record, user, *args, **kwargs):

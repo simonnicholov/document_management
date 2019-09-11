@@ -7,15 +7,16 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 
-from document_management.apps.documents.models import Document
-from document_management.apps.official_records.models import OfficialRecord
+from document_management.apps.documents.models import (Document, DocumentFile)
+from document_management.apps.official_records.models import (OfficialRecord, OfficialRecordFile)
 from document_management.core.decorators import legal_required
 
-from .forms import (UnrelatedOfficialRecordForm, UnrelatedDeleteForm,
+from .forms import (UnrelatedForm, UnrelatedDeleteForm,
                     UnrelatedChangeRecordStatusForm, UnrelatedChangeStatusForm,
                     UnrelatedUploadForm)
 
-from .forms import (RelatedOfficialRecordForm, RelatedOfficialRecordDeleteForm)
+from .forms import (RelatedForm, RelatedDeleteForm, RelatedUploadForm,
+                    RelatedChangeRecordStatusForm)
 
 
 @login_required
@@ -133,7 +134,7 @@ def unrelated_details(request, id):
 
 @legal_required
 def unrelated_add(request, id=None):
-    form = UnrelatedOfficialRecordForm(data=request.POST or None, user=request.user)
+    form = UnrelatedForm(data=request.POST or None, user=request.user)
 
     if form.is_valid():
         document = form.save()
@@ -177,8 +178,8 @@ def unrelated_edit(request, id=None):
         'retention_period': document.retention_period
     }
 
-    form = UnrelatedOfficialRecordForm(data=request.POST or None,
-                                       initial=initial, user=request.user)
+    form = UnrelatedForm(data=request.POST or None,
+                         initial=initial, user=request.user)
 
     if form.is_valid():
         form.save()
@@ -256,8 +257,11 @@ def unrelated_upload(request, id=None):
 
 @login_required
 def unrelated_preview(request, id=None):
+    document_file = get_object_or_404(DocumentFile, id=id)
+
     context = {
         'title': 'Unrelated Preview Official Records',
+        'document_file': document_file
     }
     return render(request, 'official_records/unrelated/preview.html', context)
 
@@ -432,12 +436,12 @@ def related_add(request, id=None):
     elif document.status == Document.STATUS.expired:
         document.badge_status = "badge badge-danger p-1"
 
-    form = RelatedOfficialRecordForm(data=request.POST or None, document=document,
-                                     user=request.user)
+    form = RelatedForm(data=request.POST or None, document=document,
+                       user=request.user)
 
     if form.is_valid():
-        addendum = form.save()
-        messages.success(request, f'{addendum.number} has been added')
+        official_record = form.save()
+        messages.success(request, f'{official_record.number} has been added')
         return redirect(reverse('backoffice:official_records:related_lists', args=[document.id]))
     else:
         if form.has_error('__all__'):
@@ -476,8 +480,8 @@ def related_edit(request, id=None):
         'retention_period': official_record.retention_period
     }
 
-    form = RelatedOfficialRecordForm(data=request.POST or None, initial=initial,
-                                     document=official_record.document, user=request.user)
+    form = RelatedForm(data=request.POST or None, initial=initial,
+                       document=official_record.document, user=request.user)
 
     if form.is_valid():
         form.save()
@@ -511,9 +515,9 @@ def related_delete(request, id=None):
         return redirect(reverse("backoffice:official_records:related_details",
                                 args=[official_record.id]))
 
-    form = RelatedOfficialRecordDeleteForm(data=request.POST or None,
-                                           official_record=official_record,
-                                           user=request.user)
+    form = RelatedDeleteForm(data=request.POST or None,
+                             official_record=official_record,
+                             user=request.user)
 
     if form.is_valid():
         form.save()
@@ -531,23 +535,71 @@ def related_delete(request, id=None):
 
 @legal_required
 def related_upload(request, id=None):
+    official_record = get_object_or_404(
+        OfficialRecord.objects.select_related('document')
+                      .filter(is_active=True), id=id
+    )
+
+    if official_record.document.status == Document.STATUS.done:
+        messages.error(request, "Official record can not be uploaded, the %s # %s status has already done"
+                       % (official_record.document.get_group_display().lower(),
+                          official_record.document.number))
+        return redirect(reverse("backoffice:official_records:related_details",
+                                args=[official_record.id]))
+
+    form = RelatedUploadForm(data=request.POST or None, files=request.FILES or None,
+                             official_record=official_record, user=request.user)
+
+    if form.is_valid():
+        official_record = form.save()
+        messages.success(request, "Official record # %s files has already uploaded" %
+                         (official_record.number))
+        return redirect(reverse("backoffice:official_records:related_details",
+                                args=[official_record.id]))
+
     context = {
         'title': 'Related Upload Official Records',
+        'official_record': official_record,
+        'form': form
     }
     return render(request, 'official_records/related/upload.html', context)
 
 
 @login_required
 def related_preview(request, id=None):
+    official_record_file = get_object_or_404(OfficialRecordFile, id=id)
+
     context = {
         'title': 'Related Preview Official Records',
+        'official_record_file': official_record_file
     }
     return render(request, 'official_records/related/preview.html', context)
 
 
 @legal_required
 def related_change_record_status(request, id=None):
-    context = {
-        'title': 'Related Change Record Official Records',
-    }
-    return render(request, 'official_records/related/add.html', context)
+    official_record = get_object_or_404(OfficialRecord.objects.select_related('document'), id=id)
+
+    if official_record.document.status == Document.STATUS.done:
+        messages.error(request, "Official record can not be changed, the %s # %s status has already done"
+                       % (official_record.document.get_group_display().lower(),
+                          official_record.document.number))
+        return redirect(reverse("backoffice:official_records:related_details",
+                                args=[official_record.id]))
+
+    form = RelatedChangeRecordStatusForm(official_record=official_record, user=request.user)
+
+    if form.is_valid():
+        official_record = form.save()
+
+        if official_record.is_active:
+            string_status = "activated"
+        else:
+            string_status = "deactivated"
+
+        messages.success(request, "Official record # %s has been %s" % (official_record.number, string_status))
+        return redirect(reverse("backoffice:official_records:related_lists",
+                                args=[official_record.document.id]))
+
+    return redirect(reverse("backoffice:official_records:related_lists",
+                            args=[official_record.document.id]))
