@@ -597,7 +597,7 @@ def related_change_record_status(request, id=None):
         else:
             string_status = "deactivated"
 
-        messages.success(request, "Addendum # %s has been %s" % (official_record.number, string_status))
+        messages.success(request, "Official record # %s has been %s" % (official_record.number, string_status))
         return redirect(reverse("backoffice:official_records:related_lists",
                                 args=[official_record.document.id]))
 
