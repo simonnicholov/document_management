@@ -459,7 +459,7 @@ def related_edit(request, id=None):
     )
 
     if official_record.document.status == Document.STATUS.done:
-        messages.error(request, "Official can not be changed, the %s # %s status has already done"
+        messages.error(request, "Official record can not be changed, the %s # %s status has already done"
                        % (official_record.document.get_group_display().lower(),
                           official_record.document.number))
         return redirect(reverse("backoffice:official_records:related_details",
