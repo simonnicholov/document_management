@@ -192,8 +192,9 @@ def delete(request, id):
     )
 
     if addendum.document.status == Document.STATUS.done:
-        messages.error(request, "Addendum # %s status has already done" % (addendum.document.number))
-        return redirect(reverse("backoffice:addendums:details", args=[addendum.document.id]))
+        messages.error(request, "Addendum can not be deleted, the %s # %s status has already done"
+                       % (addendum.document.get_group_display().lower(), addendum.document.number))
+        return redirect(reverse("backoffice:addendums:details", args=[addendum.id]))
 
     form = DeleteForm(data=request.POST or None, addendum=addendum, user=request.user)
 
@@ -218,8 +219,9 @@ def upload(request, id):
     )
 
     if addendum.document.status == Document.STATUS.done:
-        messages.error(request, "Document # %s status has already done" % (addendum.document.number))
-        return redirect(reverse("backoffice:addendums:details", args=[addendum.document.id]))
+        messages.error(request, "Addendum can not be uploaded, the %s # %s status has already done"
+                       % (addendum.document.get_group_display().lower(), addendum.document.number))
+        return redirect(reverse("backoffice:addendums:details", args=[addendum.id]))
 
     form = UploadForm(data=request.POST or None, files=request.FILES or None,
                       addendum=addendum, user=request.user)
@@ -254,7 +256,7 @@ def change_record_status(request, id):
     addendum = get_object_or_404(Addendum.objects.select_related('document'), id=id)
 
     if addendum.document.status == Document.STATUS.done:
-        messages.error(request, "Addendum can not be change, the %s # %s status has already done"
+        messages.error(request, "Addendum can not be changed, the %s # %s status has already done"
                        % (addendum.document.get_group_display().lower(), addendum.document.number))
         return redirect(reverse("backoffice:addendums:details", args=[addendum.id]))
 

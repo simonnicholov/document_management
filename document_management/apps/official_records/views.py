@@ -15,7 +15,7 @@ from .forms import (UnrelatedOfficialRecordForm, UnrelatedDeleteForm,
                     UnrelatedChangeRecordStatusForm, UnrelatedChangeStatusForm,
                     UnrelatedUploadForm)
 
-from .forms import RelatedOfficialRecordForm
+from .forms import (RelatedOfficialRecordForm, RelatedOfficialRecordDeleteForm)
 
 
 @login_required
@@ -453,16 +453,78 @@ def related_add(request, id=None):
 
 @legal_required
 def related_edit(request, id=None):
+    official_record = get_object_or_404(
+        OfficialRecord.objects.select_related('document')
+                      .filter(is_active=True), id=id
+    )
+
+    if official_record.document.status == Document.STATUS.done:
+        messages.error(request, "Official can not be changed, the %s # %s status has already done"
+                       % (official_record.document.get_group_display().lower(),
+                          official_record.document.number))
+        return redirect(reverse("backoffice:official_records:related_details",
+                                args=[official_record.id]))
+
+    initial = {
+        'number': official_record.number,
+        'subject': official_record.subject,
+        'signature_date': official_record.signature_date.strftime("%Y-%m-%d"),
+        'effective_date': official_record.effective_date.strftime("%Y-%m-%d"),
+        'description': official_record.description,
+        'amount': official_record.amount,
+        'job_specification': official_record.job_specification,
+        'retention_period': official_record.retention_period
+    }
+
+    form = RelatedOfficialRecordForm(data=request.POST or None, initial=initial,
+                                     document=official_record.document, user=request.user)
+
+    if form.is_valid():
+        form.save()
+        messages.success(request, f'{official_record.number} has been updated')
+        return redirect(reverse('backoffice:official_records:related_details',
+                                args=[official_record.id]))
+    else:
+        if form.has_error('__all__'):
+            messages.error(request, form.non_field_errors()[0])
+
     context = {
         'title': 'Related Edit Official Records',
+        'official_record': official_record,
+        'document': official_record.document,
+        'form': form
     }
     return render(request, 'official_records/related/edit.html', context)
 
 
 @legal_required
 def related_delete(request, id=None):
+    official_record = get_object_or_404(
+        OfficialRecord.objects.select_related('document')
+                              .filter(is_active=True), id=id
+    )
+
+    if official_record.document.status == Document.STATUS.done:
+        messages.error(request, "Official record can not be deleted, the %s # %s status has already done"
+                       % (official_record.document.get_group_display().lower(),
+                          official_record.document.number))
+        return redirect(reverse("backoffice:official_records:related_details",
+                                args=[official_record.id]))
+
+    form = RelatedOfficialRecordDeleteForm(data=request.POST or None,
+                                           official_record=official_record,
+                                           user=request.user)
+
+    if form.is_valid():
+        form.save()
+        messages.success(request, "Official record # %s has been deleted" % official_record.number)
+        return redirect(reverse("backoffice:official_records:related_lists",
+                                args=[official_record.document.id]))
+
     context = {
         'title': 'Related Delete Official Records',
+        'official_record': official_record,
+        'form': form
     }
     return render(request, 'official_records/related/delete.html', context)
 

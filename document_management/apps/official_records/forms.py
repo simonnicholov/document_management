@@ -351,3 +351,32 @@ class RelatedOfficialRecordForm(forms.Form):
                                     updated_date=timezone.now())
 
         return official_record
+
+
+class RelatedOfficialRecordDeleteForm(forms.Form):
+    reason = forms.CharField(widget=forms.Textarea())
+
+    def __init__(self, official_record, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.official_record = official_record
+        self.user = user
+
+    def save(self, *args, **kwargs):
+        official_record_number = self.official_record.number
+
+        reason = self.cleaned_data['reason']
+        action = DocumentLogs.ACTION.delete_official_record_file_relational
+        updated_by = self.user
+        updated_date = timezone.now()
+
+        DocumentLogs.objects.create(document_id=self.official_record.document.id,
+                                    document_subject=self.official_record.document.subject,
+                                    official_record_id=self.official_record.id,
+                                    reason=reason,
+                                    action=action,
+                                    updated_by=updated_by,
+                                    updated_date=updated_date)
+
+        self.official_record.delete()
+
+        return official_record_number
