@@ -13,11 +13,11 @@
                     <li class="breadcrumb-item">
                         {% include '_includes/breadcrumb.html' %}
                     </li>
-                    <li class="breadcrumb-item"><a href="{% url 'backoffice:contracts:index' %}">Contracts</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'backoffice:mous:index' %}">MoUs</a></li>
                     <li class="breadcrumb-item active">Index</li>
                 </ol>
             </div>
-            <h4 class="page-title">Contracts</h4>
+            <h4 class="page-title">MoUs</h4>
         </div>
     </div>
 </div>
@@ -25,8 +25,8 @@
 {% if request.user.get_role_id != ROLE_USER_ID %}
 <div class="row mt-3 mb-2">
     <div class="col-md-12 text-center">
-        <a href="{% url 'backoffice:contracts:add' %}">
-            <button type="button" class="btn btn-danger btn-rounded mb-3"><i class="mdi mdi-plus"></i> Create Contract</button>
+        <a href="{% url 'backoffice:mous:add' %}">
+            <button type="button" class="btn btn-danger btn-rounded mb-3"><i class="mdi mdi-plus"></i> Create MoU</button>
         </a>
     </div>
 </div>
@@ -87,7 +87,7 @@
             <table class="table table-sm table-hover table-centered mb-0">
                 <thead>
                     <tr>
-                        <th>Contract Number</th>
+                        <th>MoU Number</th>
                         <th>Subject</th>
                         <th>Company</th>
                         <th>Effective Date</th>
@@ -99,7 +99,7 @@
                 <tbody>
                     {% for document in page.object_list %}
                         <tr>
-                            <td><a href="{% url 'backoffice:contracts:details' document.id %}"># {{ document.number }}</a></td>
+                            <td><a href="{% url 'backoffice:mous:details' document.id %}"># {{ document.number }}</a></td>
                             <td>{{ document.subject }}</td>
                             <td>{{ document.partner.name }}</td>
                             <td>{{ document.effective_date|date:'d M Y' }}</td>

@@ -19,7 +19,9 @@ urlpatterns = [
 
     # documents urls
     path('contracts/', include('document_management.apps.contracts.urls', namespace="contracts")),
-    path('official-records/', include('document_management.apps.official_records.urls', namespace="official_records")),
+    path('official-records/', include('document_management.apps.official_records.urls',
+         namespace="official_records")),
+    path('mous/', include('document_management.apps.mous.urls', namespace="mous")),
 
     # specific urls
     path('', views.login_view, name="login"),

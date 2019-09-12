@@ -11,13 +11,12 @@
                     <li class="breadcrumb-item">
                         {% include '_includes/breadcrumb.html' %}
                     </li>
-                    <li class="breadcrumb-item"><a href="{% url 'backoffice:official_records:index' %}">Official Records</a></li>
-                    <li class="breadcrumb-item"><a href="{% url 'backoffice:official_records:unrelated' %}">Unrelated</a></li>
-                    <li class="breadcrumb-item"><a href="{% url 'backoffice:official_records:unrelated_details' document.id %}">Details</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'backoffice:mous:index' %}">MoUs</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'backoffice:mous:details' document.id %}">Detail</a></li>
                     <li class="breadcrumb-item active">Delete</li>
                 </ol>
             </div>
-            <h4 class="page-title">Delete Unrelated Official Record</h4>
+            <h4 class="page-title">Delete MoU</h4>
         </div>
     </div>
 </div>
@@ -75,7 +74,7 @@
                         <div class="col-md-6">
                             <div class="form-group mb-3">
                                 <h6 class="font-14">Job Specification :</h6>
-                                <p>{{ document.job_specification }}</p>
+                                <p>{{ document.job_specification|default:'-' }}</p>
                             </div>
                         </div>
                     </div>
