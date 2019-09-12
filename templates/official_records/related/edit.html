@@ -36,9 +36,10 @@
                     <div class="col-md-6">
                         <div class="form-group mb-3">
                             <h6 class="font-14">Number :</h6>
-                            <!-- TODO : DISINI HARUSNYA BISA BALIK KE MOU -->
                             {% if document.group == GROUP_CONTRACT %}
                                 <p><a href="{% url 'backoffice:contracts:details' document.id %}">{{ document.number }}</a></p>
+                            {% elif document.group == GROUP_MOU %}
+                                <p><a href="{% url 'backoffice:mous:details' document.id %}">{{ document.number }}</a></p>
                             {% endif %}
                         </div>
                     </div>

@@ -23,8 +23,13 @@
 
 <div class="row mt-3 mb-2">
     <div class="col-lg-12 text-center">
-        {% if request.user.get_role_id != ROLE_USER_ID %}
-            <a href="{% url 'backoffice:official_records:related_details' document.id %}" class="btn btn-outline-secondary btn-rounded m-1 mb-3">
+        {% if document.group == GROUP_CONTRACT %}
+            <a href="{% url 'backoffice:contracts:details' document.id %}" class="btn btn-outline-secondary btn-rounded m-1 mb-3">
+                <i class="mdi mdi-arrow-left-thick"></i>
+                Back to {{ document.get_group_display }}
+            </a>
+        {% elif document.group == GROUP_MOU %}
+            <a href="{% url 'backoffice:mous:details' document.id %}" class="btn btn-outline-secondary btn-rounded m-1 mb-3">
                 <i class="mdi mdi-arrow-left-thick"></i>
                 Back to {{ document.get_group_display }}
             </a>
