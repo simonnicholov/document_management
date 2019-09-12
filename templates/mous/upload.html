@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% load static%}
+
+{% block content_page %}
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item">
+                        {% include '_includes/breadcrumb.html' %}
+                    </li>
+                    <li class="breadcrumb-item"><a href="{% url 'backoffice:mous:index' %}">MoUs</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'backoffice:mous:details' 1 %}">Details</a></li>
+                    <li class="breadcrumb-item active">Upload</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Upload MoU</h4>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-3"></div>
+
+<div class="row">
+    <div class="col-12">
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                {{ form.file.label }}
+                                {{ form.file }}
+                                {{ form.file.errors }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 text-center">
+                    <button class="btn btn-outline-success btn-rounded m-1" type="submit">Upload</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,16 @@
+<div class="row {% if document.is_active %}mt-3{% endif %} mb-2">
+    <div class="col-lg-12 mb-2 text-center">
+        <a href="{% url 'backoffice:mous:index' %}" class="btn btn-outline-secondary btn-rounded m-1">
+            <i class="mdi mdi-arrow-left-thick"></i>
+            Go Back
+        </a>
+        <a href="{% url 'backoffice:addendums:lists' document.id %}" class="btn btn-outline-warning btn-rounded m-1">
+            <i class="mdi mdi-refresh"></i>
+            Addendum
+        </a>
+        <a href="{% url 'backoffice:official_records:related_lists' document.id %}" class="btn btn-outline-warning btn-rounded m-1">
+            <i class="mdi mdi-refresh"></i>
+            Official Record
+        </a>
+    </div>
+</div>

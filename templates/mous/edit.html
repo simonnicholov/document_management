@@ -11,11 +11,12 @@
                     <li class="breadcrumb-item">
                         {% include '_includes/breadcrumb.html' %}
                     </li>
-                    <li class="breadcrumb-item"><a href="{% url 'backoffice:contracts:index' %}">Contracts</a></li>
-                    <li class="breadcrumb-item active">Add</li>
+                    <li class="breadcrumb-item"><a href="{% url 'backoffice:mous:index' %}">MoUs</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'backoffice:mous:details' document.id %}">Detail</a></li>
+                    <li class="breadcrumb-item active">Edit</li>
                 </ol>
             </div>
-            <h4 class="page-title">Add Contract</h4>
+            <h4 class="page-title">Edit MoU</h4>
         </div>
     </div>
 </div>
@@ -38,7 +39,7 @@
                         <div class="col-md-6">
                             <div class="form-group mb-3">
                                 <label>Number</label>
-                                <input type="text" name="number" class="form-control" id="number" />
+                                <input type="text" name="number" value="{{ form.number.value }}" class="form-control" id="number" readonly />
                                 {{ form.number.errors }}
                             </div>
                         </div>
@@ -48,7 +49,7 @@
                         <div class="col-md-6">
                             <div class="form-group mb-3">
                                 <label>Subject</label>
-                                <input type="text" name="subject" class="form-control" id="subject" />
+                                <input type="text" name="subject" value="{{ form.subject.value }}" class="form-control" id="subject" />
                                 {{ form.subject.errors }}
                             </div>
                         </div>
@@ -82,7 +83,7 @@
                         <div class="col-md-6">
                             <div class="form-group mb-3">
                                 <label>Signature Date</label>
-                                <input type="text" id="signature_date" name="signature_date" class="form-control" data-date-format="yyyy-mm-dd" data-provide="datepicker" data-date-autoclose="true">
+                                <input type="text" id="signature_date" name="signature_date" value="{{ form.signature_date.value }}" class="form-control" data-date-format="yyyy-mm-dd" data-provide="datepicker" data-date-autoclose="true">
                                 {{ form.signature_date.errors }}
                             </div>
                         </div>
@@ -92,14 +93,14 @@
                         <div class="col-md-6">
                             <div class="form-group mb-3">
                                 <label>Effective Date</label>
-                                <input type="text" id="effective_date" name="effective_date" class="form-control" data-date-format="yyyy-mm-dd" data-provide="datepicker" data-date-autoclose="true">
+                                <input type="text" id="effective_date" name="effective_date" value="{{ form.effective_date.value }}" class="form-control" data-date-format="yyyy-mm-dd" data-provide="datepicker" data-date-autoclose="true">
                                 {{ form.effective_date.errors }}
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group mb-3">
                                 <label>Expired Date</label>
-                                <input type="text" id="expired_date" name="expired_date" class="form-control" data-date-format="yyyy-mm-dd" data-provide="datepicker" data-date-autoclose="true">
+                                <input type="text" id="expired_date" name="expired_date" value="{{ form.expired_date.value }}" class="form-control" data-date-format="yyyy-mm-dd" data-provide="datepicker" data-date-autoclose="true">
                                 {{ form.expired_date.errors }}
                             </div>
                         </div>
@@ -109,7 +110,7 @@
                         <div class="col-md-12">
                             <div class="form-group mb-3">
                                 <label for="alamat">Description</label>
-                                <textarea id="description" name="description" class="form-control"  rows="3"></textarea>
+                                <textarea id="description" name="description" class="form-control" rows="3">{{ form.description.value }}</textarea>
                             </div>
                         </div>
                     </div>
@@ -128,8 +129,8 @@
                         <div class="col-md-6">
                             <div class="form-group mb-3">
                                 <label for="name">Amount</label>
-                                <input type="text" id="amount_display" name="amount_display" class="form-control" />
-                                <input type="hidden" name="amount" id="amount"/>
+                                <input type="text" id="amount_display" name="amount_display" value="{{ form.amount.value|floatformat:'0' }}" class="form-control" />
+                                <input type="hidden" name="amount" value="{{ form.amount.value }}" id="amount"/>
                                 {{ form.amount.errors }}
                             </div>
                         </div>
@@ -142,19 +143,19 @@
                         <div class="col-md-6">
                             <div class="form-group mb-3">
                                 <label>Job specification</label>
-                                <input type="text" id="job_specification" name="job_specification" class="form-control">
+                                <input type="text" id="job_specification" name="job_specification" value="{{ form.job_specification.value }}" class="form-control">
                                 {{ form.job_specification.errors }}
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group mb-3">
                                 <label>Retention Period</label>
-                                <input type="number" id="retention_period" name="retention_period" class="form-control">
+                                <input type="number" id="retention_period" name="retention_period" class="form-control" value="{{ form.retention_period.value }}">
                                 {{ form.retention_period.errors }}
                             </div>
                         </div>
                     </div>
-
+                    
                     <div class="row text-center mt-3">
                         <div class="col-md-12">
                             <button id="button_submit" type="submit" class="btn btn-outline-success btn-rounded">Save</button>
@@ -162,6 +163,7 @@
                     </div>
 
                 </div>
+
             </div>                
 
         </form>
