@@ -133,7 +133,7 @@ def edit(request, id):
         'document': document,
         'form': form
     }
-    return render(request, 'contracts/edit.html', context)
+    return render(request, 'mous/edit.html', context)
 
 
 @legal_required
