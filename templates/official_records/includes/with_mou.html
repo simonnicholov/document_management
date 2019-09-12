@@ -7,8 +7,7 @@
     <div class="col-md-6">
         <div class="form-group mb-3">
             <h6 class="font-14">Number :</h6>
-            <!-- LINK HARUS DIGANTI KE NAMESPACE MOU -->
-            <p><a href="{% url 'backoffice:contracts:details' official_record.document.id %}"># {{ official_record.document.number }}</a></p>
+            <p><a href="{% url 'backoffice:mous:details' official_record.document.id %}"># {{ official_record.document.number }}</a></p>
         </div>
     </div>
     <div class="col-md-6">

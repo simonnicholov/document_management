@@ -38,8 +38,7 @@
                             {% if document.group == GROUP_CONTRACT %}
                                 <p><a href="{% url 'backoffice:contracts:details' document.id %}">{{ document.number }}</a></p>
                             {% elif document.group == GROUP_MOU %}
-                                <!-- PERBAIKI LINK DIBAWAH INI, SEHARUSNYA KE MOU. -->
-                                <p><a href="{% url 'backoffice:contracts:details' document.id %}">{{ document.number }}</a></p>
+                                <p><a href="{% url 'backoffice:mous:details' document.id %}">{{ document.number }}</a></p>
                             {% endif %}
                         </div>
                     </div>
