@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% load static%}
+
+{% block body_class %}index{% endblock %}
+
+{% block content_page %}
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item">
+                        {% include '_includes/breadcrumb.html' %}
+                    </li>
+                    <li class="breadcrumb-item"><a href="{% url 'backoffice:company_regulations:index' %}">Company Regulations</a></li>
+                    <li class="breadcrumb-item active">Index</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Company Regulations</h4>
+        </div>
+    </div>
+</div>
+
+{% if request.user.get_role_id != ROLE_USER_ID %}
+<div class="row mt-3 mb-2">
+    <div class="col-md-12 text-center">
+        <a href="{% url 'backoffice:company_regulations:add' %}">
+            <button type="button" class="btn btn-danger btn-rounded mb-3"><i class="mdi mdi-plus"></i> Create Company Regulation</button>
+        </a>
+    </div>
+</div>
+{% else %}
+<div class="row mb-3"></div>
+{% endif %}
+
+<div class="card">
+    <div class="card-body">
+        <form action="" method="GET">
+        <div class="row mt-1">
+            <div class="col-md-4">
+                <label>Search</label>
+                <div class="form-group">
+                    <input type="text" name="query" class="form-control" {% if query %}value='{{ query }}'{% endif %} placeholder="Searching ...">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label>Effective Date</label>
+                <div class="form-group">
+                    <input type="text" id="effective_date" name="effective_date"
+                            {% if effective_date %}value='{{ effective_date }}'{% endif %}
+                            class="form-control datepicker" data-date-format="yyyy-mm-dd" data-provide="datepicker"
+                            data-date-autoclose="true" placeholder="Effective Date ...">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="category" name="category" class="form-control select2" data-toggle="select2">
+                        <option value="0">- Select -</option>
+                        <option value="3" {% if category == document.CATEGORY.director_decisions %}selected{% endif %}>Director Decisions</option>
+                        <option value="4" {% if category == document.CATEGORY.circular_letter %}selected{% endif %}>Circular Letter</option>
+                        <option value="5" {% if category == document.CATEGORY.other %}selected{% endif%}>Other</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">            
+        <div class="table-responsive-sm">
+            <table class="table table-sm table-hover table-centered mb-0">
+                <thead>
+                    <tr>
+                        <th>Number</th>
+                        <th>Subject</th>
+                        <th>Effective Date</th>
+                        <th>Category</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for document in page.object_list %}
+                        <tr>
+                            <td><a href="{% url 'backoffice:company_regulations:details' document.id %}"># {{ document.number }}</a></td>
+                            <td>{{ document.subject }}</td>
+                            <td>{{ document.effective_date|date:'d M Y' }}</td>
+                            <td>{{ document.get_category_display }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="4" class="text-center"><h4>No Data</h4></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% if page.has_other_pages %}
+<div class="row justify-content-between ml-1 mr-1">
+    <div class="col-xs-3 text-left">
+        {% if page.has_previous %}
+            <a href="?page={{ page.previous_page_number }}&query={{ query }}&category={{ category }}&effective_date={{ effective_date }}" class="btn btn-outline-info btn-rounded">Prev</a>
+        {% endif %}
+    </div>
+    <div class="text-muted mt-2">
+        Page {{ page.number }} of {{ total_pages }} from {{ total_data }} documents
+    </div>
+    <div class="col-xs-3 text-right">
+        {% if page.has_next %}
+            <a href="?page={{ page.next_page_number }}&query={{ query }}&category={{ category }}&effective_date={{ effective_date }}" class="btn btn-outline-info btn-rounded">Next</a>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    $(document).on("change", "select[data-toggle='select2'], .datepicker", function(){
+        $("form").submit();
+    });
+
+    $("input[type='text']").on("keypress", function() {
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if (keycode == '13') {
+            $("form").submit();
+        }
+    });
+</script>
+{% endblock %}
