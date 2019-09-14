@@ -96,13 +96,4 @@
 {% endblock %}
 
 {% block extra_js %}
-<script>
-    // Validation on submission
-    $(document).on('click', '#button_submit', function(e) {
-        var amount = $("#amount_display").val().toString().replace(/\,/g, '');
-        amount = parseInt(amount);
-        $("#amount").val(amount);
-        $('#add-form').submit();
-    });
-</script>
 {% endblock %}
