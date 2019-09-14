@@ -17,7 +17,7 @@ def index(request):
     category = int(request.GET.get('category', 0))
 
     documents = Document.objects.select_related('partner')\
-        .filter(group=settings.GROUP_CONTRACT)
+        .filter(group=settings.GROUP_COMPANY_REGULATION)
 
     if effective_date:
         effective_date = datetime.strptime(effective_date, '%Y-%m-%d').date()
@@ -26,8 +26,7 @@ def index(request):
 
     if query:
         documents = documents.filter(Q(number__icontains=query) |
-                                     Q(subject__icontains=query) |
-                                     Q(partner__name__icontains=query))
+                                     Q(subject__icontains=query))
 
     if category > 0:
         documents = documents.filter(category=category)

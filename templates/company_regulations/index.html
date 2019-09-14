@@ -104,7 +104,7 @@
 <div class="row justify-content-between ml-1 mr-1">
     <div class="col-xs-3 text-left">
         {% if page.has_previous %}
-            <a href="?page={{ page.previous_page_number }}&query={{ query }}&category={{ category }}&effective_date={{ effective_date }}&status={{ status }}" class="btn btn-outline-info btn-rounded">Prev</a>
+            <a href="?page={{ page.previous_page_number }}&query={{ query }}&category={{ category }}&effective_date={{ effective_date }}" class="btn btn-outline-info btn-rounded">Prev</a>
         {% endif %}
     </div>
     <div class="text-muted mt-2">
@@ -112,7 +112,7 @@
     </div>
     <div class="col-xs-3 text-right">
         {% if page.has_next %}
-            <a href="?page={{ page.next_page_number }}&query={{ query }}&category={{ category }}&effective_date={{ effective_date }}&status={{ status }}" class="btn btn-outline-info btn-rounded">Next</a>
+            <a href="?page={{ page.next_page_number }}&query={{ query }}&category={{ category }}&effective_date={{ effective_date }}" class="btn btn-outline-info btn-rounded">Next</a>
         {% endif %}
     </div>
 </div>
