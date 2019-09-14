@@ -111,21 +111,30 @@ class DocumentLogs(models.Model):
         (26, 'update_official_record_status', 'Update Official Record Status'),
         (27, 'update_official_record_record_status', 'Update Offical Record Record Status'),
 
+        # Company Regulation
+        (31, 'create_company_regulation', 'Create Company Regulation'),
+        (32, 'update_company_regulation', 'Update Company Regulation'),
+        (33, 'delete_company_regulation', 'Delete Company Regulation'),
+        (34, 'upload_company_regulation_file', 'Upload Company Regulation File'),
+        (35, 'delete_company_regulation_file', 'Delete Company Regulation File'),
+        (36, 'update_company_regulation_status', 'Update Company Regulation Status'),
+        (37, 'update_company_regulation_record_status', 'Update Company Regulation Record Status'),
+
         # Addendum Relational
-        (31, 'create_addendum_relational', 'Create Addendum Relational'),
-        (32, 'update_addendum_relational', 'Update Addendum Relational'),
-        (33, 'delete_addendum_relational', 'Delete Addendum Relational'),
-        (34, 'upload_addendum_file_relational', 'Upload File Addendum Relational'),
-        (35, 'delete_addendum_file_relational', 'Delete File Addendum Relational'),
-        (36, 'update_addendum_relational_record_status', 'Update Addendum Relational Record Status'),
+        (41, 'create_addendum_relational', 'Create Addendum Relational'),
+        (42, 'update_addendum_relational', 'Update Addendum Relational'),
+        (43, 'delete_addendum_relational', 'Delete Addendum Relational'),
+        (44, 'upload_addendum_file_relational', 'Upload File Addendum Relational'),
+        (45, 'delete_addendum_file_relational', 'Delete File Addendum Relational'),
+        (46, 'update_addendum_relational_record_status', 'Update Addendum Relational Record Status'),
 
         # Official Record Relational
-        (41, 'create_official_record_relational', 'Create Official Record Relational'),
-        (42, 'update_official_record_relational', 'Update Official Record Relational'),
-        (43, 'delete_official_record_relational', 'Delete Official Record Relational'),
-        (44, 'upload_official_record_file_relational', 'Upload Official Record File Relational'),
-        (45, 'delete_official_record_file_relational', 'Delete Official Record File Relational'),
-        (46, 'update_official_record_relational_record_status', 'Update Official Record Relational Record Status')
+        (51, 'create_official_record_relational', 'Create Official Record Relational'),
+        (52, 'update_official_record_relational', 'Update Official Record Relational'),
+        (53, 'delete_official_record_relational', 'Delete Official Record Relational'),
+        (54, 'upload_official_record_file_relational', 'Upload Official Record File Relational'),
+        (55, 'delete_official_record_file_relational', 'Delete Official Record File Relational'),
+        (56, 'update_official_record_relational_record_status', 'Update Official Record Relational Record Status')
     )
     document_id = models.IntegerField(blank=True, null=True)
     document_subject = models.CharField(max_length=64, blank=True, null=True)

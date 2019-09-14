@@ -1,13 +1,16 @@
 from datetime import datetime
 
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 
 from document_management.apps.documents.models import Document, DocumentFile
 from document_management.core.decorators import legal_required
+
+from .forms import CompanyRegulationForm
 
 
 @login_required
@@ -58,8 +61,19 @@ def index(request):
 
 @legal_required
 def add(request):
+    form = CompanyRegulationForm(data=request.POST or None, user=request.user)
+
+    if form.is_valid():
+        document = form.save()
+        messages.success(request, f'{document.number} has been added')
+        return redirect('backoffice:company_regulations:index')
+    else:
+        if form.has_error('__all__'):
+            messages.error(request, form.non_field_errors()[0])
+
     context = {
         'title': 'Add Company Regulation',
+        'form': form
     }
     return render(request, 'company_regulations/add.html', context)
 
