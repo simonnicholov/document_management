@@ -19,7 +19,6 @@ def index(request):
     documents = Document.objects.select_related('partner')\
         .filter(group=settings.GROUP_CONTRACT)
 
-
     if effective_date:
         effective_date = datetime.strptime(effective_date, '%Y-%m-%d').date()
         documents = documents.filter(effective_date=effective_date)
