@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% load static%}
+
+{% block content_page %}
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item">
+                        {% include '_includes/breadcrumb.html' %}
+                    </li>
+                    <li class="breadcrumb-item"><a href="{% url 'backoffice:company_regulations:index' %}">Company Regulations</a></li>
+                    <li class="breadcrumb-item active">Add</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Add Company Regulation</h4>
+        </div>
+    </div>
+</div>
+
+<div class="mb-3"></div>
+
+<div class="row">
+    <div class="col-12">
+
+        <form id="add_form" action="" method="POST" novalidate>
+            {% csrf_token %}
+
+            <div class="card">
+                <div class="card-body">
+
+                    <h3>General Information</h3>
+                    <hr />
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label>Number</label>
+                                <input type="text" name="number" class="form-control" id="number" />
+                                {{ form.number.errors }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label>Subject</label>
+                                <input type="text" name="subject" class="form-control" id="subject" />
+                                {{ form.subject.errors }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label>Category</label>
+                                {{ form.category }}
+                                {{ form.category.errors }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label>Effective Date</label>
+                                <input type="text" id="effective_date" name="effective_date" class="form-control" data-date-format="yyyy-mm-dd" data-provide="datepicker" data-date-autoclose="true">
+                                {{ form.effective_date.errors }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group mb-3">
+                                <label for="alamat">Description</label>
+                                <textarea id="description" name="description" class="form-control"  rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row text-center mt-3">
+                        <div class="col-md-12">
+                            <button id="button_submit" type="submit" class="btn btn-outline-success btn-rounded">Save</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>                
+
+        </form>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{% endblock %}

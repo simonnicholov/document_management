@@ -18,6 +18,7 @@ COMPANY_CATEGORY = Choices(
     (0, '-', '--- select ---'),
     (3, 'director_decisions', 'Director Decisions'),
     (4, 'circular_letter', 'Circular Letter'),
+    (5, 'other', 'Other'),
 )
 
 STATUS = Choices(
