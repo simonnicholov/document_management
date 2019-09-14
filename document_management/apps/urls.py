@@ -22,6 +22,8 @@ urlpatterns = [
     path('official-records/', include('document_management.apps.official_records.urls',
          namespace="official_records")),
     path('mous/', include('document_management.apps.mous.urls', namespace="mous")),
+    path('company-regulations/', include('document_management.apps.company_regulations.urls',
+         namespace="company_regulations")),
 
     # specific urls
     path('', views.login_view, name="login"),
