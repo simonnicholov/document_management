@@ -11,7 +11,7 @@ from document_management.apps.documents.models import Document, DocumentFile
 from document_management.core.decorators import legal_required
 
 from .forms import (CompanyRegulationForm, ChangeRecordStatusForm, UploadForm,
-                    ChangeStatusForm)
+                    ChangeStatusForm, DeleteForm)
 
 
 @login_required
@@ -115,8 +115,25 @@ def edit(request, id):
 
 @legal_required
 def delete(request, id):
+    document = get_object_or_404(
+        Document.objects.filter(is_active=True), id=id
+    )
+
+    if document.status == Document.STATUS.done:
+        messages.error(request, "Document # %s status has already done" % (document.number))
+        return redirect(reverse("backoffice:company_regulations:details", args=[document.id]))
+
+    form = DeleteForm(data=request.POST or None, document=document, user=request.user)
+
+    if form.is_valid():
+        form.save()
+        messages.success(request, "Document # %s has been deleted" % document.number)
+        return redirect("backoffice:company_regulations:index")
+
     context = {
-        'title': 'Delete Company Regulation'
+        'title': 'Delete Company Regulation',
+        'document': document,
+        'form': form
     }
     return render(request, 'company_regulations/delete.html', context)
 

@@ -101,6 +101,35 @@ class ChangeRecordStatusForm(forms.Form):
         return self.document
 
 
+class DeleteForm(forms.Form):
+    reason = forms.CharField(widget=forms.Textarea())
+
+    def __init__(self, document, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.document = document
+        self.user = user
+
+    def save(self, *args, **kwargs):
+        document_number = self.document.number
+
+        reason = self.cleaned_data['reason']
+        action = DocumentLogs.ACTION.delete_company_regulation
+        updated_by = self.user
+        updated_date = timezone.now()
+
+        DocumentLogs.objects.create(document_id=self.document.id,
+                                    document_subject=self.document.subject,
+                                    reason=reason,
+                                    action=action,
+                                    updated_by=updated_by,
+                                    updated_date=updated_date)
+
+        self.document.delete()
+
+        return document_number
+
+
+
 class ChangeStatusForm(forms.Form):
     status = forms.ChoiceField(choices=STATUS, widget=select_widget)
     reason = forms.CharField(widget=forms.Textarea())
