@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+
+{% load static humanize %}
+
+{% block extra_css %}
+    <link href="{% url 'css/style.css' %}"/>
+{% endblock %}
+
+{% block content_page %}
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item">
+                        {% include '_includes/breadcrumb.html' %}
+                    </li>
+                    <li class="breadcrumb-item"><a href="{% url 'backoffice:company_regulations:index' %}">Company Regulations</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'backoffice:company_regulations:details' document.id %}">Detail</a></li>
+                    <li class="breadcrumb-item active"># {{ document.number }}</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Detail Company Regulations</h4>
+        </div>
+    </div>
+</div>
+
+{% if not document.is_active %}
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="alert alert-info alert-dismissible bg-warning text-white border-0 fade show" role="alert">
+            <strong>INFO !</strong>&nbsp;&nbsp; Company regulations is not active !
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% if request.user.get_role_id == ROLE_USER_ID %}
+    {% include 'company_regulations/includes/with_user_access.html' %}
+{% else %}
+    {% include 'company_regulations/includes/with_non_user_access.html' %}
+{% endif %}
+
+<div class="row">
+    <div class="col-lg-4">
+
+        <div class="card">
+            <div class="card-body">
+                <h3>Document Files</h3>
+                <hr />
+
+                {% for file in document.files.all %}
+                    <div class="card mb-2 shadow-none border">
+                        <div class="p-2">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <div class="avatar-sm">
+                                        <span class="avatar-title bg-primary-lighten text-primary rounded">
+                                            .PDF
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col pl-0">
+                                    <a href="{% url 'backoffice:company_regulations:preview' file.id %}" target="_blank" class="text-muted font-weight-bold">{{ file.document.subject }} - {{ forloop.counter }}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <h5 class="text-center p-2">No File</h5>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+    <div class="col-lg-8">
+
+        <div class="card">
+            <div class="card-body">
+
+                <h3>General Information <small><span class="{{ document.record_status_class }}">{{ document.is_active|yesno:'Active, Inactive' }}</span></small></h3>
+                <hr />
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <h6 class="font-14">Number :</h6>
+                            <p># {{ document.number }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="font-14">Subject :</h6>
+                        <p>{{ document.subject }}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <h6 class="font-14">Effective Date :</h6>
+                            <p>{{ document.effective_date|date:'d M Y' }}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <h6 class="font-14">Category :</h6>
+                            <p>{{ document.get_category_display }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h6 class="font-14">Description :</h6>
+                        <p>{{ document.description|default:'-' }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+{% endblock %}
