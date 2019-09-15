@@ -10,7 +10,8 @@ from django.shortcuts import render, redirect, reverse, get_object_or_404
 from document_management.apps.documents.models import Document, DocumentFile
 from document_management.core.decorators import legal_required
 
-from .forms import CompanyRegulationForm, ChangeRecordStatusForm
+from .forms import (CompanyRegulationForm, ChangeRecordStatusForm, UploadForm,
+                    ChangeStatusForm)
 
 
 @login_required
@@ -145,16 +146,59 @@ def details(request, id):
 
 @legal_required
 def upload(request, id):
+    document = get_object_or_404(
+        Document.objects.filter(is_active=True), id=id
+    )
+
+    if document.status == Document.STATUS.done:
+        messages.error(request, "Document # %s status has already done" % (document.number))
+        return redirect(reverse("backoffice:company_regulations:details", args=[document.id]))
+
+    form = UploadForm(data=request.POST or None, files=request.FILES or None,
+                      document=document, user=request.user)
+
+    if form.is_valid():
+        form.save()
+        messages.success(request, "Document # %s files has already uploaded" %
+                         (document.number))
+        return redirect(reverse("backoffice:company_regulations:details", args=[document.id]))
+
     context = {
-        'title': 'Upload Company Regulation'
+        'title': 'Upload Company Regulation',
+        'document': document,
+        'form': form
     }
-    return render(request, 'company_regulations/details.html', context)
+    return render(request, 'company_regulations/upload.html', context)
 
 
 @legal_required
 def change_status(request, id):
+    document = get_object_or_404(
+        Document.objects.filter(is_active=True), id=id
+    )
+
+    if document.status == Document.STATUS.done:
+        messages.error(request, "Document # %s status has already done" % (document.number))
+        return redirect(reverse("backoffice:company_regulations:details", args=[document.id]))
+
+    initial = {
+        'status': document.status
+    }
+
+    form = ChangeStatusForm(data=request.POST or None, initial=initial,
+                            document=document, user=request.user)
+
+    if form.is_valid():
+        form.save()
+        messages.success(request, "Document # %s status has been changed into %s" %
+                         (document.number, document.get_status_display().upper()))
+        return redirect(reverse("backoffice:company_regulations:details",
+                        args=[document.id]))
+
     context = {
-        'title': 'Change Status Company Regulation'
+        'title': 'Change Status Company Regulation',
+        'form': form,
+        'document': document
     }
     return render(request, 'company_regulations/change_status.html', context)
 

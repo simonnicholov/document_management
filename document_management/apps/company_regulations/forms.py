@@ -1,10 +1,12 @@
 from django import forms
 from django.conf import settings
+from django.core.validators import FileExtensionValidator
 from django.utils import timezone
 
 from document_management.apps.documents.models import (Document, DocumentLogs)
 from document_management.core.attributes import get_select_attribute
-from document_management.core.choices import COMPANY_CATEGORY
+from document_management.core.choices import COMPANY_CATEGORY, STATUS
+from document_management.core.dictionaries import DICT_STATUSES
 
 
 select_widget = get_select_attribute()
@@ -95,5 +97,63 @@ class ChangeRecordStatusForm(forms.Form):
                                     updated_date=updated_date)
 
         self.document.save(update_fields=['is_active'])
+
+        return self.document
+
+
+class ChangeStatusForm(forms.Form):
+    status = forms.ChoiceField(choices=STATUS, widget=select_widget)
+    reason = forms.CharField(widget=forms.Textarea())
+
+    def __init__(self, document, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.document = document
+        self.user = user
+
+    def clean_status(self):
+        if int(self.cleaned_data['status']) == self.document.status:
+            raise forms.ValidationError("Please select status first",
+                                        code="selected_is_required")
+        return self.cleaned_data['status']
+
+    def save(self, *args, **kwargs):
+        reason = self.cleaned_data['reason']
+        action = DocumentLogs.ACTION.update_company_regulation_status
+        value = DICT_STATUSES[self.cleaned_data['status']]
+        updated_by = self.user
+        updated_date = timezone.now()
+
+        DocumentLogs.objects.create(document_id=self.document.id,
+                                    document_subject=self.document.subject,
+                                    reason=reason,
+                                    action=action,
+                                    value=value,
+                                    updated_by=updated_by,
+                                    updated_date=updated_date)
+
+        self.document.status = int(self.cleaned_data['status'])
+        self.document.save(update_fields=['status'])
+
+        return self.document
+
+
+class UploadForm(forms.Form):
+    file = forms.FileField(validators=[FileExtensionValidator(allowed_extensions=['pdf'])])
+
+    def __init__(self, document, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.document = document
+        self.user = user
+
+    def save(self, *args, **kwargs):
+        self.document.files.create(file=self.cleaned_data['file'])
+        self.document.total_document = self.document.total_document + 1
+        self.document.save(update_fields=['total_document'])
+
+        DocumentLogs.objects.create(document_id=self.document.id,
+                                    document_subject=self.document.subject,
+                                    action=DocumentLogs.ACTION.upload_company_regulation_file,
+                                    updated_by=self.user,
+                                    updated_date=timezone.now())
 
         return self.document
