@@ -10,7 +10,7 @@ from django.shortcuts import render, redirect, reverse, get_object_or_404
 from document_management.apps.documents.models import Document, DocumentFile
 from document_management.core.decorators import legal_required
 
-from .forms import CompanyRegulationForm
+from .forms import CompanyRegulationForm, ChangeRecordStatusForm
 
 
 @login_required
@@ -80,8 +80,34 @@ def add(request):
 
 @legal_required
 def edit(request, id):
+    document = get_object_or_404(
+        Document.objects.filter(is_active=True), id=id
+    )
+
+    if document.status == Document.STATUS.done:
+        messages.error(request, "Document # %s status has already done" % (document.number))
+        return redirect(reverse("backoffice:company_regulations:details", args=[document.id]))
+
+    initial = {
+        'number': document.number,
+        'subject': document.subject,
+        'category': document.category,
+        'description': document.description,
+        'effective_date': document.effective_date.strftime("%Y-%m-%d")
+    }
+
+    form = CompanyRegulationForm(data=request.POST or None, initial=initial,
+                                 user=request.user)
+
+    if form.is_valid():
+        form.save()
+        messages.success(request, f'{document.number} has been updated')
+        return redirect(reverse('backoffice:company_regulations:details', args=[document.id]))
+
     context = {
-        'title': 'Edit Company Regulation'
+        'title': 'Edit Company Regulation',
+        'document': document,
+        'form': form
     }
     return render(request, 'company_regulations/edit.html', context)
 
@@ -97,8 +123,7 @@ def delete(request, id):
 @login_required
 def details(request, id):
     document = get_object_or_404(
-        Document.objects.select_related('partner', 'location')
-                .filter(group=settings.GROUP_COMPANY_REGULATION), id=id
+        Document.objects.filter(group=settings.GROUP_COMPANY_REGULATION), id=id
     )
 
     if request.user.get_role_id() == settings.ROLE_USER_ID and \
@@ -136,10 +161,26 @@ def change_status(request, id):
 
 @legal_required
 def change_record_status(request, id):
-    context = {
-        'title': 'Change Record status Company Regulation'
-    }
-    return render(request, 'company_regulations/change_status.html', context)
+    document = get_object_or_404(Document, id=id)
+
+    if document.status == Document.STATUS.done:
+        messages.error(request, "Document # %s status has already done" % (document.number))
+        return redirect(reverse("backoffice:company_regulations:details", args=[document.id]))
+
+    form = ChangeRecordStatusForm(document=document, user=request.user)
+
+    if form.is_valid():
+        document = form.save()
+
+        if document.is_active:
+            string_status = "activated"
+        else:
+            string_status = "deactivated"
+
+        messages.success(request, "Document # %s has been %s" % (document.number, string_status))
+        return redirect("backoffice:company_regulations:index")
+
+    return redirect("backoffice:company_regulations:index")
 
 
 @login_required
@@ -150,4 +191,4 @@ def preview(request, id):
         'title': 'Preview Contract',
         'document_file': document_file
     }
-    return render(request, 'contracts/preview.html', context)
+    return render(request, 'company_regulations/preview.html', context)
