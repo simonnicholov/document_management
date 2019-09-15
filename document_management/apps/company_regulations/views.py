@@ -146,7 +146,6 @@ def details(request, id):
 
 @legal_required
 def upload(request, id):
-    print('call upload')
     document = get_object_or_404(
         Document.objects.filter(is_active=True), id=id
     )
