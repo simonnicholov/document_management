@@ -12,7 +12,7 @@
                         {% include '_includes/breadcrumb.html' %}
                     </li>
                     <li class="breadcrumb-item"><a href="{% url 'backoffice:mous:index' %}">MoUs</a></li>
-                    <li class="breadcrumb-item"><a href="{% url 'backoffice:mous:details' 1 %}">Details</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'backoffice:mous:details' document.id %}">Details</a></li>
                     <li class="breadcrumb-item active">Upload</li>
                 </ol>
             </div>
