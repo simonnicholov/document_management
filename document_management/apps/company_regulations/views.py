@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, reverse, get_object_or_404
 
 from document_management.apps.documents.models import Document, DocumentFile
 from document_management.core.decorators import legal_required
@@ -96,8 +96,24 @@ def delete(request, id):
 
 @login_required
 def details(request, id):
+    document = get_object_or_404(
+        Document.objects.select_related('partner', 'location')
+                .filter(group=settings.GROUP_COMPANY_REGULATION), id=id
+    )
+
+    if request.user.get_role_id() == settings.ROLE_USER_ID and \
+       document.type == Document.TYPE.private:
+        messages.error(request, "You do not have an access, but you can request an access.")
+        return redirect(reverse("backoffice:permission_requests:requests", args=[document.id, document.group]))
+
+    if document.is_active:
+        document.record_status_class = "badge badge-success p-1 ml-1"
+    else:
+        document.record_status_class = "badge badge-danger p-1 ml-1"
+
     context = {
-        'title': 'Details Company Regulation'
+        'title': 'Details Company Regulation',
+        'document': document
     }
     return render(request, 'company_regulations/details.html', context)
 
