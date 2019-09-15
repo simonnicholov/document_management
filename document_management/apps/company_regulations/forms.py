@@ -64,3 +64,36 @@ class CompanyRegulationForm(forms.Form):
                                     updated_date=timezone.now())
 
         return document
+
+
+class ChangeRecordStatusForm(forms.Form):
+
+    def __init__(self, document, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.document = document
+        self.user = user
+
+    def is_valid(self):
+        return True
+
+    def save(self, *args, **kwargs):
+        if self.document.is_active:
+            self.document.is_active = False
+        else:
+            self.document.is_active = True
+
+        updated_by = self.user
+        updated_date = timezone.now()
+        action = DocumentLogs.ACTION.update_company_regulation_record_status
+        value = self.document.is_active
+
+        DocumentLogs.objects.create(document_id=self.document.id,
+                                    document_subject=self.document.subject,
+                                    action=action,
+                                    value=value,
+                                    updated_by=updated_by,
+                                    updated_date=updated_date)
+
+        self.document.save(update_fields=['is_active'])
+
+        return self.document
