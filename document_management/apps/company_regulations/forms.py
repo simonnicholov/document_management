@@ -129,7 +129,6 @@ class DeleteForm(forms.Form):
         return document_number
 
 
-
 class ChangeStatusForm(forms.Form):
     status = forms.ChoiceField(choices=STATUS, widget=select_widget)
     reason = forms.CharField(widget=forms.Textarea())
