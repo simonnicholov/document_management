@@ -9,8 +9,8 @@ from document_management.core.utils import FilenameGenerator
 class OfficialRecord(models.Model):
     document = models.ForeignKey('documents.Document', related_name="official_records",
                                  on_delete=models.CASCADE)
-    number = models.CharField(max_length=32, unique=True)
-    subject = models.CharField(max_length=64)
+    number = models.CharField(max_length=64, unique=True, db_index=True)
+    subject = models.CharField(max_length=256)
     signature_date = models.DateField(blank=True, null=True)
     effective_date = models.DateField(blank=True, null=True)
     expired_date = models.DateField(blank=True, null=True)
