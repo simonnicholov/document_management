@@ -40,8 +40,8 @@ class Document(models.Model):
                                 on_delete=models.CASCADE, blank=True, null=True)
     location = models.ForeignKey('locations.Location', related_name="documents",
                                  on_delete=models.CASCADE, blank=True, null=True)
-    number = models.CharField(max_length=32, unique=True, db_index=True)
-    subject = models.CharField(max_length=64)
+    number = models.CharField(max_length=64, unique=True, db_index=True)
+    subject = models.CharField(max_length=256)
     signature_date = models.DateField(blank=True, null=True)
     effective_date = models.DateField(blank=True, null=True)
     expired_date = models.DateField(blank=True, null=True)
