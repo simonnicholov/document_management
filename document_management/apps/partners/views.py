@@ -8,7 +8,7 @@ def index(request):
     name = request.GET.get('name', '')
     director = int(request.GET.get('director', ''))
     business_sector = int(request.GET.get('business_sector', 0))
-    status = int(request.GET.get('status', 0))
+    status = int(request.GET.get('status', -1))
 
     partners = Partner.objects.all()
 
