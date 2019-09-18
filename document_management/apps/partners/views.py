@@ -5,9 +5,9 @@ from document_management.apps.partners.models import Partner
 
 
 def index(request):
-    name = request.GET.get('query', '')
-    director = int(request.GET.get('category', 0))
-    business_sector = int(request.GET.get('type', 0))
+    name = request.GET.get('name', '')
+    director = int(request.GET.get('director', ''))
+    business_sector = int(request.GET.get('business_sector', 0))
     status = int(request.GET.get('status', 0))
 
     partners = Partner.objects.all()
