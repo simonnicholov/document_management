@@ -25,7 +25,7 @@ class PartnerForm(forms.Form):
         self.user = user
 
     def clean_business_sector(self):
-        if self.cleaned_data['business_sector'] == BUSINESS_SECTOR.select:
+        if int(self.cleaned_data['business_sector']) == BUSINESS_SECTOR.select:
             raise forms.ValidationError("Please select business sector first",
                                         code="selected_is_required")
         return self.cleaned_data['business_sector']
