@@ -3,117 +3,154 @@
 {% load static%}
 
 {% block content_page %}
-<div class="container-fluid pb-4">
-
-    <div class="row">
-        <div class="col-12">
-            <div class="page-title-box">
-                <div class="page-title-right">
-                    <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item">
-                            {% include '_includes/breadcrumb.html' %}
-                        </li>
-                        <li class="breadcrumb-item"><a href="{% url 'backoffice:partners:index' %}">Partner</a></li>
-                        <li class="breadcrumb-item active">Detail</li>
-                    </ol>
-                </div>
-                <h4 class="page-title">Detail Partner</h4>
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item">
+                        {% include '_includes/breadcrumb.html' %}
+                    </li>
+                    <li class="breadcrumb-item"><a href="{% url 'backoffice:partners:index' %}">Partners</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'backoffice:partners:details' partner.id %}">Detail</a></li>
+                    <li class="breadcrumb-item active"># {{ partner.name }}</li>
+                </ol>
             </div>
+            <h4 class="page-title">Detail Partner</h4>
         </div>
     </div>
+</div>
 
-    <div class="row">
-        <div class="col-12">
-
-            <div class="card">
-                <div class="card-body">
-
-                    <h3>General Information</h3>
-                    <hr />
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group mb-3">
-                                <h6 class="font-14">Nama :</h6>
-                                <p>PT Mega Maju Selalu</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group mb-3">
-                                <h6 class="font-14">Bidang :</h6>
-                                <p>Kontraktor</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group mb-3">
-                                <h6 class="font-14">Direktur Utama :</h6>
-                                <p>John Doe</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group mb-3">
-                                <h6 class="font-14">Perwakilan :</h6>
-                                <p>Michael Page</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h6 class="font-14">Alamat :</h6>
-                            <p>Jalan Permata Hijau Boulevard 3 No 18C</p>
-                        </div>
-                    </div>
-
-                    <h3 class="mt-3">Legal Information</h3>
-                    <hr />
-
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group mb-3">
-                                <h6 class="font-14">NPWP :</h6>
-                                <p>85737634813247</p>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group mb-3">
-                                <h6 class="font-14">SIUP :</h6>
-                                <p>85N87324N8711</p>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group mb-3">
-                                <h6 class="font-14">PTKP :</h6>
-                                <p>995M392N491345</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <h3 class="mt-3">Contact Information</h3>
-                    <hr />
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group mb-3">
-                                <h6 class="font-14">Telephone :</h6>
-                                <p>0215650110</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group mb-3">
-                                <h6 class="font-14">Fax :</h6>
-                                <p>0215600101</p>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
+{% if not partner.is_active %}
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="alert alert-info alert-dismissible bg-warning text-white border-0 fade show" role="alert">
+            <strong>INFO !</strong>&nbsp;&nbsp; Partner is not active !
         </div>
+    </div>
+</div>
+{% endif %}
+
+<div class="row {% if partner.is_active %}mt-3{% endif %} mb-2">
+    <div class="col-lg-12 mb-2 text-center">
+        <a href="{% url 'backoffice:partners:index' %}" class="btn btn-outline-secondary btn-rounded m-1">
+            <i class="mdi mdi-arrow-left-thick"></i>
+            Go Back
+        </a>
+        <a href="{% url 'backoffice:partners:edit' partner.id %}" class="btn btn-outline-primary btn-rounded m-1">
+            <i class="mdi mdi-pencil"></i>
+            Edit
+        </a>
+        {% if partner.is_active %}
+            <a href="{% url 'backoffice:partners:change_record_status' partner.id %}" class="btn btn-outline-danger btn-rounded m-1">
+                <i class="mdi mdi-trash-can"></i>
+                Deactivate
+            </a>
+        {% endif %}
+        {% if not partner.is_active %}
+            <a href="{% url 'backoffice:partners:change_record_status' partner.id %}" class="btn btn-outline-success btn-rounded m-1">
+                <i class="mdi mdi-trash-can"></i>
+                Activate
+            </a>
+        {% endif %}
+        <a href="{% url 'backoffice:partners:delete' partner.id %}" class="btn btn-outline-danger btn-rounded m-1">
+            <i class="mdi mdi-trash-can"></i>
+            Delete
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+
+        <div class="card">
+            <div class="card-body">
+
+                    <h3>General Information <small><span class="{{ partner.record_status_class }}">{{ partner.is_active|yesno:'Active, Inactive' }}</span></small></h3>
+                <hr />
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <h6 class="font-14">Name :</h6>
+                            <p>{{ partner.name }}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <h6 class="font-14">Director :</h6>
+                            <p>{{ partner.director }}}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <h6 class="font-14">Business Sector :</h6>
+                            <p>{{ partner.get_business_sector_display }}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <h6 class="font-14">Person In Charge :</h6>
+                            <p>{{ partner.person_in_charge|default:'-' }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <h6 class="font-14">Alamat :</h6>
+                        <p>{{ partner.address|default:'-' }}</p>
+                    </div>
+                </div>
+
+                <h3 class="mt-3">Legal Information</h3>
+                <hr />
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group mb-3">
+                            <h6 class="font-14">NPWP :</h6>
+                            <p>{{ partner.npwp|default:'-' }}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group mb-3">
+                            <h6 class="font-14">SIUP :</h6>
+                            <p>{{ partner.siup|default:'-' }}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group mb-3">
+                            <h6 class="font-14">PTKP :</h6>
+                            <p>{{ partner.ptkp|default:'-' }}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3 class="mt-3">Contact Information</h3>
+                <hr />
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <h6 class="font-14">Telephone :</h6>
+                            <p>{{ partner.telephone|default:'-' }}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <h6 class="font-14">Fax :</h6>
+                            <p>{{ partner.fax|default:'-' }}</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
     </div>
 </div>
 {% endblock %}
