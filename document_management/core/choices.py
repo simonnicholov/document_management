@@ -27,3 +27,18 @@ STATUS = Choices(
     (2, 'done', 'Done'),
     (3, 'expired', 'Expired'),
 )
+
+BUSINESS_SECTOR = Choices(
+    (0, 'select', '--- select ---'),
+    (1, 'aneka_industri', 'Aneka Industri'),
+    (2, 'barang_konsumsi', 'Barang Konsumsi'),
+    (3, 'industri_dasar_dan_kimia', 'Industri Dasar dan Kimia'),
+    (4, 'infrastruktur', 'Infrastruktur'),
+    (5, 'jasa', 'Jasa'),
+    (6, 'keuangan', 'Keuangan'),
+    (7, 'perdagangan', 'Perdagangan'),
+    (8, 'pertambangan', 'Pertambangan'),
+    (9, 'pertanian', 'Pertanian'),
+    (10, 'properti', 'Properti'),
+    (11, 'transportasi', 'Transportasi'),
+)

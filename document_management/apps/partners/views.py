@@ -1,12 +1,15 @@
+from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from document_management.apps.partners.models import Partner
+
+from .forms import PartnerForm
 
 
 def index(request):
     name = request.GET.get('name', '')
-    director = int(request.GET.get('director', ''))
+    director = request.GET.get('director', '')
     business_sector = int(request.GET.get('business_sector', 0))
     status = int(request.GET.get('status', -1))
 
@@ -57,8 +60,19 @@ def index(request):
 
 
 def add(request):
+    form = PartnerForm(data=request.POST or None, user=request.user)
+
+    if form.is_valid():
+        partner = form.save()
+        messages.success(request, f'{partner.name} has been added')
+        return redirect('backoffice:partners:index')
+    else:
+        if form.has_error('__all__'):
+            messages.error(request, form.non_field_errors()[0])
+
     context = {
-        'title': 'Add Partner'
+        'title': 'Add Partner',
+        'form': form
     }
     return render(request, 'partners/add.html', context)
 
