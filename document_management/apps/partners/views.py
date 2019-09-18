@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 from document_management.apps.partners.models import Partner
 
@@ -92,8 +92,16 @@ def delete(request, id):
 
 
 def details(request, id):
+    partner = get_object_or_404(Partner, id=id)
+
+    if partner.is_active:
+        partner.record_status_class = "badge badge-success p-1 ml-1"
+    else:
+        partner.record_status_class = "badge badge-danger p-1 ml-1"
+
     context = {
-        'title': 'Details Partner'
+        'title': 'Details Partner',
+        'partner': partner
     }
     return render(request, 'partners/details.html', context)
 
@@ -101,5 +109,12 @@ def details(request, id):
 def search(request):
     context = {
         'title': 'Search Partner'
+    }
+    return render(request, 'partners/search.html', context)
+
+
+def change_record_status(request):
+    context = {
+        'title': 'Change Record Status'
     }
     return render(request, 'partners/search.html', context)
