@@ -60,3 +60,23 @@ class PartnerForm(forms.Form):
                                                       defaults=defaults)
 
         return partner
+
+
+class ChangeRecordStatusForm(forms.Form):
+
+    def __init__(self, partner, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.partner = partner
+
+    def is_valid(self):
+        return True
+
+    def save(self, *args, **kwargs):
+        if self.partner.is_active:
+            self.partner.is_active = False
+        else:
+            self.partner.is_active = True
+
+        self.partner.save(update_fields=['is_active'])
+
+        return self.partner

@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect, reverse, get_object_or_404
 
 from document_management.apps.partners.models import Partner
 
-from .forms import PartnerForm
+from .forms import PartnerForm, ChangeRecordStatusForm
 
 
 def index(request):
@@ -139,8 +139,20 @@ def search(request):
     return render(request, 'partners/search.html', context)
 
 
-def change_record_status(request):
-    context = {
-        'title': 'Change Record Status'
-    }
-    return render(request, 'partners/search.html', context)
+def change_record_status(request, id):
+    partner = get_object_or_404(Partner, id=id)
+
+    form = ChangeRecordStatusForm(partner=partner)
+
+    if form.is_valid():
+        partner = form.save()
+
+        if partner.is_active:
+            string_status = "activated"
+        else:
+            string_status = "deactivated"
+
+        messages.success(request, "Partner # %s has been %s" % (partner.name, string_status))
+        return redirect("backoffice:partners:index")
+
+    return redirect("backoffice:partners:index")
