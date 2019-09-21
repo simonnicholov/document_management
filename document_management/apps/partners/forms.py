@@ -45,6 +45,7 @@ class PartnerForm(forms.Form):
         fax = self.cleaned_data['fax']
 
         defaults = {
+            'director': director,
             'business_sector': business_sector,
             'person_in_charge': person_in_charge,
             'address': address,
@@ -56,7 +57,6 @@ class PartnerForm(forms.Form):
         }
 
         partner, _ = Partner.objects.update_or_create(name=name,
-                                                      director=director,
                                                       defaults=defaults)
 
         return partner

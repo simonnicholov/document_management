@@ -99,8 +99,8 @@
                         <tr>
                             <td><a href="{% url 'backoffice:partners:details' partner.id %}"># {{ partner.name }}</a></td>
                             <td>{{ partner.director }}</td>
-                            <td>{{ partner.get_business_sector_display }}</td>
-                            <td><span class="{{ document.badge_is_active_class }}">{{ partner.get_is_active_display }}</span></td>
+                            <td>{{ partner.get_business_sector_display|default:'-' }}</td>
+                            <td><span class="{{ partner.badge_is_active_class }}">{{ partner.is_active|yesno:'Active,Inactive' }}</span></td>
                         </tr>
                     {% empty %}
                         <tr>
