@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, reverse, get_object_or_404
 
 from document_management.apps.partners.models import Partner
 
@@ -39,11 +39,11 @@ def index(request):
     except EmptyPage:
         page = paginator.page(paginator.num_pages)
 
-    for document in page.object_list:
-        if document.is_active:
-            document.badge_is_active_class = "badge badge-success p-1"
+    for partner in page.object_list:
+        if partner.is_active:
+            partner.badge_is_active_class = "badge badge-success p-1"
         else:
-            document.badge_is_active_class = "badge badge-danger p-1"
+            partner.badge_is_active_class = "badge badge-danger p-1"
 
     context = {
         'title': 'Partner',
@@ -78,8 +78,34 @@ def add(request):
 
 
 def edit(request, id):
+    partner = get_object_or_404(
+        Partner.objects.filter(is_active=True), id=id
+    )
+
+    initial = {
+        'name': partner.name,
+        'director': partner.director,
+        'person_in_charge': partner.person_in_charge,
+        'business_sector': partner.business_sector,
+        'address': partner.address,
+        'npwp': partner.npwp,
+        'siup': partner.siup,
+        'ptkp': partner.ptkp,
+        'telephone': partner.telephone,
+        'fax': partner.fax
+    }
+
+    form = PartnerForm(data=request.POST or None, initial=initial, user=request.user)
+
+    if form.is_valid():
+        form.save()
+        messages.success(request, f'{partner.name} has been updated')
+        return redirect(reverse('backoffice:partners:details', args=[partner.id]))
+
     context = {
-        'title': 'Edit Partner'
+        'title': 'Edit Partner',
+        'partner': partner,
+        'form': form
     }
     return render(request, 'partners/edit.html', context)
 

@@ -79,7 +79,7 @@
                     <div class="col-md-6">
                         <div class="form-group mb-3">
                             <h6 class="font-14">Director :</h6>
-                            <p>{{ partner.director }}}</p>
+                            <p>{{ partner.director }}</p>
                         </div>
                     </div>
                 </div>
@@ -88,7 +88,7 @@
                     <div class="col-md-6">
                         <div class="form-group mb-3">
                             <h6 class="font-14">Business Sector :</h6>
-                            <p>{{ partner.get_business_sector_display }}</p>
+                            <p>{{ partner.get_business_sector_display|default:'-' }}</p>
                         </div>
                     </div>
                     <div class="col-md-6">
