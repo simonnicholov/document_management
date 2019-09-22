@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect, reverse, get_object_or_404
 
 from document_management.apps.partners.models import Partner
 
-from .forms import PartnerForm, ChangeRecordStatusForm
+from .forms import PartnerForm, ChangeRecordStatusForm, DeleteForm
 
 
 def index(request):
@@ -111,8 +111,27 @@ def edit(request, id):
 
 
 def delete(request, id):
+    partner = get_object_or_404(Partner, id=id)
+
+    if not partner.is_active:
+        messages.error(request, "Partner # %s status is inactive, please activate before deleting"
+                                % (partner.name))
+        return redirect(reverse("backoffice:partners:details", args=[partner.id]))
+
+    form = DeleteForm(data=request.POST or None, partner=partner)
+
+    if form.is_valid():
+        partner_name = form.save()
+        messages.success(request, "Partner # %s has been deleted" % partner_name)
+        return redirect("backoffice:partners:index")
+    else:
+        if form.has_error('__all__'):
+            messages.error(request, form.non_field_errors()[0])
+
     context = {
-        'title': 'Delete Partner'
+        'title': 'Delete Partner',
+        'partner': partner,
+        'form': form
     }
     return render(request, 'partners/delete.html', context)
 

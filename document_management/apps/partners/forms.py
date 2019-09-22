@@ -1,5 +1,6 @@
 from django import forms
 
+from document_management.apps.documents.models import Document
 from document_management.apps.partners.models import Partner
 from document_management.core.attributes import get_select_attribute
 from document_management.core.choices import BUSINESS_SECTOR
@@ -80,3 +81,30 @@ class ChangeRecordStatusForm(forms.Form):
         self.partner.save(update_fields=['is_active'])
 
         return self.partner
+
+
+class DeleteForm(forms.Form):
+    reason = forms.CharField(widget=forms.Textarea())
+
+    def __init__(self, partner, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.partner = partner
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        if self.errors:
+            return cleaned_data
+
+        has_used = Document.objects.filter(partner=self.partner).exists()
+        if has_used:
+            raise forms.ValidationError("Delete partner is not allowed, because partner has already used.",
+                                        code="partner_has_used")
+
+        return cleaned_data
+
+    def save(self, *args, **kwargs):
+        partner_name = self.partner.name
+        self.partner.delete()
+
+        return partner_name
