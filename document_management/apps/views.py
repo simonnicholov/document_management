@@ -7,7 +7,6 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect
-from django.utils import timezone
 
 from document_management.apps.addendums.models import Addendum
 from document_management.apps.documents.models import Document
@@ -62,17 +61,12 @@ def dashboard_legal(request):
     today = datetime.now().date()
     next_month = today + relativedelta(months=+1)
     three_month = today + relativedelta(months=+3)
-    print(today)
-    print(next_month)
-    print(three_month)
 
     # 3 months expiration
     three_month_lists = document.filter(expired_date__range=(today, three_month))
-    print(three_month_lists)
 
     # monthly expiration
     next_month_lists = document.filter(expired_date__range=(today, next_month))
-    print(next_month_lists)
 
     context = {
         'title': 'Dashboard',
