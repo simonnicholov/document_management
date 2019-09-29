@@ -70,7 +70,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware'
 ]
 
 ROOT_URLCONF = 'document_management.urls'
@@ -220,7 +220,6 @@ EMPTY_LABEL = "--- select ---"
 
 MAX_VALIDATOR_AMOUNT = 10_000_000_000_000  # 10 Trilliun Rupiah
 MAX_VALIDATOR_TEXT = "10.000.000.000.000"
-
 
 try:
     from .settings_local import *  # noqa
