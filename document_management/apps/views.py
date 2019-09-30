@@ -86,8 +86,22 @@ def dashboard_legal(request):
 
 @user_required
 def dashboard_user(request):
+    requests = PermissionRequest.objects.filter(is_active=True)
+    total_request = requests.count()
+    total_pending = requests.filter(status=PermissionRequest.STATUS.request).count()
+    total_reject = requests.filter(status=PermissionRequest.STATUS.rejected).count()
+    total_approve = requests.filter(status=PermissionRequest.STATUS.approved).count()
+    list_requests = requests.select_related('document')\
+        .filter(status=PermissionRequest.STATUS.approved).order_by('-id')[:5]
+
     context = {
-        'title': 'Dashboard'
+        'title': 'Dashboard',
+        'PermissionRequest': PermissionRequest,
+        'list_requests': list_requests,
+        'total_request': total_request,
+        'total_pending': total_pending,
+        'total_reject': total_reject,
+        'total_approve': total_approve
     }
     return render(request, 'dashboard_user.html', context)
 
