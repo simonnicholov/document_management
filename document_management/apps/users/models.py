@@ -1,4 +1,3 @@
-from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserManager
