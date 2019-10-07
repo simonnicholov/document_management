@@ -24,7 +24,7 @@ class PermissionRequest(models.Model):
     has_viewed = models.BooleanField(default=False)
     viewed_date = models.DateTimeField(blank=True, null=True)
 
-    user = models.ForeignKey('users.User', related_name='user_request',
+    user = models.ForeignKey('users.User', related_name='user_requests',
                              on_delete=models.CASCADE)
 
     is_active = models.BooleanField('active', default=True)

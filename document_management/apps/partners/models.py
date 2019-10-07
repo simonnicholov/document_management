@@ -19,16 +19,16 @@ class Partner(models.Model):
         (11, 'transportasi', 'Transportasi'),
     )
 
-    name = models.CharField(max_length=32, unique=True, db_index=True)
+    name = models.CharField(max_length=64, unique=True, db_index=True)
     director = models.CharField(max_length=64, blank=True, null=True)
     person_in_charge = models.CharField(max_length=64, blank=True, null=True)
     business_sector = models.PositiveSmallIntegerField(choices=BUSINESS_SECTOR, blank=True, null=True)
     address = models.CharField(max_length=256)
-    npwp = models.CharField(max_length=32)
-    siup = models.CharField(max_length=32)
-    ptkp = models.CharField(max_length=32)
-    telephone = models.CharField(max_length=32)
-    fax = models.CharField(max_length=32)
+    npwp = models.CharField(max_length=32, blank=True, null=True)
+    siup = models.CharField(max_length=32, blank=True, null=True)
+    ptkp = models.CharField(max_length=32, blank=True, null=True)
+    telephone = models.CharField(max_length=32, blank=True, null=True)
+    fax = models.CharField(max_length=32, blank=True, null=True)
     is_active = models.BooleanField('active', default=True)
     created = AutoCreatedField()
 

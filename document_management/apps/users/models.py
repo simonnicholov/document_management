@@ -1,6 +1,11 @@
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
+
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserManager
 from django.db import models
 from django.utils import timezone
+
+from document_management.apps.permission_requests.models import PermissionRequest
 
 
 class CustomUserManager(UserManager):
@@ -56,3 +61,26 @@ class User(AbstractBaseUser, PermissionsMixin):
         if self.role:
             return self.role.name
         return None
+
+    def has_permission(self, document_id):
+        user_request = self.user_requests\
+            .filter(document__id=document_id, status=PermissionRequest.STATUS.approved)
+        action_date = user_request.first().action_date + relativedelta(days=+1)
+        today = timezone.now()
+
+        if not user_request.exists():
+            return False
+
+        if today > action_date:
+            viewed_date = user_request.viewed_date + relativedelta(days=+1)
+
+            if not user_request.has_viewed:
+                user_request.has_viewed = True
+                user_request.viewed_date = timezone.now()
+                user_request.save(update_fields=['has_viewed', 'viewed_date'])
+                return True
+            elif today < viewed_date:
+                return True
+
+            return False
+        return True

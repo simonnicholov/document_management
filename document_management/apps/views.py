@@ -56,7 +56,7 @@ def dashboard_legal(request):
     total_company_regulation = document.filter(group=settings.GROUP_COMPANY_REGULATION).count()
 
     total_addendum = Addendum.objects.filter(is_active=True).count()
-    total_approval = PermissionRequest.objects.all().count()
+    total_approval = PermissionRequest.objects.filter(status=PermissionRequest.STATUS.request).count()
 
     today = datetime.now().date()
     next_month = today + relativedelta(months=+1)

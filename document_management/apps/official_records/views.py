@@ -102,10 +102,13 @@ def unrelated_details(request, id):
                 .filter(group=settings.GROUP_OFFICIAL_RECORD), id=id
     )
 
-    if request.user.get_role_id() == settings.ROLE_USER_ID and \
+    user = request.user
+    if user.get_role_id() == settings.ROLE_USER_ID and \
        document.type == Document.TYPE.private:
-        messages.error(request, "You do not have an access, but you can request an access.")
-        return redirect(reverse("backoffice:permission_requests:requests", args=[document.id, document.group]))
+        if not user.has_permission(id):
+            messages.error(request, "You do not have an access, but you can request an access.")
+            return redirect(reverse("backoffice:permission_requests:requests",
+                                    args=[document.id, document.group]))
 
     if document.type == Document.TYPE.private:
         document.badge_type_class = "badge badge-danger p-1"
@@ -400,10 +403,13 @@ def related_details(request, id=None):
         OfficialRecord.objects.select_related('document'), id=id
     )
 
-    if request.user.get_role_id() == settings.ROLE_USER_ID and \
+    user = request.user
+    if user.get_role_id() == settings.ROLE_USER_ID and \
        official_record.document.type == Document.TYPE.private:
-        messages.error(request, "You do not have an access, but you can request an access to the document first.")
-        return redirect("backoffice:permission_requests")
+        if not user.has_permission(id):
+            messages.error(request, "You do not have an access, but you can request an access to the document first.")
+            return redirect(reverse("backoffice:permission_requests:requests",
+                                    args=[official_record.document.id, official_record.document.group]))
 
     if official_record.is_active:
         official_record.record_status_class = "badge badge-success p-1 ml-1"

@@ -86,10 +86,13 @@ def details(request, id):
         Addendum.objects.select_related('document'), id=id
     )
 
-    if request.user.get_role_id() == settings.ROLE_USER_ID and \
+    user = request.user
+    if user.get_role_id() == settings.ROLE_USER_ID and \
        addendum.document.type == Document.TYPE.private:
-        messages.error(request, "You do not have an access, but you can request an access to the document first.")
-        return redirect("backoffice:permission_requests")
+        if not user.has_permission(id):
+            messages.error(request, "You do not have an access, but you can request an access.")
+            return redirect(reverse("backoffice:permission_requests:requests",
+                                    args=[addendum.document.id, addendum.document.group]))
 
     if addendum.is_active:
         addendum.record_status_class = "badge badge-success p-1 ml-1"
