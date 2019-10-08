@@ -89,7 +89,7 @@ def details(request, id):
     user = request.user
     if user.get_role_id() == settings.ROLE_USER_ID and \
        addendum.document.type == Document.TYPE.private:
-        if not user.has_permission(id):
+        if not user.has_permission(addendum.document.id):
             messages.error(request, "You do not have an access, but you can request an access.")
             return redirect(reverse("backoffice:permission_requests:requests",
                                     args=[addendum.document.id, addendum.document.group]))

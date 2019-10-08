@@ -406,7 +406,7 @@ def related_details(request, id=None):
     user = request.user
     if user.get_role_id() == settings.ROLE_USER_ID and \
        official_record.document.type == Document.TYPE.private:
-        if not user.has_permission(id):
+        if not user.has_permission(official_record.document.id):
             messages.error(request, "You do not have an access, but you can request an access to the document first.")
             return redirect(reverse("backoffice:permission_requests:requests",
                                     args=[official_record.document.id, official_record.document.group]))

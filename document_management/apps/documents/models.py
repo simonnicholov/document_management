@@ -67,7 +67,7 @@ class Document(models.Model):
         return f"Number ({self.number}) : {self.subject}"
 
     def validate_request_permission(self, user: User) -> bool:
-        return self.permission_requests.all()\
+        return self.permission_requests\
             .filter(user=user, status=PermissionRequest.STATUS.request).exists()
 
 

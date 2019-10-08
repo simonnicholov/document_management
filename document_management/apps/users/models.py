@@ -64,11 +64,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     def has_permission(self, document_id):
         user_request = self.user_requests\
             .filter(document__id=document_id, status=PermissionRequest.STATUS.approved)
-        action_date = user_request.first().action_date + relativedelta(days=+1)
-        today = timezone.now()
 
         if not user_request.exists():
             return False
+
+        action_date = user_request.first().action_date + relativedelta(days=+1)
+        today = timezone.now()
 
         if today > action_date:
             viewed_date = user_request.viewed_date + relativedelta(days=+1)
