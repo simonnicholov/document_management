@@ -176,10 +176,12 @@ def details(request, id):
                 .filter(group=settings.GROUP_CONTRACT), id=id
     )
 
-    if request.user.get_role_id() == settings.ROLE_USER_ID and \
+    user = request.user
+    if user.get_role_id() == settings.ROLE_USER_ID and \
        document.type == Document.TYPE.private:
-        messages.error(request, "You do not have an access, but you can request an access.")
-        return redirect(reverse("backoffice:permission_requests:requests", args=[document.id, document.group]))
+        if not user.has_permission(id):
+            messages.error(request, "You do not have an access, but you can request an access.")
+            return redirect(reverse("backoffice:permission_requests:requests", args=[document.id, document.group]))
 
     if document.type == Document.TYPE.private:
         document.badge_type_class = "badge badge-danger p-1"

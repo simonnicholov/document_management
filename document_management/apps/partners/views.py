@@ -3,10 +3,12 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 
 from document_management.apps.partners.models import Partner
+from document_management.core.decorators import legal_required
 
 from .forms import PartnerForm, ChangeRecordStatusForm, DeleteForm
 
 
+@legal_required
 def index(request):
     name = request.GET.get('name', '')
     director = request.GET.get('director', '')
@@ -59,6 +61,7 @@ def index(request):
     return render(request, 'partners/index.html', context)
 
 
+@legal_required
 def add(request):
     form = PartnerForm(data=request.POST or None, user=request.user)
 
@@ -77,6 +80,7 @@ def add(request):
     return render(request, 'partners/add.html', context)
 
 
+@legal_required
 def edit(request, id):
     partner = get_object_or_404(
         Partner.objects.filter(is_active=True), id=id
@@ -110,6 +114,7 @@ def edit(request, id):
     return render(request, 'partners/edit.html', context)
 
 
+@legal_required
 def delete(request, id):
     partner = get_object_or_404(Partner, id=id)
 
@@ -136,6 +141,7 @@ def delete(request, id):
     return render(request, 'partners/delete.html', context)
 
 
+@legal_required
 def details(request, id):
     partner = get_object_or_404(Partner, id=id)
 
@@ -151,6 +157,7 @@ def details(request, id):
     return render(request, 'partners/details.html', context)
 
 
+@legal_required
 def search(request):
     context = {
         'title': 'Search Partner'
@@ -158,6 +165,7 @@ def search(request):
     return render(request, 'partners/search.html', context)
 
 
+@legal_required
 def change_record_status(request, id):
     partner = get_object_or_404(Partner, id=id)
 
