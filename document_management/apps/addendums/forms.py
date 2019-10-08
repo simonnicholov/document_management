@@ -24,16 +24,25 @@ class AddendumForm(forms.Form):
     job_specification = forms.CharField(max_length=256)
     retention_period = forms.IntegerField(min_value=1, max_value=7300, required=False)
 
-    def __init__(self, document, user, *args, **kwargs):
+    def __init__(self, document, user, is_update=False, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.document = document
         self.user = user
+        self.is_update = is_update
 
     def clean(self):
         cleaned_data = super().clean()
 
         if self.errors:
             return cleaned_data
+
+        if not self.is_update:
+            addendum_exist = Addendum.objects.filter(document=self.document,
+                                                     number=cleaned_data['number']).exists()
+            if addendum_exist:
+                raise forms.ValidationError("Number addendum has already used. "
+                                            "Please check number correctly.",
+                                            code="number_has_already_used")
 
         addendum_signature_date = cleaned_data['signature_date']
         addendum_effective_date = cleaned_data['effective_date']

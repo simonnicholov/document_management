@@ -22,7 +22,7 @@
     </div>
 </div>
 
-{% if request.user.get_role_id != ROLE_USER_ID %}
+{% if not request.user.get_role_id == ROLE_USER_ID %}
 <div class="row mt-3 mb-2">
     <div class="col-md-12 text-center">
         <a href="{% url 'backoffice:official_records:unrelated_add' %}">

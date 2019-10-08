@@ -33,10 +33,12 @@
                 Back to {{ document.get_group_display }}
             </a>
         {% endif %}
+        {% if not request.user.get_role_id == ROLE_USER_ID %}
         <a href="{% url 'backoffice:addendums:add' document.id %}" class="btn btn-danger btn-rounded m-1 mb-3">
             <i class="mdi mdi-plus"></i>
             Create Addendums
         </a>
+        {% endif %}
     </div>
 </div>
 
