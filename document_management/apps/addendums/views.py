@@ -168,7 +168,7 @@ def edit(request, id):
     }
 
     form = AddendumForm(data=request.POST or None, initial=initial,
-                        document=addendum.document, user=request.user)
+                        document=addendum.document, user=request.user, is_update=True)
 
     if form.is_valid():
         form.save()
