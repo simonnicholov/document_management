@@ -63,23 +63,24 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def has_permission(self, document_id):
         user_request = self.user_requests\
-            .filter(document__id=document_id, status=PermissionRequest.STATUS.approved)
+            .filter(document__id=document_id, status=PermissionRequest.STATUS.approved).first()
 
-        if not user_request.exists():
+        if not user_request:
             return False
 
-        action_date = user_request.first().action_date + relativedelta(days=+1)
+        action_date = user_request.action_date + relativedelta(days=+1)
         today = timezone.now()
 
         if today > action_date:
-            viewed_date = user_request.viewed_date + relativedelta(days=+1)
-
-            if not user_request.has_viewed:
+            if not user_request.viewed_date:
                 user_request.has_viewed = True
                 user_request.viewed_date = timezone.now()
                 user_request.save(update_fields=['has_viewed', 'viewed_date'])
                 return True
-            elif today < viewed_date:
+            else:
+                viewed_date = user_request.viewed_date + relativedelta(days=+1)
+
+            if today < viewed_date:
                 return True
 
             return False
