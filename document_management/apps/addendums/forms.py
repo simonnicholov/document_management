@@ -40,7 +40,7 @@ class AddendumForm(forms.Form):
             addendum_exist = Addendum.objects.filter(document=self.document,
                                                      number=cleaned_data['number']).exists()
             if addendum_exist:
-                raise forms.ValidationError("Number of addendum has already used. "
+                raise forms.ValidationError("Number of Addendum has already used. "
                                             "Please check number correctly.",
                                             code="number_has_already_used")
 
