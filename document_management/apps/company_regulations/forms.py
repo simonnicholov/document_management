@@ -19,9 +19,10 @@ class CompanyRegulationForm(forms.Form):
     category = forms.ChoiceField(choices=COMPANY_CATEGORY, widget=select_widget)
     description = forms.CharField(widget=forms.Textarea(), required=False)
 
-    def __init__(self, user, *args, **kwargs):
+    def __init__(self, user, is_update=False, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.user = user
+        self.is_update = is_update
 
     def clean_category(self):
         if self.cleaned_data['category'] == "0":
