@@ -31,6 +31,20 @@ class PartnerForm(forms.Form):
                                         code="selected_is_required")
         return self.cleaned_data['business_sector']
 
+    def clean(self):
+        cleaned_data = super().clean()
+
+        if self.errors:
+            return cleaned_data
+
+        if not self.is_update:
+            if Document.objects.filter(number=cleaned_data['number']).exists():
+                raise forms.ValidationError("Number of Partner has already used. "
+                                            "Please check number correctly.",
+                                            code="number_has_already_used")
+
+        return cleaned_data
+
     def save(self, *args, **kwargs):
         name = self.cleaned_data['name']
         director = self.cleaned_data['director']

@@ -67,7 +67,7 @@ class ContractForm(forms.Form):
 
         if not self.is_update:
             if Document.objects.filter(number=cleaned_data['number']).exists():
-                raise forms.ValidationError("Number contract has already used. "
+                raise forms.ValidationError("Number of Contract has already used. "
                                             "Please check number correctly.",
                                             code="number_has_already_used")
 

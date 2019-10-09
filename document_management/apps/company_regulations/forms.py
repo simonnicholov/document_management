@@ -29,6 +29,20 @@ class CompanyRegulationForm(forms.Form):
 
         return self.cleaned_data['category']
 
+    def clean(self):
+        cleaned_data = super().clean()
+
+        if self.errors:
+            return cleaned_data
+
+        if not self.is_update:
+            if Document.objects.filter(number=cleaned_data['number']).exists():
+                raise forms.ValidationError("Number of Company Regulation has already used. "
+                                            "Please check number correctly.",
+                                            code="number_has_already_used")
+
+        return cleaned_data
+
     def save(self, *args, **kwargs):
         number = self.cleaned_data['number']
         subject = self.cleaned_data['subject']

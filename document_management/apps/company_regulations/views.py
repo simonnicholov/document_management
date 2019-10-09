@@ -98,7 +98,7 @@ def edit(request, id):
     }
 
     form = CompanyRegulationForm(data=request.POST or None, initial=initial,
-                                 user=request.user)
+                                 user=request.user, is_update=True)
 
     if form.is_valid():
         form.save()
