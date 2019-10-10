@@ -97,7 +97,7 @@
                     <div class="col-md-6">
                         <div class="form-group mb-3">
                             <h6 class="font-14">Signature Date :</h6>
-                            <p># {{ official_record.signature_date|date:'d M Y' }}</p>
+                            <p>{% if official_record.signature_date %}#{% endif %} {{ official_record.signature_date|date:'d M Y'|default:'-' }}</p>
                         </div>
                     </div>
                 </div>
@@ -106,13 +106,13 @@
                     <div class="col-md-6">
                         <div class="form-group mb-3">
                             <h6 class="font-14">Effective Date :</h6>
-                            <p># {{ official_record.effective_date|date:'d M Y' }}</p>
+                            <p>{% if official_record.effective_date %}#{% endif %} {{ official_record.effective_date|date:'d M Y'|default:'-' }}</p>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group mb-3">
                             <h6 class="font-14">Expired Date :</h6>
-                            <p>{{ official_record.expired_date|date:'d M Y' }}</p>
+                            <p>{% if official_record.expired_date %}#{% endif %} {{ official_record.expired_date|date:'d M Y'|default:'-' }}</p>
                         </div>
                     </div>
                 </div>
@@ -121,13 +121,13 @@
                     <div class="col-md-6">
                         <div class="form-group mb-3">
                             <h6 class="font-14">Job Specification :</h6>
-                            <p>{{ official_record.job_specification }}</p>
+                            <p>{{ official_record.job_specification|default:'-' }}</p>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group mb-3">
                             <h6 class="font-14">Retention Period :</h6>
-                            <p>{{ official_record.retention_period }}</p>
+                            <p>{{ official_record.retention_period|default:'-' }}</p>
                         </div>
                     </div>
                 </div>
@@ -135,7 +135,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <h6 class="font-14">Description :</h6>
-                        <p>{{ official_record.description }}</p>
+                        <p>{{ official_record.description|default:'-' }}</p>
                     </div>
                 </div>
 

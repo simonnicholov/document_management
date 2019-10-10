@@ -120,13 +120,13 @@
                     <div class="col-md-6">
                         <div class="form-group mb-3">
                             <h6 class="font-14">Job Specification :</h6>
-                            <p>{{ addendum.job_specification }}</p>
+                            <p>{{ addendum.job_specification|default:'-' }}</p>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group mb-3">
                             <h6 class="font-14">Retention Period :</h6>
-                            <p>{{ addendum.retention_period }}</p>
+                            <p>{{ addendum.retention_period|default:'-' }}</p>
                         </div>
                     </div>
                 </div>
@@ -134,7 +134,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <h6 class="font-14">Description :</h6>
-                        <p>{{ addendum.description }}</p>
+                        <p>{{ addendum.description|default:'-' }}</p>
                     </div>
                 </div>
                 
