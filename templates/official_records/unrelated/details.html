@@ -160,7 +160,11 @@
                     <div class="col-md-6">
                         <div class="form-group mb-3">
                             <h6 class="font-14">Corporate :</h6>
-                            <p><a href="{% url 'backoffice:partners:details' document.partner.id %}">{{ document.partner.name }}</a></p>
+                            {% if request.user.get_role_id == ROLE_USER_ID %}
+                                    {{ document.partner.name }}
+                            {% else %}
+                                <a href="{% url 'backoffice:partners:details' document.partner.id %}">{{ document.partner.name }}</a>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="col-md-6">
