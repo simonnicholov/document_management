@@ -182,7 +182,7 @@ def unrelated_edit(request, id=None):
     }
 
     form = UnrelatedForm(data=request.POST or None,
-                         initial=initial, user=request.user)
+                         initial=initial, user=request.user, is_update=True)
 
     if form.is_valid():
         form.save()
@@ -487,7 +487,7 @@ def related_edit(request, id=None):
     }
 
     form = RelatedForm(data=request.POST or None, initial=initial,
-                       document=official_record.document, user=request.user)
+                       document=official_record.document, user=request.user, is_update=True)
 
     if form.is_valid():
         form.save()

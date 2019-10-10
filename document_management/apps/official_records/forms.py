@@ -48,9 +48,10 @@ class UnrelatedForm(forms.Form):
     job_specification = forms.CharField(max_length=256)
     retention_period = forms.IntegerField(min_value=1, max_value=7300, required=False)
 
-    def __init__(self, user, *args, **kwargs):
+    def __init__(self, user, is_update=False, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.user = user
+        self.is_update = is_update
 
     def clean_category(self):
         if self.cleaned_data['category'] == "0":
@@ -69,6 +70,12 @@ class UnrelatedForm(forms.Form):
 
         if self.errors:
             return cleaned_data
+
+        if not self.is_update:
+            if Document.objects.filter(number=cleaned_data['number']).exists():
+                raise forms.ValidationError("Number of Official Record has already used. "
+                                            "Please check number correctly.",
+                                            code="number_has_already_used")
 
         signature_date = cleaned_data['signature_date']
         effective_date = cleaned_data['effective_date']
@@ -263,8 +270,8 @@ Related Area
 
 class RelatedForm(forms.Form):
     number = forms.CharField(max_length=32)
-    signature_date = forms.DateField(input_formats=["%Y-%m-%d"])
-    effective_date = forms.DateField(input_formats=["%Y-%m-%d"])
+    signature_date = forms.DateField(input_formats=["%Y-%m-%d"], required=False)
+    effective_date = forms.DateField(input_formats=["%Y-%m-%d"], required=False)
     subject = forms.CharField(max_length=64)
     description = forms.CharField(widget=forms.Textarea(), required=False)
 
@@ -272,15 +279,16 @@ class RelatedForm(forms.Form):
         validators=[MinValueValidator(0),
                     MaxValueValidator(settings.MAX_VALIDATOR_AMOUNT,
                                       (f'Can not greater than {settings.MAX_VALIDATOR_TEXT} '))
-                    ])
+                    ], required=False)
 
-    job_specification = forms.CharField(max_length=256)
+    job_specification = forms.CharField(max_length=256, required=False)
     retention_period = forms.IntegerField(min_value=1, max_value=7300, required=False)
 
-    def __init__(self, document, user, *args, **kwargs):
+    def __init__(self, document, user, is_update=False, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.document = document
         self.user = user
+        self.is_update = is_update
 
     def clean(self):
         cleaned_data = super().clean()
@@ -288,34 +296,11 @@ class RelatedForm(forms.Form):
         if self.errors:
             return cleaned_data
 
-        addendum_signature_date = cleaned_data['signature_date']
-        addendum_effective_date = cleaned_data['effective_date']
-
-        self.expired_date = self.document.expired_date
-        document_signature_date = self.document.signature_date
-        document_effective_date = self.document.effective_date
-
-        group = self.document.get_group_display().lower()
-
-        if addendum_signature_date < document_signature_date:
-            raise forms.ValidationError("Signature date official record can not less than signature date %s"
-                                        % group,
-                                        code="invalid_date_range")
-
-        if addendum_signature_date > addendum_effective_date:
-            raise forms.ValidationError("Signature date official record can not greater than effective date %s"
-                                        % group,
-                                        code="invalid_date_range")
-
-        if addendum_effective_date < document_effective_date:
-            raise forms.ValidationError("Effective date official record can not less than effective date %s"
-                                        % group,
-                                        code="invalid_date_range")
-
-        if addendum_effective_date > self.expired_date:
-            raise forms.ValidationError("Effective date official record can not greater than expired date %s"
-                                        % group,
-                                        code="invalid_date_range")
+        if not self.is_update:
+            if Document.objects.filter(number=cleaned_data['number']).exists():
+                raise forms.ValidationError("Number of Official Record has already used. "
+                                            "Please check number correctly.",
+                                            code="number_has_already_used")
 
         return cleaned_data
 
@@ -323,7 +308,7 @@ class RelatedForm(forms.Form):
         number = self.cleaned_data['number']
         signature_date = self.cleaned_data['signature_date']
         effective_date = self.cleaned_data['effective_date']
-        expired_date = self.expired_date
+        expired_date = self.document.expired_date
         subject = self.cleaned_data['subject']
         amount = self.cleaned_data['amount']
         job_specification = self.cleaned_data['job_specification']

@@ -19,15 +19,30 @@ class CompanyRegulationForm(forms.Form):
     category = forms.ChoiceField(choices=COMPANY_CATEGORY, widget=select_widget)
     description = forms.CharField(widget=forms.Textarea(), required=False)
 
-    def __init__(self, user, *args, **kwargs):
+    def __init__(self, user, is_update=False, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.user = user
+        self.is_update = is_update
 
     def clean_category(self):
         if self.cleaned_data['category'] == "0":
             raise forms.ValidationError("Please select item in the list", code="field_is_required")
 
         return self.cleaned_data['category']
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        if self.errors:
+            return cleaned_data
+
+        if not self.is_update:
+            if Document.objects.filter(number=cleaned_data['number']).exists():
+                raise forms.ValidationError("Number of Company Regulation has already used. "
+                                            "Please check number correctly.",
+                                            code="number_has_already_used")
+
+        return cleaned_data
 
     def save(self, *args, **kwargs):
         number = self.cleaned_data['number']

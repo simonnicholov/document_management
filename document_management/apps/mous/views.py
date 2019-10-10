@@ -121,7 +121,8 @@ def edit(request, id):
         'retention_period': document.retention_period
     }
 
-    form = MousForm(data=request.POST or None, initial=initial, user=request.user)
+    form = MousForm(data=request.POST or None, initial=initial, user=request.user,
+                    is_update=True)
 
     if form.is_valid():
         form.save()

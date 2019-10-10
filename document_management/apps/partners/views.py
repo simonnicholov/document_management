@@ -99,7 +99,8 @@ def edit(request, id):
         'fax': partner.fax
     }
 
-    form = PartnerForm(data=request.POST or None, initial=initial, user=request.user)
+    form = PartnerForm(data=request.POST or None, initial=initial, user=request.user,
+                       is_update=True)
 
     if form.is_valid():
         form.save()

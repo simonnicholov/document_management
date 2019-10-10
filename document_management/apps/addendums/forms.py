@@ -10,8 +10,8 @@ from document_management.apps.documents.models import DocumentLogs
 
 class AddendumForm(forms.Form):
     number = forms.CharField(max_length=32)
-    signature_date = forms.DateField(input_formats=["%Y-%m-%d"])
-    effective_date = forms.DateField(input_formats=["%Y-%m-%d"])
+    signature_date = forms.DateField(input_formats=["%Y-%m-%d"], required=False)
+    effective_date = forms.DateField(input_formats=["%Y-%m-%d"], required=False)
     subject = forms.CharField(max_length=64)
     description = forms.CharField(widget=forms.Textarea(), required=False)
 
@@ -19,9 +19,9 @@ class AddendumForm(forms.Form):
         validators=[MinValueValidator(0),
                     MaxValueValidator(settings.MAX_VALIDATOR_AMOUNT,
                                       (f'Can not greater than {settings.MAX_VALIDATOR_TEXT} '))
-                    ])
+                    ], required=False)
 
-    job_specification = forms.CharField(max_length=256)
+    job_specification = forms.CharField(max_length=256, required=False)
     retention_period = forms.IntegerField(min_value=1, max_value=7300, required=False)
 
     def __init__(self, document, user, is_update=False, *args, **kwargs):
@@ -40,38 +40,9 @@ class AddendumForm(forms.Form):
             addendum_exist = Addendum.objects.filter(document=self.document,
                                                      number=cleaned_data['number']).exists()
             if addendum_exist:
-                raise forms.ValidationError("Number addendum has already used. "
+                raise forms.ValidationError("Number of Addendum has already used. "
                                             "Please check number correctly.",
                                             code="number_has_already_used")
-
-        addendum_signature_date = cleaned_data['signature_date']
-        addendum_effective_date = cleaned_data['effective_date']
-
-        self.expired_date = self.document.expired_date
-        document_signature_date = self.document.signature_date
-        document_effective_date = self.document.effective_date
-
-        group = self.document.get_group_display().lower()
-
-        if addendum_signature_date < document_signature_date:
-            raise forms.ValidationError("Signature date addendum can not less than signature date %s"
-                                        % group,
-                                        code="invalid_date_range")
-
-        if addendum_signature_date > addendum_effective_date:
-            raise forms.ValidationError("Signature date addendum can not greater than effective date %s"
-                                        % group,
-                                        code="invalid_date_range")
-
-        if addendum_effective_date < document_effective_date:
-            raise forms.ValidationError("Effective date addendum can not less than effective date %s"
-                                        % group,
-                                        code="invalid_date_range")
-
-        if addendum_effective_date > self.expired_date:
-            raise forms.ValidationError("Effective date addendum can not greater than expired date %s"
-                                        % group,
-                                        code="invalid_date_range")
 
         return cleaned_data
 
@@ -79,7 +50,7 @@ class AddendumForm(forms.Form):
         number = self.cleaned_data['number']
         signature_date = self.cleaned_data['signature_date']
         effective_date = self.cleaned_data['effective_date']
-        expired_date = self.expired_date
+        expired_date = self.document.expired_date
         subject = self.cleaned_data['subject']
         amount = self.cleaned_data['amount']
         job_specification = self.cleaned_data['job_specification']

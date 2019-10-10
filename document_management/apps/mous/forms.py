@@ -42,9 +42,10 @@ class MousForm(forms.Form):
     job_specification = forms.CharField(max_length=256)
     retention_period = forms.IntegerField(min_value=1, max_value=7300, required=False)
 
-    def __init__(self, user, *args, **kwargs):
+    def __init__(self, user, is_update=False, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.user = user
+        self.is_update = is_update
 
     def clean_category(self):
         if self.cleaned_data['category'] == "0":
@@ -63,6 +64,12 @@ class MousForm(forms.Form):
 
         if self.errors:
             return cleaned_data
+
+        if not self.is_update:
+            if Document.objects.filter(number=cleaned_data['number']).exists():
+                raise forms.ValidationError("Number of MoU has already used. "
+                                            "Please check number correctly.",
+                                            code="number_has_already_used")
 
         signature_date = cleaned_data['signature_date']
         effective_date = cleaned_data['effective_date']
