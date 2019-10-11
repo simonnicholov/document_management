@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% load static%}
+
+{% block content_page %}
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item">
+                        {% include '_includes/breadcrumb.html' %}
+                    </li>
+                    <li class="breadcrumb-item"><a href="{% url 'backoffice:reports:index' %}">Reports</a></li>
+                    <li class="breadcrumb-item active">Index</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Reports</h4>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="col-md-6">
+        <a href="{% url 'backoffice:reports:contract' %}">
+        <div class="card text-white bg-info overflow-hidden">
+            <div class="card-body">
+                <div class="toll-free-box text-center">
+                    <h4> <i class="mdi mdi-map-legend"></i>Contract</h4>
+                </div>
+            </div>
+        </div>
+        </a>
+    </div>
+    <div class="col-md-6">
+        <a href="{% url 'backoffice:reports:mou' %}">
+        <div class="card text-white bg-info overflow-hidden">
+            <div class="card-body">
+                <div class="toll-free-box text-center">
+                    <h4> <i class="mdi mdi-map-legend"></i>MoU</h4>
+                </div>
+            </div>
+        </div>
+        </a>
+    </div>
+    <div class="col-md-6">
+        <a href="{% url 'backoffice:reports:official_record' %}">
+        <div class="card text-white bg-info overflow-hidden">
+            <div class="card-body">
+                <div class="toll-free-box text-center">
+                    <h4> <i class="mdi mdi-map-legend"></i>Official Record</h4>
+                </div>
+            </div>
+        </div>
+        </a>
+    </div>
+    <div class="col-md-6">
+        <a href="{% url 'backoffice:reports:company_regulations' %}">
+        <div class="card text-white bg-info overflow-hidden">
+            <div class="card-body">
+                <div class="toll-free-box text-center">
+                    <h4> <i class="mdi mdi-map-legend"></i>Company Regulations</h4>
+                </div>
+            </div>
+        </div>
+        </a>
+    </div>
+</div>
+{% endblock %}
