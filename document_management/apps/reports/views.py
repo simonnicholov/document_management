@@ -4,7 +4,7 @@ from django.shortcuts import render
 
 from document_management.core.decorators import legal_required
 
-from .forms import ContractForm, MoUForm
+from .forms import ContractForm, MoUForm, OfficialRecordForm
 
 
 @legal_required
@@ -53,8 +53,18 @@ def mou(request):
 
 @legal_required
 def official_record(request):
+    form = OfficialRecordForm(data=request.POST or None)
+
+    if form.is_valid():
+        response = form.generate_zip_response(HttpResponse(content_type='application/zip'))
+        return response
+    else:
+        if form.has_error('__all__'):
+            messages.error(request, form.non_field_errors()[0])
+
     context = {
-        'title': 'Report Official Record'
+        'title': 'Report Official Record',
+        'form': form
     }
     return render(request, 'reports/official_record.html', context)
 

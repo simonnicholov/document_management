@@ -12,10 +12,10 @@
                         {% include '_includes/breadcrumb.html' %}
                     </li>
                     <li class="breadcrumb-item"><a href="{% url 'backoffice:reports:index' %}">Reports</a></li>
-                    <li class="breadcrumb-item active">Report Company Regulation</li>
+                    <li class="breadcrumb-item active">Report Official Record</li>
                 </ol>
             </div>
-            <h4 class="page-title">Report Company Regulation</h4>
+            <h4 class="page-title">Report Official Record</h4>
         </div>
     </div>
 </div>
@@ -44,25 +44,6 @@
                                 <label>End Date</label>
                                 <input type="text" id="end_date" name="end_date" class="form-control" data-date-format="yyyy-mm-dd" data-provide="datepicker" data-date-autoclose="true">
                                 {{ form.end_date.errors }}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label>Is Addendum</label>
-                            <div class="form-group mb-3">
-                                <input type="checkbox" id="is_addendum" name="is_addendum" checked data-switch="primary"/>
-                                <label for="is_addendum" data-on-label="Yes" data-off-label="No"></label>
-                                {{ form.is_addendum.errors }}
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <label>Is Official Record</label>
-                            <div class="form-group mb-3">
-                                <input type="checkbox" id="is_official_record" name="is_official_record" checked data-switch="primary"/>
-                                <label for="is_official_record" data-on-label="Yes" data-off-label="No"></label>
-                                {{ form.is_official_record.errors }}
                             </div>
                         </div>
                     </div>
