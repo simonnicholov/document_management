@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import render
 
@@ -21,6 +22,9 @@ def contract(request):
     if form.is_valid():
         response = form.generate_zip_response(HttpResponse(content_type='application/zip'))
         return response
+    else:
+        if form.has_error('__all__'):
+            messages.error(request, form.non_field_errors()[0])
 
     context = {
         'title': 'Report Contract',

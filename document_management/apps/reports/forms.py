@@ -25,7 +25,7 @@ class ContractForm(forms.Form):
             return cleaned_data
 
         if cleaned_data['start_date'] > cleaned_data['end_date']:
-            raise forms.ValidationError("Start date must be less than end date", code="invalid_date_range")
+            raise forms.ValidationError("Start date can not be less than end date", code="invalid_date_range")
 
         return cleaned_data
 
