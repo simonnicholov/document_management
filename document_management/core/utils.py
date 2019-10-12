@@ -1,6 +1,5 @@
 import os
-
-from datetime import datetime
+import datetime
 
 from django.template.defaultfilters import slugify
 from django.utils import timezone
@@ -53,7 +52,7 @@ def convert_to_datetime(date, tzinfo=None):
     """
     tzinfo = tzinfo or timezone.get_current_timezone()
 
-    if isinstance(date, datetime):
+    if isinstance(date, datetime.datetime):
         if timezone.is_naive(date):
             date = timezone.make_aware(date, tzinfo)
 
