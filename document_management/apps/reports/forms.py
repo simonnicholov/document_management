@@ -178,3 +178,98 @@ class MoUForm(forms.Form):
             zip_file.writestr(csv_filename, csv_buffer.getvalue())
 
         return response
+
+
+class CompanyRegulationForm(forms.Form):
+    start_date = forms.DateField(input_formats=["%Y-%m-%d"])
+    end_date = forms.DateField(input_formats=["%Y-%m-%d"])
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        if self.errors:
+            return cleaned_data
+
+        if cleaned_data['start_date'] > cleaned_data['end_date']:
+            raise forms.ValidationError("Start date can not be less than end date", code="invalid_date_range")
+
+        return cleaned_data
+
+    def generate_zip_response(self, http_response):
+        start_date = self.cleaned_data['start_date']
+        end_date = self.cleaned_data['end_date']
+        date_range = str(start_date).replace('-', '') + '-' + \
+            str(end_date).replace('-', '')
+        start_date, end_date = prepare_datetime_range(start_date, end_date)
+        response = http_response
+        response['Content-Disposition'] = 'attachment; filename="%s-report-company-regulation.zip"' \
+            % date_range
+
+        csv_filename = date_range + '-report-company-regulation.csv'
+        csv_buffer = StringIO()
+        writer = csv.writer(csv_buffer)
+
+        documents = Document.objects.filter(group=settings.GROUP_COMPANY_REGULATION,
+                                            effective_date__range=[start_date, end_date])\
+                                    .order_by('-id')
+
+        header = ('Number', 'Subject', 'Category', 'Type', 'Effective Date')
+        writer.writerow(header)
+
+        for document in documents:
+            writer.writerow([document.number, document.subject, document.get_category_display(),
+                             document.get_type_display(), document.effective_date.strftime('%d-%b-%Y')])
+
+        with zipfile.ZipFile(response, mode='w', compression=zipfile.ZIP_DEFLATED) as zip_file:
+            zip_file.writestr(csv_filename, csv_buffer.getvalue())
+
+        return response
+
+
+class OfficialRecordForm(forms.Form):
+    start_date = forms.DateField(input_formats=["%Y-%m-%d"])
+    end_date = forms.DateField(input_formats=["%Y-%m-%d"])
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        if self.errors:
+            return cleaned_data
+
+        if cleaned_data['start_date'] > cleaned_data['end_date']:
+            raise forms.ValidationError("Start date can not be less than end date", code="invalid_date_range")
+
+        return cleaned_data
+
+    def generate_zip_response(self, http_response):
+        start_date = self.cleaned_data['start_date']
+        end_date = self.cleaned_data['end_date']
+        date_range = str(start_date).replace('-', '') + '-' + \
+            str(end_date).replace('-', '')
+        start_date, end_date = prepare_datetime_range(start_date, end_date)
+        response = http_response
+        response['Content-Disposition'] = 'attachment; filename="%s-report-official-record.zip"' \
+            % date_range
+
+        csv_filename = date_range + '-report-official-record.csv'
+        csv_buffer = StringIO()
+        writer = csv.writer(csv_buffer)
+
+        documents = Document.objects.select_related('location', 'partner')\
+                                    .filter(group=settings.GROUP_OFFICIAL_RECORD,
+                                            expired_date__range=[start_date, end_date])\
+                                    .order_by('-id')
+
+        header = ('Number', 'Subject', 'Location', 'Partner', 'Category', 'Type', 'Amount', 'Expired Date')
+        writer.writerow(header)
+
+        for document in documents:
+            writer.writerow([document.number, document.subject, document.location.name,
+                             document.partner.name, document.get_category_display(),
+                             document.get_type_display(), document.amount,
+                             document.expired_date.strftime('%d-%b-%Y')])
+
+        with zipfile.ZipFile(response, mode='w', compression=zipfile.ZIP_DEFLATED) as zip_file:
+            zip_file.writestr(csv_filename, csv_buffer.getvalue())
+
+        return response
