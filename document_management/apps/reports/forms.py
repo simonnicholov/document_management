@@ -229,8 +229,6 @@ class CompanyRegulationForm(forms.Form):
 class OfficialRecordForm(forms.Form):
     start_date = forms.DateField(input_formats=["%Y-%m-%d"])
     end_date = forms.DateField(input_formats=["%Y-%m-%d"])
-    is_addendum = forms.BooleanField(required=False)
-    is_official_record = forms.BooleanField(required=False)
 
     def clean(self):
         cleaned_data = super().clean()
