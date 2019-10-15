@@ -74,7 +74,7 @@ class Document(models.Model):
 class DocumentFile(models.Model):
     document = models.ForeignKey('documents.Document', related_name="files",
                                  on_delete=models.CASCADE)
-    file = models.FileField(upload_to=FilenameGenerator('document_file'))
+    file = models.FileField(upload_to=FilenameGenerator('document_file'), null=True, blank=True)
     is_active = models.BooleanField('active', default=True)
     created = AutoCreatedField()
 
