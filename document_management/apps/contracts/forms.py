@@ -255,3 +255,40 @@ class UploadForm(forms.Form):
                                     updated_date=timezone.now())
 
         return self.document
+
+
+class RemoveForm(forms.Form):
+    reason = forms.CharField(widget=forms.Textarea())
+
+    def __init__(self, document_file, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.user = user
+        self.document_file = document_file
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        if self.errors:
+            return cleaned_data
+
+        if not self.document_file:
+            raise forms.ValidationError("Can not find document",
+                                        code="file_not_exists")
+
+        return cleaned_data
+
+    def remove(self, *args, **kwargs):
+        document = self.document_file.document
+
+        self.document_file.file.delete()
+        self.document_file.delete()
+
+        document.total_document = document.total_document - 1
+        document.save(update_fields=['total_document'])
+
+        DocumentLogs.objects.create(document_id=document.id,
+                                    document_subject=document.subject,
+                                    action=DocumentLogs.ACTION.delete_contract_file,
+                                    value=self.cleaned_data['reason'],
+                                    updated_by=self.user,
+                                    updated_date=timezone.now())

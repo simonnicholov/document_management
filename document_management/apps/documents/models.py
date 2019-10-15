@@ -79,7 +79,9 @@ class DocumentFile(models.Model):
     created = AutoCreatedField()
 
     def __str__(self):
-        return str(self.file.url)
+        if self.file:
+            return str(self.file.url)
+        return self.document.number
 
 
 class DocumentLogs(models.Model):
