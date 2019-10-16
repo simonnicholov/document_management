@@ -175,3 +175,30 @@ class DeleteForm(forms.Form):
         self.addendum.delete()
 
         return addendum_number
+
+
+class RemoveForm(forms.Form):
+    reason = forms.CharField(widget=forms.Textarea())
+
+    def __init__(self, addendum_file, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.user = user
+        self.addendum_file = addendum_file
+
+    def remove(self, *args, **kwargs):
+        document = self.addendum_file.addendum.document
+        value = self.addendum_file.file.url
+
+        self.addendum_file.file.delete()
+        self.addendum_file.delete()
+
+        document.total_addendum = document.total_addendum - 1
+        document.save(update_fields=['total_addendum'])
+
+        DocumentLogs.objects.create(document_id=document.id,
+                                    document_subject=document.subject,
+                                    action=DocumentLogs.ACTION.delete_addendum_file_relational,
+                                    value=value,
+                                    reason=self.cleaned_data['reason'],
+                                    updated_by=self.user,
+                                    updated_date=timezone.now())

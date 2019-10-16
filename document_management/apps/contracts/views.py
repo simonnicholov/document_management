@@ -316,7 +316,7 @@ def remove(request, id):
 
     if form.is_valid():
         form.remove()
-        messages.success(request, "File of # %s has been deleted" % str(document_file.document.number))
+        messages.success(request, "Document File of # %s has been deleted" % str(document_file.document.number))
         return redirect(reverse("backoffice:contracts:details", args=[document_file.document.id]))
     else:
         if form.has_error('__all__'):
