@@ -66,7 +66,12 @@
                                     </div>
                                 </div>
                                 <div class="col pl-0">
-                                    <a href="{% url 'backoffice:contracts:preview' file.id %}" target="_blank" class="text-muted font-weight-bold">{{ file.document.subject }} - {{ forloop.counter }}</a>
+                                    <a href="{% url 'backoffice:official_records:unrelated_preview' file.id %}" target="_blank" class="text-muted font-weight-bold">{{ file.document.subject }} - {{ forloop.counter }}</a>
+                                </div>
+                                <div class="col-auto">
+                                    <a href="{% url 'backoffice:official_records:unrelated_remove' file.id %}" class="btn btn-link btn-lg text-muted">
+                                        <i class="dripicons-trash"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>

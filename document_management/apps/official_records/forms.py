@@ -251,8 +251,8 @@ class UnrelatedUploadForm(forms.Form):
 
     def save(self, *args, **kwargs):
         self.document.files.create(file=self.cleaned_data['file'])
-        self.document.total_official_record = self.document.total_official_record + 1
-        self.document.save(update_fields=['total_official_record'])
+        self.document.total_document = self.document.total_document + 1
+        self.document.save(update_fields=['total_document'])
 
         DocumentLogs.objects.create(document_id=self.document.id,
                                     document_subject=self.document.subject,
@@ -261,6 +261,33 @@ class UnrelatedUploadForm(forms.Form):
                                     updated_date=timezone.now())
 
         return self.document
+
+
+class UnrelatedRemoveForm(forms.Form):
+    reason = forms.CharField(widget=forms.Textarea())
+
+    def __init__(self, document_file, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.user = user
+        self.document_file = document_file
+
+    def remove(self, *args, **kwargs):
+        document = self.document_file.document
+        value = self.document_file.file.url
+
+        self.document_file.file.delete()
+        self.document_file.delete()
+
+        document.total_document = document.total_document - 1
+        document.save(update_fields=['total_document'])
+
+        DocumentLogs.objects.create(document_id=document.id,
+                                    document_subject=document.subject,
+                                    action=DocumentLogs.ACTION.delete_official_record_file,
+                                    value=value,
+                                    reason=self.cleaned_data['reason'],
+                                    updated_by=self.user,
+                                    updated_date=timezone.now())
 
 
 '''

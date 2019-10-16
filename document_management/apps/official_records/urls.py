@@ -35,4 +35,6 @@ urlpatterns = [
     path('related/<int:id>/lists/', views.related_lists, name="related_lists"),
     path('unrelated/<int:id>/change-status/', views.unrelated_change_status,
          name="unrelated_change_status"),
+
+    path('unrelated/<int:id>/remove/', views.unrelated_remove, name="unrelated_remove"),
 ]
