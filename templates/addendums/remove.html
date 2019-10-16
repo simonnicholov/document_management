@@ -11,8 +11,8 @@
                     <li class="breadcrumb-item">
                         {% include '_includes/breadcrumb.html' %}
                     </li>
-                    <li class="breadcrumb-item"><a href="{% url 'backoffice:contracts:index' %}">Addendums</a></li>
-                    <li class="breadcrumb-item"><a href="{% url 'backoffice:contracts:details' addendum_file.addendum.document.id %}">Detail</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'backoffice:addendums:index' %}">Addendums</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'backoffice:addendums:details' addendum_file.addendum.document.id %}">Detail</a></li>
                     <li class="breadcrumb-item active">Remove</li>
                 </ol>
             </div>

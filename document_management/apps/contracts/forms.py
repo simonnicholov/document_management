@@ -1,6 +1,5 @@
 from django import forms
 from django.conf import settings
-from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.core.validators import (MinValueValidator, MaxValueValidator,
                                     FileExtensionValidator)
 from django.utils import timezone
