@@ -301,7 +301,7 @@ def remove(request, id):
             messages.error(request, form.non_field_errors()[0])
 
     context = {
-        'title': 'Remove File Contract',
+        'title': 'Remove File Addendum',
         'addendum_file': addendum_file,
         'form': form
     }

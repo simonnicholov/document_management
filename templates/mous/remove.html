@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+{% load static humanize %}
+
+{% block content_page %}
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item">
+                        {% include '_includes/breadcrumb.html' %}
+                    </li>
+                    <li class="breadcrumb-item"><a href="{% url 'backoffice:mous:index' %}">MoUs</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'backoffice:mous:details' document_file.document.id %}">Detail</a></li>
+                    <li class="breadcrumb-item active">Remove</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Remove File MoU</h4>
+        </div>
+    </div>
+</div>
+
+<div class="mb-3"></div>
+
+<div class="row">
+    <div class="col-12">
+
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <h6 class="font-14">Number :</h6>
+                                <p># {{ document_file.document.number }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <h6 class="font-14">Subject :</h6>
+                                <p>{{ document_file.document.subject }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <h6 class="font-14">Corporate :</h6>
+                                <p>{{ document_file.document.partner.name }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <h6 class="font-14">Amount :</h6>
+                                <p>Rp. {{ document_file.document.amount|floatformat:0|intcomma }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <h6 class="font-14">Status:</h6>
+                                <p><span class="{{ document.badge_status_class }}">{{ document_file.document.get_status_display }}</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <h6 class="font-14">Job Specification :</h6>
+                                <p>{{ document_file.document.job_specification|default:'-' }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h6 class="font-14">Description :</h6>
+                            <p>{{ document_file.document.description|default:'-' }}</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h6 class="font-14">File :</h6>
+                            <iframe src="{{ document_file.file.url }}" class="preview-file"></iframe>    
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group mb-3">
+                                <label for="reason">Reason</label>
+                                <textarea class="form-control" id="reason" name="reason" rows="3"></textarea>
+                                {{ form.reason.errors }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row text-center">
+                <div class="col-md-12">
+                    <button type="submit" class="btn btn-outline-danger btn-rounded">Delete</button>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+{% endblock %}
