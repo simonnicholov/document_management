@@ -59,6 +59,11 @@
                                     <div class="col pl-0">
                                         <a href="{% url 'backoffice:addendums:preview' file.id %}" target="_blank" class="text-muted font-weight-bold">{{ file.addendum.subject }} - {{ forloop.counter }}</a>
                                     </div>
+                                    <div class="col-auto">
+                                        <a href="{% url 'backoffice:addendums:remove' file.id %}" class="btn btn-link btn-lg text-muted">
+                                            <i class="dripicons-trash"></i>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>

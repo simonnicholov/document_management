@@ -60,8 +60,8 @@
                         <tr>
                             <td><a href="{% url 'backoffice:addendums:details' addendum.id %}"># {{ addendum.number }}</a></td>
                             <td>{{ addendum.subject }}</td>
-                            <td>{{ addendum.signature_date|date:'d M Y' }}</td>
-                            <td>{{ addendum.effective_date|date:'d M Y' }}</td>
+                            <td>{{ addendum.signature_date|date:'d M Y'|default:'-' }}</td>
+                            <td>{{ addendum.effective_date|date:'d M Y'|default:'-' }}</td>
                             <td>{{ addendum.expired_date|date:'d M Y' }}</td>
                         </tr>
                     {% empty %}

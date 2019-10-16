@@ -13,4 +13,5 @@ urlpatterns = [
     path('<int:id>/upload/', views.upload, name="upload"),
     path('<int:id>/preview/', views.preview, name="preview"),
     path('<int:id>/status/', views.change_record_status, name="change_record_status"),
+    path('<int:id>/remove/', views.remove, name="remove"),
 ]

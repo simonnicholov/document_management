@@ -11,7 +11,7 @@ from document_management.apps.addendums.models import Addendum, AddendumFile
 from document_management.apps.documents.models import Document
 from document_management.core.decorators import legal_required
 
-from .forms import (AddendumForm, ChangeRecordStatusForm, UploadForm, DeleteForm)
+from .forms import (AddendumForm, ChangeRecordStatusForm, UploadForm, DeleteForm, RemoveForm)
 
 
 @login_required
@@ -277,3 +277,32 @@ def change_record_status(request, id):
         return redirect(reverse("backoffice:addendums:lists", args=[addendum.document.id]))
 
     return redirect(reverse("backoffice:addendums:lists", args=[addendum.document.id]))
+
+
+@legal_required
+def remove(request, id):
+    addendum_file = get_object_or_404(
+        AddendumFile.objects.select_related('addendum', 'addendum__document')
+                            .filter(is_active=True), id=id
+    )
+
+    if addendum_file.addendum.document.status == Document.STATUS.done:
+        messages.error(request, "Document # %s status has already done" % (addendum_file.addendum.document.number))
+        return redirect(reverse("backoffice:addendums:details", args=[addendum_file.addendum.id]))
+
+    form = RemoveForm(data=request.POST or None, addendum_file=addendum_file, user=request.user)
+
+    if form.is_valid():
+        form.remove()
+        messages.success(request, "Addendum File of # %s has been deleted" % str(addendum_file.addendum.document.number))
+        return redirect(reverse("backoffice:addendums:details", args=[addendum_file.addendum.id]))
+    else:
+        if form.has_error('__all__'):
+            messages.error(request, form.non_field_errors()[0])
+
+    context = {
+        'title': 'Remove File Contract',
+        'addendum_file': addendum_file,
+        'form': form
+    }
+    return render(request, 'addendums/remove.html', context)
