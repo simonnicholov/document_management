@@ -13,7 +13,7 @@ from document_management.core.decorators import legal_required
 
 from .forms import (UnrelatedForm, UnrelatedDeleteForm,
                     UnrelatedChangeRecordStatusForm, UnrelatedChangeStatusForm,
-                    UnrelatedUploadForm)
+                    UnrelatedUploadForm, UnrelatedRemoveForm)
 
 from .forms import (RelatedForm, RelatedDeleteForm, RelatedUploadForm,
                     RelatedChangeRecordStatusForm)
@@ -324,6 +324,35 @@ def unrelated_change_record_status(request, id=None):
         return redirect("backoffice:official_records:unrelated")
 
     return redirect("backoffice:official_records:unrelated")
+
+
+@legal_required
+def unrelated_remove(request, id):
+    document_file = get_object_or_404(
+        DocumentFile.objects.select_related('document', 'document__partner')
+                            .filter(is_active=True), id=id
+    )
+
+    if document_file.document.status == Document.STATUS.done:
+        messages.error(request, "Document # %s status has already done" % (document_file.document.number))
+        return redirect(reverse("backoffice:official_records:unrelated_details", args=[document_file.document.id]))
+
+    form = UnrelatedRemoveForm(data=request.POST or None, document_file=document_file, user=request.user)
+
+    if form.is_valid():
+        form.remove()
+        messages.success(request, "Official Record File of # %s has been deleted" % str(document_file.document.number))
+        return redirect(reverse("backoffice:official_records:unrelated_details", args=[document_file.document.id]))
+    else:
+        if form.has_error('__all__'):
+            messages.error(request, form.non_field_errors()[0])
+
+    context = {
+        'title': 'Remove File Official Record',
+        'document_file': document_file,
+        'form': form
+    }
+    return render(request, 'official_records/unrelated/remove.html', context)
 
 
 '''

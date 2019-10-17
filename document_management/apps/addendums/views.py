@@ -282,7 +282,7 @@ def change_record_status(request, id):
 @legal_required
 def remove(request, id):
     addendum_file = get_object_or_404(
-        AddendumFile.objects.select_related('addendum', 'addendum__document')
+        AddendumFile.objects.select_related('addendum', 'addendum__document', 'addendum__document__partner')
                             .filter(is_active=True), id=id
     )
 
