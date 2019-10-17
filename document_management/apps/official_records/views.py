@@ -329,7 +329,8 @@ def unrelated_change_record_status(request, id=None):
 @legal_required
 def unrelated_remove(request, id):
     document_file = get_object_or_404(
-        DocumentFile.objects.select_related('document').filter(is_active=True), id=id
+        DocumentFile.objects.select_related('document', 'document__partner')
+                            .filter(is_active=True), id=id
     )
 
     if document_file.document.status == Document.STATUS.done:
