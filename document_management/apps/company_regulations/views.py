@@ -258,8 +258,7 @@ def preview(request, id):
 @legal_required
 def remove(request, id):
     document_file = get_object_or_404(
-        DocumentFile.objects.select_related('document')
-                            .filter(is_active=True), id=id
+        DocumentFile.objects.select_related('document' 'document__partner').filter(is_active=True), id=id
     )
 
     if document_file.document.status == Document.STATUS.done:
@@ -270,7 +269,7 @@ def remove(request, id):
 
     if form.is_valid():
         form.remove()
-        messages.success(request, "Document File of # %s has been deleted" % str(document_file.document.number))
+        messages.success(request, "Company Regulation File of # %s has been deleted" % str(document_file.document.number))
         return redirect(reverse("backoffice:company_regulations:details", args=[document_file.document.id]))
     else:
         if form.has_error('__all__'):
