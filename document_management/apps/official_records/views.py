@@ -16,7 +16,7 @@ from .forms import (UnrelatedForm, UnrelatedDeleteForm,
                     UnrelatedUploadForm, UnrelatedRemoveForm)
 
 from .forms import (RelatedForm, RelatedDeleteForm, RelatedUploadForm,
-                    RelatedChangeRecordStatusForm)
+                    RelatedChangeRecordStatusForm, RelatedRemoveForm)
 
 
 @login_required
@@ -638,3 +638,37 @@ def related_change_record_status(request, id=None):
 
     return redirect(reverse("backoffice:official_records:related_lists",
                             args=[official_record.document.id]))
+
+
+@legal_required
+def related_remove(request, id):
+    official_record_file = get_object_or_404(
+        OfficialRecordFile.objects.select_related('official_record', 'official_record__document',
+                                                  'official_record__document__partner')
+                                  .filter(is_active=True), id=id
+    )
+
+    official_record = official_record_file.official_record
+
+    if official_record.document.status == Document.STATUS.done:
+        messages.error(request, "Document # %s status has already done" % (official_record.document.number))
+        return redirect(reverse("backoffice:official_records:related_details", args=[official_record.document.id]))
+
+    form = RelatedRemoveForm(data=request.POST or None, official_record_file=official_record_file,
+                             user=request.user)
+
+    if form.is_valid():
+        form.remove()
+        messages.success(request, "Official Record File of # %s has been deleted"
+                                  % str(official_record.document.number))
+        return redirect(reverse("backoffice:official_records:related_details", args=[official_record.document.id]))
+    else:
+        if form.has_error('__all__'):
+            messages.error(request, form.non_field_errors()[0])
+
+    context = {
+        'title': 'Remove File Contract',
+        'official_record_file': official_record_file,
+        'form': form
+    }
+    return render(request, 'official_records/related/remove.html', context)
