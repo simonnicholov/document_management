@@ -74,7 +74,7 @@ class Document(models.Model):
 class DocumentFile(models.Model):
     document = models.ForeignKey('documents.Document', related_name="files",
                                  on_delete=models.CASCADE)
-    file = models.FileField(upload_to=FilenameGenerator('document_file'), null=True, blank=True)
+    file = models.FileField(upload_to=FilenameGenerator('document_file'))
     is_active = models.BooleanField('active', default=True)
     created = AutoCreatedField()
 
@@ -126,16 +126,16 @@ class DocumentLogs(models.Model):
         (41, 'create_addendum_relational', 'Create Addendum Relational'),
         (42, 'update_addendum_relational', 'Update Addendum Relational'),
         (43, 'delete_addendum_relational', 'Delete Addendum Relational'),
-        (44, 'upload_addendum_file_relational', 'Upload File Addendum Relational'),
-        (45, 'delete_addendum_file_relational', 'Delete File Addendum Relational'),
+        (44, 'upload_addendum_relational_file', 'Upload Addendum Relational File'),
+        (45, 'delete_addendum_relational_file', 'Delete Addendum Relational File'),
         (46, 'update_addendum_relational_record_status', 'Update Addendum Relational Record Status'),
 
         # Official Record Relational
         (51, 'create_official_record_relational', 'Create Official Record Relational'),
         (52, 'update_official_record_relational', 'Update Official Record Relational'),
         (53, 'delete_official_record_relational', 'Delete Official Record Relational'),
-        (54, 'upload_official_record_file_relational', 'Upload Official Record File Relational'),
-        (55, 'delete_official_record_file_relational', 'Delete Official Record File Relational'),
+        (54, 'upload_official_record_relational_file', 'Upload Official Record Relational File'),
+        (55, 'delete_official_record_relational_file', 'Delete Official Record Relational File'),
         (56, 'update_official_record_relational_record_status', 'Update Official Record Relational Record Status')
     )
     document_id = models.IntegerField(blank=True, null=True)
