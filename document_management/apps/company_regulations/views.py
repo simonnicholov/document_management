@@ -258,7 +258,7 @@ def preview(request, id):
 @legal_required
 def remove(request, id):
     document_file = get_object_or_404(
-        DocumentFile.objects.select_related('document' 'document__partner').filter(is_active=True), id=id
+        DocumentFile.objects.select_related('document', 'document__partner').filter(is_active=True), id=id
     )
 
     if document_file.document.status == Document.STATUS.done:

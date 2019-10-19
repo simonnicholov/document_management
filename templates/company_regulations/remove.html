@@ -47,39 +47,6 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group mb-3">
-                                <h6 class="font-14">Corporate :</h6>
-                                <p>{{ document_file.document.partner.name }}</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group mb-3">
-                                <h6 class="font-14">Amount :</h6>
-                                <p>Rp. {{ document_file.document.amount|floatformat:0|intcomma }}</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group mb-3">
-                                <h6 class="font-14">Status:</h6>
-                                <p><span class="{{ document.badge_status_class }}">{{ document_file.document.get_status_display }}</span></p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group mb-3">
-                                <h6 class="font-14">Job Specification :</h6>
-                                <p>{{ document_file.document.job_specification|default:'-' }}</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
                         <div class="col-md-12">
                             <h6 class="font-14">Description :</h6>
                             <p>{{ document_file.document.description|default:'-' }}</p>
