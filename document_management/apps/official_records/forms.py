@@ -131,9 +131,9 @@ class UnrelatedForm(forms.Form):
                                                               defaults=defaults)
 
         if created:
-            action = DocumentLogs.ACTION.create_contract
+            action = DocumentLogs.ACTION.create_official_record
         else:
-            action = DocumentLogs.ACTION.update_contract
+            action = DocumentLogs.ACTION.update_official_record
 
         DocumentLogs.objects.create(document_id=document.id,
                                     document_subject=subject,
@@ -461,3 +461,30 @@ class RelatedDeleteForm(forms.Form):
         self.official_record.delete()
 
         return official_record_number
+
+
+class RelatedRemoveForm(forms.Form):
+    reason = forms.CharField(widget=forms.Textarea())
+
+    def __init__(self, official_record_file, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.user = user
+        self.document_file = official_record_file
+
+    def remove(self, *args, **kwargs):
+        document = self.official_record_file.official_record.document
+        value = self.official_record_file.file.url
+
+        self.official_record_file.file.delete()
+        self.official_record_file.delete()
+
+        document.total_document = document.total_document - 1
+        document.save(update_fields=['total_document'])
+
+        DocumentLogs.objects.create(document_id=document.id,
+                                    document_subject=document.subject,
+                                    action=DocumentLogs.ACTION.delete_official_record_file_relational,
+                                    value=value,
+                                    reason=self.cleaned_data['reason'],
+                                    updated_by=self.user,
+                                    updated_date=timezone.now())
