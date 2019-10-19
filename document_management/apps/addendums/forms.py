@@ -141,7 +141,7 @@ class UploadForm(forms.Form):
                                     document_subject=self.addendum.document.subject,
                                     addendum_id=self.addendum.id,
                                     addendum_subject=self.addendum.subject,
-                                    action=DocumentLogs.ACTION.upload_addendum_file_relational,
+                                    action=DocumentLogs.ACTION.upload_addendum_relational_file,
                                     updated_by=self.user,
                                     updated_date=timezone.now())
 
@@ -197,7 +197,7 @@ class RemoveForm(forms.Form):
 
         DocumentLogs.objects.create(document_id=document.id,
                                     document_subject=document.subject,
-                                    action=DocumentLogs.ACTION.delete_addendum_file_relational,
+                                    action=DocumentLogs.ACTION.delete_addendum_relational_file,
                                     value=value,
                                     reason=self.cleaned_data['reason'],
                                     updated_by=self.user,

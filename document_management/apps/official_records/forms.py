@@ -427,7 +427,7 @@ class RelatedUploadForm(forms.Form):
                                     document_subject=self.official_record.document.subject,
                                     official_record_id=self.official_record.id,
                                     official_record_subject=self.official_record.subject,
-                                    action=DocumentLogs.ACTION.upload_official_record_file_relational,
+                                    action=DocumentLogs.ACTION.upload_official_record_relational_file,
                                     updated_by=self.user,
                                     updated_date=timezone.now())
 
@@ -446,7 +446,7 @@ class RelatedDeleteForm(forms.Form):
         official_record_number = self.official_record.number
 
         reason = self.cleaned_data['reason']
-        action = DocumentLogs.ACTION.delete_official_record_file_relational
+        action = DocumentLogs.ACTION.delete_official_record_relational
         updated_by = self.user
         updated_date = timezone.now()
 
@@ -483,7 +483,7 @@ class RelatedRemoveForm(forms.Form):
 
         DocumentLogs.objects.create(document_id=document.id,
                                     document_subject=document.subject,
-                                    action=DocumentLogs.ACTION.delete_official_record_file_relational,
+                                    action=DocumentLogs.ACTION.delete_official_record_relational_file,
                                     value=value,
                                     reason=self.cleaned_data['reason'],
                                     updated_by=self.user,
