@@ -50,7 +50,7 @@
                         <div class="col-md-6">
                             <div class="form-group mb-3">
                                 <h6 class="font-14">Job Specification :</h6>
-                                <p>{{ addendum.job_specification }}</p>
+                                <p>{{ addendum.job_specification|default:'-' }}</p>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -64,7 +64,7 @@
                         <div class="col-md-12">
                             <div class="form-group mb-3">
                                 <h6 class="font-14">Description :</h6>
-                                <p>{{ addendum.description }}</p>
+                                <p>{{ addendum.description|default:'-' }}</p>
                             </div>
                         </div>
                     </div>

@@ -62,7 +62,7 @@
                             <td>{{ addendum.subject }}</td>
                             <td>{{ addendum.signature_date|date:'d M Y'|default:'-' }}</td>
                             <td>{{ addendum.effective_date|date:'d M Y'|default:'-' }}</td>
-                            <td>{{ addendum.expired_date|date:'d M Y' }}</td>
+                            <td>{{ addendum.expired_date|date:'d M Y'|default:'-' }}</td>
                         </tr>
                     {% empty %}
                         <tr>
