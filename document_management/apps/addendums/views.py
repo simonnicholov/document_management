@@ -156,11 +156,21 @@ def edit(request, id):
                        % (addendum.document.get_group_display().lower(), addendum.document.number))
         return redirect(reverse("backoffice:addendums:details", args=[addendum.id]))
 
+    if addendum.signature_date:
+        signature_date = addendum.signature_date.strftime("%Y-%m-%d")
+    else:
+        signature_date = ''
+
+    if addendum.effective_date:
+        effective_date = addendum.effective_date.strftime("%Y-%m-%d")
+    else:
+        effective_date = ''
+
     initial = {
         'number': addendum.number,
         'subject': addendum.subject,
-        'signature_date': addendum.signature_date.strftime("%Y-%m-%d"),
-        'effective_date': addendum.effective_date.strftime("%Y-%m-%d"),
+        'signature_date': signature_date,
+        'effective_date': effective_date,
         'description': addendum.description,
         'amount': addendum.amount,
         'job_specification': addendum.job_specification,

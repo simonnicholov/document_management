@@ -17,7 +17,7 @@ class OfficialRecord(models.Model):
     amount = models.FloatField(validators=[MinValueValidator(0)], blank=True, null=True)
     description = models.TextField(blank=True)
 
-    job_specification = models.CharField(max_length=256, blank=True, null=True)
+    job_specification = models.CharField(max_length=256, blank=True)
     retention_period = models.PositiveSmallIntegerField(blank=True, null=True)
 
     is_active = models.BooleanField('active', default=True)

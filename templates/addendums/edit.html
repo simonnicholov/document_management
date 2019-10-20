@@ -53,7 +53,13 @@
                     <div class="col-md-6">
                         <div class="form-group mb-3">
                             <h6 class="font-14">Amount :</h6>
-                            <p>{{ document.amount|floatformat:'0'|intcomma }}</p>
+                            <p>
+                                {% if document.amount %}
+                                    Rp. {{ document.amount|floatformat:'0'|intcomma }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -61,13 +67,25 @@
                     <div class="col-md-6">
                         <div class="form-group mb-3">
                             <h6 class="font-14">Signature Date :</h6>
-                            <p>{{ document.signature_date|date:'d M Y' }}</p>
+                            <p>
+                                {% if document.signature_date %}
+                                    {{ document.signature_date|date:'d M Y' }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </p>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group mb-3">
                             <h6 class="font-14">Effective Date :</h6>
-                            <p>{{ document.effective_date|date:'d M Y' }}</p>
+                            <p>
+                                {% if document.effective_date %}
+                                    {{ document.effective_date|date:'d M Y' }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </p>
                         </div>
                     </div>
                 </div>

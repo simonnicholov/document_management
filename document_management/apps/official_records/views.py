@@ -504,11 +504,21 @@ def related_edit(request, id=None):
         return redirect(reverse("backoffice:official_records:related_details",
                                 args=[official_record.id]))
 
+    if official_record.signature_date:
+        signature_date = official_record.signature_date.strftime("%Y-%m-%d")
+    else:
+        signature_date = ''
+
+    if official_record.effective_date:
+        effective_date = official_record.effective_date.strftime("%Y-%m-%d")
+    else:
+        effective_date = ''
+
     initial = {
         'number': official_record.number,
         'subject': official_record.subject,
-        'signature_date': official_record.signature_date.strftime("%Y-%m-%d"),
-        'effective_date': official_record.effective_date.strftime("%Y-%m-%d"),
+        'signature_date': signature_date,
+        'effective_date': effective_date,
         'description': official_record.description,
         'amount': official_record.amount,
         'job_specification': official_record.job_specification,

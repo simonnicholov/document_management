@@ -56,7 +56,13 @@
                         <div class="col-md-6">
                             <div class="form-group mb-3">
                                 <h6 class="font-14">Amount :</h6>
-                                <p>{{ addendum.amount|floatformat:'0'|intcomma }}</p>
+                                <p>
+                                    {% if addendum.document.amount %}
+                                        Rp. {{ addendum.document.amount|floatformat:'0'|intcomma }}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </p>
                             </div>
                         </div>
                     </div>
