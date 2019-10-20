@@ -21,9 +21,10 @@ class PartnerForm(forms.Form):
     telephone = forms.CharField(max_length=32, required=False)
     fax = forms.CharField(max_length=32, required=False)
 
-    def __init__(self, user, *args, **kwargs):
+    def __init__(self, user, is_update=False, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.user = user
+        self.is_update = is_update
 
     def clean_business_sector(self):
         if int(self.cleaned_data['business_sector']) == BUSINESS_SECTOR.select:
@@ -38,10 +39,10 @@ class PartnerForm(forms.Form):
             return cleaned_data
 
         if not self.is_update:
-            if Document.objects.filter(number=cleaned_data['number']).exists():
-                raise forms.ValidationError("Number of Partner has already used. "
-                                            "Please check number correctly.",
-                                            code="number_has_already_used")
+            if Partner.objects.filter(name=cleaned_data['name']).exists():
+                raise forms.ValidationError("Name of Partner has already used. "
+                                            "Please check name correctly.",
+                                            code="name_has_already_used")
 
         return cleaned_data
 

@@ -53,7 +53,7 @@ class Document(models.Model):
     type = models.PositiveSmallIntegerField(choices=TYPE)
     status = models.PositiveSmallIntegerField(choices=STATUS, default=STATUS.ongoing)
 
-    job_specification = models.CharField(max_length=256, blank=True, null=True)
+    job_specification = models.CharField(max_length=256, blank=True)
     retention_period = models.PositiveSmallIntegerField(blank=True, null=True)
 
     total_document = models.PositiveSmallIntegerField(default=0)

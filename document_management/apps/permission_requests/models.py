@@ -18,7 +18,7 @@ class PermissionRequest(models.Model):
     status = models.PositiveSmallIntegerField(choices=STATUS, default=STATUS.request)
     user_action = models.ForeignKey('users.User', related_name='user_action',
                                     on_delete=models.CASCADE, blank=True, null=True)
-    action_reason = models.CharField(max_length=256, blank=True, null=True)
+    action_reason = models.CharField(max_length=256, blank=True)
     action_date = models.DateTimeField(blank=True, null=True)
 
     has_viewed = models.BooleanField(default=False)
