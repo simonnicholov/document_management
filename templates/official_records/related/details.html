@@ -102,7 +102,7 @@
                     <div class="col-md-6">
                         <div class="form-group mb-3">
                             <h6 class="font-14">Signature Date :</h6>
-                            <p>{% if official_record.signature_date %}#{% endif %} {{ official_record.signature_date|date:'d M Y'|default:'-' }}</p>
+                            <p>{{ official_record.signature_date|date:'d M Y'|default:'-' }}</p>
                         </div>
                     </div>
                 </div>
@@ -111,13 +111,13 @@
                     <div class="col-md-6">
                         <div class="form-group mb-3">
                             <h6 class="font-14">Effective Date :</h6>
-                            <p>{% if official_record.effective_date %}#{% endif %} {{ official_record.effective_date|date:'d M Y'|default:'-' }}</p>
+                            <p>{{ official_record.effective_date|date:'d M Y'|default:'-' }}</p>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group mb-3">
                             <h6 class="font-14">Expired Date :</h6>
-                            <p>{% if official_record.expired_date %}#{% endif %} {{ official_record.expired_date|date:'d M Y'|default:'-' }}</p>
+                            <p>{{ official_record.expired_date|date:'d M Y'|default:'-' }}</p>
                         </div>
                     </div>
                 </div>

@@ -101,7 +101,7 @@
                     <div class="col-md-6">
                         <div class="form-group mb-3">
                             <h6 class="font-14">Signature Date :</h6>
-                            <p>{% if addendum.signature_date %}#{% endif %} {{ addendum.signature_date|date:'d M Y'|default:'-' }}</p>
+                            <p>{{ addendum.signature_date|date:'d M Y'|default:'-' }}</p>
                         </div>
                     </div>
                 </div>
@@ -110,13 +110,13 @@
                     <div class="col-md-6">
                         <div class="form-group mb-3">
                             <h6 class="font-14">Effective Date :</h6>
-                            <p>{% if addendum.effective_date %}#{% endif %} {{ addendum.effective_date|date:'d M Y'|default:'-' }}</p>
+                            <p>{{ addendum.effective_date|date:'d M Y'|default:'-' }}</p>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group mb-3">
                             <h6 class="font-14">Expired Date :</h6>
-                            <p>{% if addendum.expired_date %}#{% endif %} {{ addendum.expired_date|date:'d M Y'|default:'-' }}</p>
+                            <p>{{ addendum.expired_date|date:'d M Y'|default:'-' }}</p>
                         </div>
                     </div>
                 </div>
