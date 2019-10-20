@@ -61,9 +61,9 @@
                         <tr>
                             <td><a href="{% url 'backoffice:official_records:related_details' official_record.id %}"># {{ official_record.number }}</a></td>
                             <td>{{ official_record.subject }}</td>
-                            <td>{{ official_record.signature_date|date:'d M Y' }}</td>
-                            <td>{{ official_record.effective_date|date:'d M Y' }}</td>
-                            <td>{{ official_record.expired_date|date:'d M Y' }}</td>
+                            <td>{{ official_record.signature_date|date:'d M Y'|default:'-' }}</td>
+                            <td>{{ official_record.effective_date|date:'d M Y'|default:'-' }}</td>
+                            <td>{{ official_record.expired_date|date:'d M Y'|default:'-' }}</td>
                         </tr>
                     {% empty %}
                         <tr>

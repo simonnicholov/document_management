@@ -188,7 +188,7 @@
                     <div class="col-md-6">
                         <div class="form-group mb-3">
                             <h6 class="font-14">Retention Period :</h6>
-                            <p>{{ document.retention_period }}</p>
+                            <p>{{ document.retention_period|default:'-' }}</p>
                         </div>
                     </div>
                 </div>

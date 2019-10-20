@@ -46,7 +46,7 @@ class Document(models.Model):
     effective_date = models.DateField(blank=True, null=True)
     expired_date = models.DateField(blank=True, null=True)
     amount = models.FloatField(validators=[MinValueValidator(0)], blank=True, null=True)
-    description = models.TextField(blank=True, null=True)
+    description = models.TextField(blank=True)
 
     group = models.PositiveSmallIntegerField(choices=GROUP)
     category = models.PositiveSmallIntegerField(choices=CATEGORY)
