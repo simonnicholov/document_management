@@ -11,12 +11,12 @@
                     <li class="breadcrumb-item">
                         {% include '_includes/breadcrumb.html' %}
                     </li>
-                    <li class="breadcrumb-item"><a href="{% url 'backoffice:addendums:index' %}">Addendums</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'backoffice:addendums:index' %}">Addendum</a></li>
                     <li class="breadcrumb-item"><a href="{% url 'backoffice:addendums:details' addendum_file.addendum.document.id %}">Detail</a></li>
                     <li class="breadcrumb-item active">Remove</li>
                 </ol>
             </div>
-            <h4 class="page-title">Remove File Addendum</h4>
+            <h4 class="page-title">Remove Addendum File</h4>
         </div>
     </div>
 </div>
@@ -65,7 +65,7 @@
                         <div class="col-md-6">
                             <div class="form-group mb-3">
                                 <h6 class="font-14">Status:</h6>
-                                <p><span class="{{ document.badge_status_class }}">{{ addendum_file.addendum.document.get_status_display }}</span></p>
+                                <p><span class="{{ addendum_file.addendum.document.badge_status_class }}">{{ addendum_file.addendum.document.get_status_display }}</span></p>
                             </div>
                         </div>
                     </div>

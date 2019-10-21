@@ -313,6 +313,13 @@ def remove(request, id):
         messages.error(request, "Document # %s status has already done" % (document_file.document.number))
         return redirect(reverse("backoffice:contracts:details", args=[document_file.document.id]))
 
+    if document_file.document.status == Document.STATUS.ongoing:
+        document_file.document.badge_status_class = "badge badge-warning p-1"
+    elif document_file.document.status == Document.STATUS.done:
+        document_file.document.badge_status_class = "badge badge-success p-1"
+    elif document_file.document.status == Document.STATUS.expired:
+        document_file.document.badge_status_class = "badge badge-danger p-1"
+
     form = RemoveForm(data=request.POST or None, document_file=document_file, user=request.user)
 
     if form.is_valid():
@@ -324,7 +331,7 @@ def remove(request, id):
             messages.error(request, form.non_field_errors()[0])
 
     context = {
-        'title': 'Remove File Contract',
+        'title': 'Remove Contract File',
         'document_file': document_file,
         'form': form
     }
