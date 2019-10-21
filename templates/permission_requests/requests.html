@@ -90,7 +90,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <h6 class="font-14">Description :</h6>
-                            <p>{{ document.description }}</p>
+                            <p>{{ document.description|default:'-' }}</p>
                         </div>
                     </div>
 
