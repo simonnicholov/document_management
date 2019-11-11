@@ -8,6 +8,7 @@
 - [ ] Pastikan `reviewers` sudah dipilih
 - [ ] Update `changelog.md`
 
+
 #### JIKA TERDAPAT EFEK PERUBAHAN
 - [ ] Screenshoot harus ditampilkan jika ada perubahan tampilan
 - [ ] Fitur sudah di-test dari browser jika ada diperlukan
