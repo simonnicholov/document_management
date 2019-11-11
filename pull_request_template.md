@@ -1,4 +1,4 @@
-Pastikan checklist dibawah sudah dibaca dan dikerjakan sebelum submit `pull request` :
+#### Pastikan checklist dibawah sudah dibaca dan dikerjakan sebelum submit `pull request` :
 
 - [ ] Fix/Ref #nomor_issue. (Nomor issue harus disertakan)
 - [ ] Penambahan / pengurang code sudah dibaca ulang
@@ -8,14 +8,15 @@ Pastikan checklist dibawah sudah dibaca dan dikerjakan sebelum submit `pull requ
 - [ ] Pastikan `reviewers` sudah dipilih
 - [ ] Update `changelog.md`
 
-JIKA TERDAPAT EFEK PERUBAHAN
+
+#### JIKA TERDAPAT EFEK PERUBAHAN
 - [ ] Screenshoot harus ditampilkan jika ada perubahan tampilan
 - [ ] Fitur sudah di-test dari browser jika ada diperlukan
 
-JIKA TERMASUK PROJECT DAN MILESTONE
+#### JIKA TERMASUK PROJECT DAN MILESTONE
 - [ ] Pastikan `projects` sudah dipilih
 - [ ] Pastikan `milestone` sudah dipilih
 
-INFORMASI :
+#### INFORMASI :
 - Created date : dd/mm/yyyy
 - Merged date  : dd/mm/yyyy
