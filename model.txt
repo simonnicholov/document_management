@@ -40,3 +40,4 @@ UI/UX
   - CSS/SCSS
   - Variable
   - Background-image
+  - Coloring
