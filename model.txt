@@ -41,3 +41,4 @@ UI/UX
   - Variable
   - Background-image
   - Coloring
+  - Mouse
