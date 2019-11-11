@@ -1,2 +1,2 @@
 ## Development
-- [ ] [Remove/Comment/New/Remove/Tweak] <keterangan>
+- [ ] [Remove/Comment/New/Remove/Tweak] (Keterangan)
