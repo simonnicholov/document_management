@@ -35,6 +35,7 @@ User
   - document_type
   - maintenance
   - state
+  - date
   
 UI/UX
   - CSS/SCSS
