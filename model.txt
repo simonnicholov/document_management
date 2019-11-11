@@ -8,6 +8,8 @@ Location
   - umodified
   - updated_at
 
+  - add [form_transaction]
+
 Partner
   - partner_name
   - address
