@@ -17,6 +17,7 @@ User
  - username
  - email
  - role
+ - tambah function
  
  
  TRANSACTION
