@@ -37,3 +37,4 @@ User
   
 UI/UX
   - CSS/SCSS
+  - Variable
