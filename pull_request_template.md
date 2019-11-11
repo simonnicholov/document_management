@@ -5,11 +5,16 @@ Pastikan checklist dibawah sudah dibaca dan dikerjakan sebelum submit `pull requ
 - [ ] Print statement sudah dihapus
 - [ ] Code spacing code atau code identation sudah dikembali
 - [ ] Penamaan variable harus jelas, dan sudah di-cek kembali
-- [ ] Update changelog.md
+- [ ] Pastikan `reviewers` sudah dipilih
+- [ ] Update `changelog.md`
 
 JIKA TERDAPAT EFEK PERUBAHAN
 - [ ] Screenshoot harus ditampilkan jika ada perubahan tampilan
 - [ ] Fitur sudah di-test dari browser jika ada diperlukan
+
+JIKA TERMASUK PROJECT DAN MILESTONE
+- [ ] Pastikan `projects` sudah dipilih
+- [ ] Pastikan `milestone` sudah dipilih
 
 INFORMASI :
 - Created date : dd/mm/yyyy
