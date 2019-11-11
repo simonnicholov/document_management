@@ -6,7 +6,7 @@
 - [ ] Code spacing code atau code identation sudah dikembali
 - [ ] Penamaan variable harus jelas, dan sudah di-cek kembali
 - [ ] Pastikan `reviewers` sudah dipilih
-- [ ] Update `changelog.md`
+- [ ] Update `CHANGELOG.md`
 
 
 #### JIKA TERDAPAT EFEK PERUBAHAN
