@@ -14,14 +14,13 @@
    Tetapi, jika `Projects` dan `Milestone` belum ada. Tolong ditambahkan.
 
 
-#### Detail Issue :
+#### DETAIL ISSUE :
 
 
-#### Link :
+#### LINK :
 
 
-#### How to reproduce issue :
+#### HOW TO REPRODUCE :
 
 
-#### Screenshoot :
-
+#### SCREENSHOOT :
