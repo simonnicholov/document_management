@@ -1,4 +1,4 @@
-Django==2.2.3
+Django==2.2.10
 
 # django
 django-compressor==2.2
