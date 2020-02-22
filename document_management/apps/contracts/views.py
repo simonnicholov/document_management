@@ -6,6 +6,7 @@ from django.db.models import Q
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 
 from document_management.apps.documents.models import Document, DocumentFile
+from document_management.apps.locations.models import Location
 from document_management.core.decorators import legal_required
 
 from .forms import (ContractForm, DeleteForm, ChangeRecordStatusForm,
@@ -16,10 +17,10 @@ from .forms import (ContractForm, DeleteForm, ChangeRecordStatusForm,
 def index(request):
     query = request.GET.get('query', '')
     category = int(request.GET.get('category', 0))
-    type = int(request.GET.get('type', 0))
+    location = int(request.GET.get('location', 0))
     status = int(request.GET.get('status', 0))
 
-    documents = Document.objects.select_related('partner')\
+    documents = Document.objects.select_related('partner', 'location')\
         .filter(group=settings.GROUP_CONTRACT)
 
     if query:
@@ -30,8 +31,8 @@ def index(request):
     if category > 0:
         documents = documents.filter(category=category)
 
-    if type > 0:
-        documents = documents.filter(type=type)
+    if location > 0:
+        documents = documents.filter(location=location)
 
     if status > 0:
         documents = documents.filter(status=status)
@@ -40,7 +41,7 @@ def index(request):
 
     page = request.GET.get('page', 1)
 
-    paginator = Paginator(documents, 25)
+    paginator = Paginator(documents, 2)
     try:
         page = paginator.page(page)
     except PageNotAnInteger:
@@ -61,6 +62,8 @@ def index(request):
         else:
             document.badge_status_class = "badge badge-danger p-1"
 
+    locations = Location.objects.filter(is_active=True)
+
     context = {
         'title': 'Contract',
         'document': Document,
@@ -69,8 +72,9 @@ def index(request):
         'total_pages': paginator.num_pages,
         'query': query,
         'category': category,
-        'type': type,
-        'status': status
+        'selected_location': location,
+        'status': status,
+        'locations': locations
     }
     return render(request, 'contracts/index.html', context)
 
