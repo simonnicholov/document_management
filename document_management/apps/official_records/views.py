@@ -687,8 +687,6 @@ def related_remove(request, id):
     elif official_record.document.status == Document.STATUS.expired:
         official_record.document.badge_status_class = "badge badge-danger p-1"
 
-    print(official_record.document.badge_status_class)
-
     if form.is_valid():
         form.remove()
         messages.success(request, "Official Record File of # %s has been deleted"
