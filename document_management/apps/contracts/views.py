@@ -41,7 +41,7 @@ def index(request):
 
     page = request.GET.get('page', 1)
 
-    paginator = Paginator(documents, 2)
+    paginator = Paginator(documents, 25)
     try:
         page = paginator.page(page)
     except PageNotAnInteger:
