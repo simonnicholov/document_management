@@ -402,6 +402,7 @@ def related(request):
     context = {
         'title': 'Related Official Records',
         'official_record': OfficialRecord,
+        'document': Document,
         'page': page,
         'total_data': paginator.count,
         'total_pages': paginator.num_pages,
@@ -503,6 +504,18 @@ def related_edit(request, id=None):
                           official_record.document.number))
         return redirect(reverse("backoffice:official_records:related_details",
                                 args=[official_record.id]))
+
+    if official_record.document.type == Document.TYPE.private:
+        official_record.document.badge_type_class = "badge badge-danger p-1"
+    else:
+        official_record.document.badge_type_class = "badge badge-success p-1"
+
+    if official_record.document.status == Document.STATUS.ongoing:
+        official_record.document.badge_status_class = "badge badge-warning p-1"
+    elif official_record.document.status == Document.STATUS.done:
+        official_record.document.badge_status_class = "badge badge-success p-1"
+    elif official_record.document.status == Document.STATUS.expired:
+        official_record.document.badge_status_class = "badge badge-danger p-1"
 
     if official_record.signature_date:
         signature_date = official_record.signature_date.strftime("%Y-%m-%d")
@@ -667,6 +680,13 @@ def related_remove(request, id):
     form = RelatedRemoveForm(data=request.POST or None, official_record_file=official_record_file,
                              user=request.user)
 
+    if official_record.document.status == Document.STATUS.ongoing:
+        official_record.document.badge_status_class = "badge badge-warning p-1"
+    elif official_record.document.status == Document.STATUS.done:
+        official_record.document.badge_status_class = "badge badge-success p-1"
+    elif official_record.document.status == Document.STATUS.expired:
+        official_record.document.badge_status_class = "badge badge-danger p-1"
+
     if form.is_valid():
         form.remove()
         messages.success(request, "Official Record File of # %s has been deleted"
@@ -677,7 +697,7 @@ def related_remove(request, id):
             messages.error(request, form.non_field_errors()[0])
 
     context = {
-        'title': 'Remove File Contract',
+        'title': 'Remove Official Record File',
         'official_record_file': official_record_file,
         'form': form
     }

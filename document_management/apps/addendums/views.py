@@ -166,6 +166,18 @@ def edit(request, id):
     else:
         effective_date = ''
 
+    if addendum.document.type == Document.TYPE.private:
+        addendum.document.badge_type_class = "badge badge-danger p-1"
+    else:
+        addendum.document.badge_type_class = "badge badge-success p-1"
+
+    if addendum.document.status == Document.STATUS.ongoing:
+        addendum.document.badge_status_class = "badge badge-warning p-1"
+    elif addendum.document.status == Document.STATUS.done:
+        addendum.document.badge_status_class = "badge badge-success p-1"
+    elif addendum.document.status == Document.STATUS.expired:
+        addendum.document.badge_status_class = "badge badge-danger p-1"
+
     initial = {
         'number': addendum.number,
         'subject': addendum.subject,
@@ -296,22 +308,31 @@ def remove(request, id):
                             .filter(is_active=True), id=id
     )
 
-    if addendum_file.addendum.document.status == Document.STATUS.done:
-        messages.error(request, "Document # %s status has already done" % (addendum_file.addendum.document.number))
-        return redirect(reverse("backoffice:addendums:details", args=[addendum_file.addendum.id]))
+    addendum = addendum_file.addendum
+
+    if addendum.document.status == Document.STATUS.done:
+        messages.error(request, "Document # %s status has already done" % (addendum.document.number))
+        return redirect(reverse("backoffice:addendums:details", args=[addendum.id]))
+
+    if addendum.document.status == Document.STATUS.ongoing:
+        addendum.document.badge_status_class = "badge badge-warning p-1"
+    elif addendum.document.status == Document.STATUS.done:
+        addendum.document.badge_status_class = "badge badge-success p-1"
+    elif addendum.document.status == Document.STATUS.expired:
+        addendum.document.badge_status_class = "badge badge-danger p-1"
 
     form = RemoveForm(data=request.POST or None, addendum_file=addendum_file, user=request.user)
 
     if form.is_valid():
         form.remove()
-        messages.success(request, "Addendum File of # %s has been deleted" % str(addendum_file.addendum.document.number))
-        return redirect(reverse("backoffice:addendums:details", args=[addendum_file.addendum.id]))
+        messages.success(request, "Addendum File of # %s has been deleted" % str(addendum.document.number))
+        return redirect(reverse("backoffice:addendums:details", args=[addendum.id]))
     else:
         if form.has_error('__all__'):
             messages.error(request, form.non_field_errors()[0])
 
     context = {
-        'title': 'Remove File Addendum',
+        'title': 'Remove Addendum File',
         'addendum_file': addendum_file,
         'form': form
     }

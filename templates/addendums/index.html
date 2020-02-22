@@ -61,7 +61,7 @@
                         <option value="0">- Select -</option>
                         <option value="1" {% if category == document.CATEGORY.construction %}selected{% endif %}>Construction</option>
                         <option value="2" {% if category == document.CATEGORY.property %}selected{% endif %}>Property</option>
-                        <option value="3"" {% if category == document.CATEGORY.other %}selected{% endif %}>Others</option>
+                        <option value="5" {% if category == document.CATEGORY.other %}selected{% endif %}>Others</option>
                     </select>
                 </div>
             </div>
@@ -89,8 +89,8 @@
                             <td><a href="{% url 'backoffice:addendums:details' addendum.id %}"># {{ addendum.number }}</a></td>
                             <td>{{ addendum.subject }}</td>
                             <td>{{ addendum.signature_date|date:'d M Y' }}</td>
-                            <td>{{ addendum.get_group_display }}</td>
-                            <td>{{ addendum.get_category_display }}</td>
+                            <td>{{ addendum.document.get_group_display }}</td>
+                            <td>{{ addendum.document.get_category_display }}</td>
                         </tr>
                     {% empty %}
                         <tr>
@@ -115,7 +115,7 @@
     </div>
     <div class="col-xs-3 text-right">
         {% if page.has_next %}
-            <a href="?page={{ page.next_page_number }}&query={{ query }}&signature_datey={{ signature_date }}&group={{ group }}&category={{ category }}" class="btn btn-outline-info btn-rounded">Next</a>
+            <a href="?page={{ page.next_page_number }}&query={{ query }}&signature_date={{ signature_date }}&group={{ group }}&category={{ category }}" class="btn btn-outline-info btn-rounded">Next</a>
         {% endif %}
     </div>
 </div>

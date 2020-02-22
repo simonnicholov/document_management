@@ -20,7 +20,7 @@
                     <li class="breadcrumb-item active"># {{ document.number }}</li>
                 </ol>
             </div>
-            <h4 class="page-title">Detail Company Regulations</h4>
+            <h4 class="page-title">Detail Company Regulation</h4>
         </div>
     </div>
 </div>
@@ -64,9 +64,11 @@
                                     <a href="{% url 'backoffice:company_regulations:preview' file.id %}" target="_blank" class="text-muted font-weight-bold">{{ file.document.subject }} - {{ forloop.counter }}</a>
                                 </div>
                                 <div class="col-auto">
+                                    {% if not request.user.get_role_id == ROLE_USER_ID %}
                                     <a href="{% url 'backoffice:company_regulations:remove' file.id %}" class="btn btn-link btn-lg text-muted">
                                         <i class="dripicons-trash"></i>
                                     </a>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>

@@ -69,9 +69,11 @@
                                     <a href="{% url 'backoffice:official_records:unrelated_preview' file.id %}" target="_blank" class="text-muted font-weight-bold">{{ file.document.subject }} - {{ forloop.counter }}</a>
                                 </div>
                                 <div class="col-auto">
+                                    {% if not request.user.get_role_id == ROLE_USER_ID %}
                                     <a href="{% url 'backoffice:official_records:unrelated_remove' file.id %}" class="btn btn-link btn-lg text-muted">
                                         <i class="dripicons-trash"></i>
                                     </a>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
