@@ -17,6 +17,7 @@ User
  - username
  - email
  - role
+ - tambah function
  
  
  TRANSACTION
@@ -35,3 +36,9 @@ User
   - maintenance
   - state
   
+UI/UX
+  - CSS/SCSS
+  - Variable
+  - Background-image
+  - Coloring
+  - Mouse
