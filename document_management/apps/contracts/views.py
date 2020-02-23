@@ -55,7 +55,7 @@ def index(request):
     if status > 0:
         documents = documents.filter(status=status)
 
-    if  sort_type == SortType.ASC.value:
+    if sort_type == SortType.ASC.value:
         if sort_field == SortField.NUMBER.value:
             documents = documents.order_by('number')
         elif sort_field == SortField.EFFECTIVE_DATE.value:
