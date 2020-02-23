@@ -1,3 +1,5 @@
+from enum import Enum
+
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -8,9 +10,22 @@ from django.shortcuts import render, redirect, reverse, get_object_or_404
 from document_management.apps.documents.models import Document, DocumentFile
 from document_management.apps.locations.models import Location
 from document_management.core.decorators import legal_required
+from document_management.core.enum import SortType
 
 from .forms import (ContractForm, DeleteForm, ChangeRecordStatusForm,
                     ChangeStatusForm, UploadForm, RemoveForm)
+
+
+class SortField(Enum):
+    NUMBER = "number"
+    EFFECTIVE_DATE = "effective_date"
+
+    @classmethod
+    def to_dict(cls):
+        dict_sort_field = {}
+        for m in cls:
+            dict_sort_field[m.name] = m.value
+        return dict_sort_field
 
 
 @login_required
@@ -19,6 +34,9 @@ def index(request):
     category = int(request.GET.get('category', 0))
     location = int(request.GET.get('location', 0))
     status = int(request.GET.get('status', 0))
+
+    sort_field = request.GET.get('sort_field')
+    sort_type = request.GET.get('sort_type')
 
     documents = Document.objects.select_related('partner', 'location')\
         .filter(group=settings.GROUP_CONTRACT)
@@ -37,7 +55,29 @@ def index(request):
     if status > 0:
         documents = documents.filter(status=status)
 
-    documents = documents.order_by('-id')
+    if  sort_type == SortType.ASC.value:
+        if sort_field == SortField.NUMBER.value:
+            documents = documents.order_by('number')
+        elif sort_field == SortField.EFFECTIVE_DATE.value:
+            documents = documents.order_by('effective_date')
+
+        next_sort_type = SortType.DESC.value
+        sort_type = SortType.ASC.value
+
+    elif sort_type == SortType.DESC:
+        if sort_field == SortField.NUMBER.value:
+            documents = documents.order_by('-number')
+        elif sort_field == SortField.EFFECTIVE_DATE.value:
+            documents = documents.order_by('-effective_date')
+
+        next_sort_type = SortType.ASC.value
+        sort_type = SortType.DESC.value
+
+    else:
+        documents = documents.order_by('-id')
+
+        next_sort_type = SortType.ASC.value
+        sort_type = SortType.DESC.value
 
     page = request.GET.get('page', 1)
 
@@ -74,8 +114,13 @@ def index(request):
         'category': category,
         'selected_location': location,
         'status': status,
-        'locations': locations
+        'locations': locations,
+        'sort_field': sort_field,
+        'sort_type': sort_type,
+        'next_sort_type': next_sort_type,
+        'dict_sort_field': SortField.to_dict()
     }
+
     return render(request, 'contracts/index.html', context)
 
 

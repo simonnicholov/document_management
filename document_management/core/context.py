@@ -1,5 +1,7 @@
 from django.conf import settings
 
+from .enum import SortType
+
 
 def context_constant(request):
     context = {
@@ -11,6 +13,8 @@ def context_constant(request):
         'GROUP_CONTRACT': settings.GROUP_CONTRACT,
         'GROUP_MOU': settings.GROUP_MOU,
         'GROUP_OFFICIAL_RECORD': settings.GROUP_OFFICIAL_RECORD,
-        'GROUP_COMPANY_REGULATION': settings.GROUP_COMPANY_REGULATION
+        'GROUP_COMPANY_REGULATION': settings.GROUP_COMPANY_REGULATION,
+        'SORT_ASC': SortType.ASC.value,
+        'SORT_DESC': SortType.DESC.value
     }
     return context
