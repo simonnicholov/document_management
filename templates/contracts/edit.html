@@ -48,14 +48,14 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group mb-3">
-                                <label>Subject</label>
+                                <label><span>*</span> Subject</label>
                                 <input type="text" name="subject" value="{{ form.subject.value }}" class="form-control" id="subject" />
                                 {{ form.subject.errors }}
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group mb-3">
-                                <label>Location</label>
+                                <label><span>*</span> Location</label>
                                 {{ form.location }}
                                 {{ form.location.errors }}
                             </div>
@@ -65,14 +65,14 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group mb-3">
-                                <label>Category</label>
+                                <label><span>*</span> Category</label>
                                 {{ form.category }}
                                 {{ form.category.errors }}
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group mb-3">
-                                <label>Type</label>
+                                <label><span>*</span> Type</label>
                                 {{ form.type }}
                                 {{ form.type.errors }}
                             </div>
@@ -82,7 +82,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group mb-3">
-                                <label>Signature Date</label>
+                                <label><span>*</span> Signature Date</label>
                                 <input type="text" id="signature_date" name="signature_date" value="{{ form.signature_date.value }}" class="form-control" data-date-format="yyyy-mm-dd" data-provide="datepicker" data-date-autoclose="true">
                                 {{ form.signature_date.errors }}
                             </div>
@@ -92,14 +92,14 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group mb-3">
-                                <label>Effective Date</label>
+                                <label><span>*</span> Effective Date</label>
                                 <input type="text" id="effective_date" name="effective_date" value="{{ form.effective_date.value }}" class="form-control" data-date-format="yyyy-mm-dd" data-provide="datepicker" data-date-autoclose="true">
                                 {{ form.effective_date.errors }}
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group mb-3">
-                                <label>Expired Date</label>
+                                <label><span>*</span> Expired Date</label>
                                 <input type="text" id="expired_date" name="expired_date" value="{{ form.expired_date.value }}" class="form-control" data-date-format="yyyy-mm-dd" data-provide="datepicker" data-date-autoclose="true">
                                 {{ form.expired_date.errors }}
                             </div>
@@ -121,14 +121,14 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Corporate</label>
+                                <label><span>*</span> Corporate</label>
                                 {{ form.partner }}
                                 {{ form.partner.errors }}
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group mb-3">
-                                <label for="name">Amount</label>
+                                <label for="name"><span>*</span> Amount</label>
                                 <input type="text" id="amount_display" name="amount_display" value="{{ form.amount.value|floatformat:'0' }}" class="form-control" />
                                 <input type="hidden" name="amount" value="{{ form.amount.value }}" id="amount"/>
                                 {{ form.amount.errors }}
@@ -142,7 +142,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group mb-3">
-                                <label>Job specification</label>
+                                <label><span>*</span> Job specification</label>
                                 <input type="text" id="job_specification" name="job_specification" value="{{ form.job_specification.value }}" class="form-control">
                                 {{ form.job_specification.errors }}
                             </div>
@@ -155,7 +155,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="row text-center mt-3">
                         <div class="col-md-12">
                             <button id="button_submit" type="submit" class="btn btn-outline-success btn-rounded">Save</button>
@@ -164,7 +164,7 @@
 
                 </div>
 
-            </div>                
+            </div>
 
         </form>
 
